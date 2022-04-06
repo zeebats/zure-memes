@@ -1,0 +1,12 @@
+{
+  "name": "zurememes",
+  "private": "true",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "minisearch": "4.0.3"
+  },
+  "devDependencies": {
+    "@zeebats/eslint-config": "1.0.2"
+  }
+}
