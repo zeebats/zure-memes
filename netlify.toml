@@ -1,0 +1,12 @@
+[build]
+  publish = "images/"
+
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
+  included_files = ["./data/memes.js"]
+
+[[redirects]]
+  from = "/search"
+  to = "/.netlify/functions/search"
+  status = 200
