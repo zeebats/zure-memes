@@ -1,12 +1,14 @@
 {
   "name": "zurememes",
   "private": "true",
-  "type": "module",
-  "scripts": {},
+  "scripts": {
+    "ts-check": "tsc"
+  },
   "dependencies": {
-    "minisearch": "4.0.3"
+    "@netlify/functions": "1.0.0"
   },
   "devDependencies": {
-    "@zeebats/eslint-config": "1.0.2"
+    "@zeebats/eslint-config": "1.0.2",
+    "typescript": "4.6.3"
   }
 }
