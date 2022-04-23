@@ -1,11 +1,20 @@
 import { Handler } from '@netlify/functions';
+import { ResourceApiResponse, v2 as cloudinary } from 'cloudinary';
 
-export const handler: Handler = async (event, context) => ({
-    statusCode: 200,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        message: 'Hello World',
-    }),
-});
+const getCloudinaryList = (): Promise<ResourceApiResponse> => cloudinary.api.resources({
+    prefix: 'memes',
+    tags: true,
+    type: 'upload',
+}, (error, results) => results);
+
+export const handler: Handler = async () => {
+    const list = await getCloudinaryList();
+
+    return {
+        body: JSON.stringify(list),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        statusCode: 200,
+    };
+};

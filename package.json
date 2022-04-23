@@ -5,7 +5,8 @@
     "ts-check": "tsc"
   },
   "dependencies": {
-    "@netlify/functions": "1.0.0"
+    "@netlify/functions": "1.0.0",
+    "cloudinary": "1.29.1"
   },
   "devDependencies": {
     "@zeebats/eslint-config": "1.0.2",
