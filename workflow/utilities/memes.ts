@@ -22,7 +22,7 @@ export const getMemes = async ({ tagIds }: { tagIds: number[] }): Promise<number
 
     let memes: Meme[] = JSON.parse(local);
 
-    memes = memes.filter(meme => tagIds.includes(meme.id));
+    memes = memes.filter(meme => tagIds.includes(meme.tag_id));
 
     // eslint-disable-next-line camelcase
     return memes.reduce((accumulator: number[], { image_id }: Meme): number[] => {
