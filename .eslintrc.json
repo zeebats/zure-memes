@@ -1,8 +1,12 @@
 {
-  "extends": ["@zeebats/eslint-config/typescript"],
+  "extends": [
+    "@zeebats/eslint-config/typescript"
+  ],
   "overrides": [
     {
-      "files": ["*.d.ts"],
+      "files": [
+        "*.d.ts"
+      ],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off",
         "unicorn/prevent-abbreviations": "off"

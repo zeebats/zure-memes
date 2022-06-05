@@ -1,6 +1,12 @@
 [build]
   functions = "functions"
 
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  port = 4449
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"

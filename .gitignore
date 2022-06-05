@@ -6,3 +6,16 @@ node_modules
 
 # Netlify
 .netlify
+
+# Alfred workflow
+workflow/export/.cache
+workflow/export/index.js
+
+# Nuxt
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
