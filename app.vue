@@ -105,7 +105,10 @@ const handleSubmit = async () => {
 
     const { id: image_id } = image;
 
-    images.value.push(image);
+    images.value = [
+        image,
+        ...images.value,
+    ];
 
     const { data: dataTags } = await $supabase.from<Tag>('tags').insert(newTags.value.split(',').map(tag => ({
         name: tag
