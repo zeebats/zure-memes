@@ -87,8 +87,8 @@
 </template>
 
 <script setup lang="ts">
-import useVuelidate from '@vuelidate/core'
-import { helpers, required, url } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core';
+import { helpers, required, url } from '@vuelidate/validators';
 
 import { Image, getImages } from '@/utilities/images';
 import { Meme, getMemes } from '@/utilities/memes';
@@ -119,11 +119,6 @@ const newUrl = ref('');
 const newTitle = ref('');
 const newTags = ref('');
 
-const $v = useVuelidate(rules, {
-    newTitle,
-    newUrl,
-});
-
 const { data: tags } = await useAsyncData('tags', async () => getTags({
     $supabase,
     query: query.value,
@@ -138,6 +133,11 @@ const { data: images } = await useAsyncData('images', () => getImages({
     $supabase,
     imageIds: memes.value,
 }), {watch: [memes]});
+
+const $v = useVuelidate(rules, {
+    newTitle,
+    newUrl,
+});
 
 const handleSubmit = async () => {
     if (!await $v.value.$validate()) return
