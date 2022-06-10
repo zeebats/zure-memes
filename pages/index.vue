@@ -11,7 +11,12 @@
                                 id="url"
                                 type="text"
                                 v-model.trim="newUrl"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                :disabled="loading"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                :class="[
+                                    loading && 'bg-gray-200',
+                                    !loading && 'bg-gray-50',
+                                ]"
                             >
                             <span class="text-xs grid gap-y-2">
                                 <p
@@ -31,7 +36,12 @@
                                 id="title"
                                 type="text"
                                 v-model.trim="newTitle"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                :disabled="loading"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                :class="[
+                                    loading && 'bg-gray-200',
+                                    !loading && 'bg-gray-50',
+                                ]"
                             >
                             <span class="text-xs grid gap-y-2">
                                 <p
@@ -51,12 +61,17 @@
                                 id="tags"
                                 type="text"
                                 v-model.trim="newTags"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                :disabled="loading"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                :class="[
+                                    loading && 'bg-gray-200',
+                                    !loading && 'bg-gray-50',
+                                ]"
                             >
                             <span class="text-xs">Optional, should be comma seperated: <pre class="inline-block">`tag,tag,tag`</pre></span>
                         </span>
                     </label>
-                    <button type="submit" class="flex-grow focus:outline-none text-white !bg-green-700 hover:!bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:!bg-green-600 dark:hover:!bg-green-700 dark:focus:ring-green-800">Submit</button>
+                    <Button type="submit" class="flex-grow text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-opacity" :class="[loading && 'op-50']">Submit</Button>
                 </form>
             </div>
 
@@ -70,17 +85,15 @@
                         id="search"
                         type="search"
                         v-model.trim="query"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                     >
                 </label>
             </div>
 
             <hr>
 
-            <div class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 items-center">
-                <figure v-for="{url, title} in images" :key="url">
-                    <img :src="url" :alt="title" class="block w-full">
-                </figure>
+            <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                <Item v-for="{url, title, tags} in imageStore.imagesLoop" :key="url" :url="url" :title="title" :tags="tags" />
             </div>
         </div>
     </NuxtLayout>
@@ -90,10 +103,14 @@
 import { useVuelidate } from '@vuelidate/core';
 import { helpers, required, url } from '@vuelidate/validators';
 
-import { Image, getImages } from '@/utilities/images';
-import { Meme, getMemes } from '@/utilities/memes';
-import { Tag, getTags } from '@/utilities/tags';
+import { Image } from '@/utilities/images';
+import { Meme } from '@/utilities/memes';
+import { Tag } from '@/utilities/tags';
 import { setTimestamp } from '@/utilities/timestamp';
+
+import { useTagsStore } from '@/store/tags';
+import { useMemesStore } from '@/store/memes';
+import { useImageStore } from '@/store/images';
 
 definePageMeta({
     middleware: 'auth'
@@ -118,42 +135,29 @@ const rules = computed(() => ({
 
 const $supabase = useSupabaseClient();
 
-let controller = null;
+const loading = ref<boolean>(false);
 
-let loading = ref(false);
+const query = ref<string>('');
+const newUrl = ref<string>('');
+const newTitle = ref<string>('');
+const newTags = ref<string>('');
 
-const query = ref('');
-const newUrl = ref('');
-const newTitle = ref('');
-const newTags = ref('');
+const tagStore = useTagsStore();
+const memeStore = useMemesStore();
+const imageStore = useImageStore();
 
-const { data: tags } = await useAsyncData('tags', async () => getTags({
-    $supabase,
-    query: query.value,
-    controller,
-    loading,
-}), {watch: [query]});
+await tagStore.getTags($supabase);
+await memeStore.getMemes($supabase);
+await imageStore.getImages($supabase);
 
-const { data: memes } = await useAsyncData('memes', () => getMemes({
-    $supabase,
-    tagIds: tags.value,
-    controller,
-    loading,
-}), {watch: [tags]});
-
-const { data: images } = await useAsyncData('images', () => getImages({
-    $supabase,
-    imageIds: memes.value,
-    controller,
-    loading,
-}), {watch: [memes]});
+watch(query, (): void => tagStore.modifyQuery(query.value))
 
 const $v = useVuelidate(rules, {
     newTitle,
     newUrl,
 });
 
-const handleSubmit = async () => {
+const handleSubmit = async (): Promise<void> => {
     if (!await $v.value.$validate()) return;
 
     loading.value = true;
@@ -163,31 +167,31 @@ const handleSubmit = async () => {
         title: newTitle.value,
     });
 
-    newUrl.value = '';
-    newTitle.value = '';
-
     const image = dataImages.at(0);
 
     const { id: image_id } = image;
-
-    images.value = [
-        image,
-        ...images.value,
-    ];
 
     const { data: dataTags } = await $supabase.from<Tag>('tags').insert(newTags.value.split(',').map(tag => ({
         name: tag
     })));
 
-    newTags.value = '';
-
-    $v.value.$reset();
-
-    const { data: dataMemes } = await $supabase.from<Meme>('memes').insert(dataTags.map(({id}) => ({
+    await $supabase.from<Meme>('memes').insert(dataTags.map(({id}): { image_id: number; tag_id: number; } => ({
         image_id,
         tag_id: id,
     })));
 
-    setTimestamp({ $supabase });
+    await tagStore.getTags($supabase);
+    await memeStore.getMemes($supabase);
+    await imageStore.getImages($supabase);
+
+    await setTimestamp({ $supabase });
+
+    newUrl.value = '';
+    newTitle.value = '';
+    newTags.value = '';
+
+    $v.value.$reset();
+
+    loading.value = false;
 }
 </script>

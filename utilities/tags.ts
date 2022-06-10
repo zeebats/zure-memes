@@ -46,3 +46,16 @@ export const getTags = async ({
         tags,
     });
 };
+
+export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Tag[]> => {
+    const {
+        data: tags,
+        error,
+    } = await queryTags({ $supabase }).select();
+
+    if (error) {
+        throw error;
+    }
+
+    return tags;
+};
