@@ -9,6 +9,19 @@ export interface Meme {
 
 export const queryMemes = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Meme> => $supabase.from<Meme>('memes');
 
+export const getAllMemes = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Meme[]> => {
+    const {
+        data: memes,
+        error,
+    } = await queryMemes({ $supabase }).select();
+
+    if (error) {
+        throw error;
+    }
+
+    return memes;
+};
+
 export const getMemes = async ({
     $supabase,
     tagIds,

@@ -5,7 +5,10 @@
   node_bundler = "esbuild"
 
 [dev]
+  command = "npm run dev"
+  framework = "#custom"
   port = 4449
+  targetPort = 3000
 
 [[redirects]]
   from = "/api/*"

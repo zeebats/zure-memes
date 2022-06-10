@@ -16,16 +16,19 @@
   "dependencies": {
     "@netlify/functions": "1.0.0",
     "@nuxtjs/supabase": "0.1.16",
+    "@pinia/nuxt": "0.1.9",
     "@supabase/supabase-js": "1.35.3",
     "@types/node": "17.0.40",
     "@unocss/nuxt": "0.38.0",
     "@unocss/reset": "0.38.0",
     "@vuelidate/core": "2.0.0-alpha.41",
     "@vuelidate/validators": "2.0.0-alpha.29",
+    "colord": "2.9.2",
     "filenamify-url": "3.0.0",
     "fzf": "0.5.1",
     "node-fetch": "3.2.5",
-    "nuxt": "3.0.0-rc.3"
+    "nuxt": "3.0.0-rc.3",
+    "pinia": "2.0.14"
   },
   "devDependencies": {
     "@commitlint/cli": "17.0.2",
