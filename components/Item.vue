@@ -1,6 +1,6 @@
 <template>
-    <div ref="item" class="grid" @click="handleClick" @pointerenter="hover = true" @pointerleave="hover = false">
-        <button class="aspect-ratio-[355/200] col-[1/-1] row-[1/-1] relative -z-1 appearance-none" @focus="handleFocus"></button>
+    <div ref="item" class="grid focus-within:ring-4 ring-blue-300 dark:ring-blue-800" @click="handleClick" @pointerenter="handlePointerEnter" @pointerleave="handlePointerLeave">
+        <button class="aspect-ratio-[355/200] outline-none col-[1/-1] row-[1/-1] relative -z-1 appearance-none" @focus="handleFocus"></button>
         <figure class="col-[1/-1] row-[1/-1] self-center">
             <img :src="url" :alt="title" class="block w-full">
         </figure>
@@ -116,6 +116,22 @@ const handleClick = (): void => {
     }
 
     hover.value = !hover.value
+}
+
+const handlePointerEnter = (): void => {
+    if(!window.matchMedia('(pointer:fine)').matches) {
+        return;
+    }
+
+    hover.value = true
+}
+
+const handlePointerLeave = (): void => {
+    if(!window.matchMedia('(pointer:fine)').matches) {
+        return;
+    }
+
+    hover.value = false
 }
 
 const handleFocus = (): void => {
