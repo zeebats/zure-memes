@@ -12,7 +12,10 @@
                                 type="text"
                                 v-model.trim="newUrl"
                                 :disabled="loading"
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                autocapitalize="none"
+                                autocorrect="off"
+                                spellcheck="false"
+                                class="text-base border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                                 :class="[
                                     loading && 'bg-gray-200',
                                     !loading && 'bg-gray-50',
@@ -37,7 +40,10 @@
                                 type="text"
                                 v-model.trim="newTitle"
                                 :disabled="loading"
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                autocapitalize="none"
+                                autocorrect="off"
+                                spellcheck="false"
+                                class="text-base border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                                 :class="[
                                     loading && 'bg-gray-200',
                                     !loading && 'bg-gray-50',
@@ -62,7 +68,10 @@
                                 type="text"
                                 v-model.trim="newTags"
                                 :disabled="loading"
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                                autocapitalize="none"
+                                autocorrect="off"
+                                spellcheck="false"
+                                class="text-base border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                                 :class="[
                                     loading && 'bg-gray-200',
                                     !loading && 'bg-gray-50',
@@ -85,7 +94,10 @@
                         id="search"
                         type="search"
                         v-model.trim="query"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                        autocapitalize="none"
+                        autocorrect="off"
+                        spellcheck="false"
+                        class="text-base bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                     >
                 </label>
             </div>
