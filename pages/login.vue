@@ -10,8 +10,8 @@ const user = useSupabaseUser()
 const { auth } = useSupabaseClient()
 
 watchEffect((): void => {
-  if (user.value) {
-    navigateTo('/')
-  }
+    if (user.value) {
+        navigateTo('/')
+    }
 })
 </script>
