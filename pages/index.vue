@@ -20,10 +20,11 @@
                                     loading && 'bg-gray-200',
                                     !loading && 'bg-gray-50',
                                 ]"
+                                @blur="urlValidation.$commit"
                             >
                             <span class="text-xs grid gap-y-2">
                                 <p
-                                    v-for="{ $message, $uid } of $v.newUrl.$errors"
+                                    v-for="{ $message, $uid } of urlValidation.$errors"
                                     :key="$uid"
                                     class="text-red-600"
                                 >
@@ -48,10 +49,11 @@
                                     loading && 'bg-gray-200',
                                     !loading && 'bg-gray-50',
                                 ]"
+                                @blur="titleValidation.$commit"
                             >
                             <span class="text-xs grid gap-y-2">
                                 <p
-                                    v-for="{ $message, $uid } of $v.newTitle.$errors"
+                                    v-for="{ $message, $uid } of titleValidation.$errors"
                                     :key="$uid"
                                     class="text-red-600"
                                 >
@@ -112,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core';
+import { useVuelidate, Validation } from '@vuelidate/core';
 import { helpers, required, url } from '@vuelidate/validators';
 
 import { Image } from '@/utilities/images';
@@ -164,13 +166,18 @@ await imageStore.getImages($supabase);
 
 watch(query, (): void => tagStore.modifyQuery(query.value))
 
-const $v = useVuelidate(rules, {
+const v$ = useVuelidate(rules, {
     newTitle,
     newUrl,
+}, {
+    $rewardEarly: true
 });
 
+const urlValidation = computed(() => v$.value.newUrl as Validation)
+const titleValidation = computed(() => v$.value.newTitle as Validation)
+
 const handleSubmit = async (): Promise<void> => {
-    if (!await $v.value.$validate()) return;
+    if (!await v$.value.$validate()) return;
 
     loading.value = true;
 
@@ -202,7 +209,7 @@ const handleSubmit = async (): Promise<void> => {
     newTitle.value = '';
     newTags.value = '';
 
-    $v.value.$reset();
+    v$.value.$reset();
 
     loading.value = false;
 }
