@@ -1,12 +1,11 @@
 {
   "extends": [
+    "@zeebats/eslint-config/vue3",
     "@zeebats/eslint-config/typescript"
   ],
   "overrides": [
     {
-      "files": [
-        "*.d.ts"
-      ],
+      "files": ["*.d.ts"],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off",
         "unicorn/prevent-abbreviations": "off"

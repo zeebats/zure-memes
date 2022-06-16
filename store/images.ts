@@ -13,6 +13,20 @@ export const useImageStore = defineStore('images', {
         async getImages($supabase: SupabaseClient): Promise<void> {
             this.images = await getAllImages({ $supabase });
         },
+        upsert(modified: Image): void {
+            const arrayID = this.images.findIndex((original: StoreImage): boolean => original.id === modified.id);
+
+            if (arrayID > 0) {
+                this.images[arrayID] = modified;
+
+                return;
+            }
+
+            this.images = [
+                modified,
+                ...this.images,
+            ];
+        },
     },
     getters: {
         imagesById(): { [id: string]: StoreImage } {
@@ -40,6 +54,15 @@ export const useImageStore = defineStore('images', {
 
                 return image.tags.some(({ id }) => filteredTags.includes(id));
             });
+        },
+        largestImageID(): number {
+            return this.images.reduce((accumulator: number, image: StoreImage): number => {
+                if (accumulator > image.id) {
+                    return accumulator;
+                }
+
+                return image.id;
+            }, 0);
         },
     },
     state: (): { images: Image[] } => ({ images: [] }),

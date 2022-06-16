@@ -13,7 +13,9 @@ export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient })
     const {
         data: images,
         error,
-    } = await queryImages({ $supabase }).select().order('id', { ascending: false });
+    } = await queryImages({ $supabase })
+        .select()
+        .order('id', { ascending: false });
 
     if (error) {
         throw error;
