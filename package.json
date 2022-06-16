@@ -30,7 +30,7 @@
     "fzf": "0.5.1",
     "nanoid": "4.0.0",
     "node-fetch": "3.2.6",
-    "nuxt": "3.0.0-rc.3",
+    "nuxt": "3.0.0-rc.4",
     "pinia": "2.0.14"
   },
   "devDependencies": {
