@@ -1,0 +1,15 @@
+{
+    "ignore": [
+        "**/build",
+        "node_modules"
+    ],
+    "files": {
+        "**/README*": "UPPER CASE.lc",
+        "**/LICENSE*": "UPPER CASE.lc",
+        "**/components/**/*.vue": "PascalCase.lc",
+        "**/*": "kebab-case.lc"
+    },
+    "folders": {
+        "**/*": "kebab-case"
+    }
+}

@@ -22,6 +22,19 @@ export const useTagsStore = defineStore('tags', {
         modifyQuery(query: string): void {
             this.query = query;
         },
+        upsert(modifiedTags: Tag[]): void {
+            for (const modifiedTag of modifiedTags) {
+                const arrayID = this.tags.findIndex((original: StoreTag): boolean => original.id === modifiedTag.id);
+
+                if (arrayID > 0) {
+                    this.tags[arrayID] = modifiedTag;
+
+                    continue;
+                }
+
+                this.tags.push(modifiedTag);
+            }
+        },
     },
     getters: {
         filteredTags(): number[] {
@@ -33,6 +46,15 @@ export const useTagsStore = defineStore('tags', {
                 query: this.query,
                 tags: this.tags,
             });
+        },
+        largestTagID(): number {
+            return this.tags.reduce((accumulator: number, tag: Tag): number => {
+                if (accumulator > tag.id) {
+                    return accumulator;
+                }
+
+                return tag.id;
+            }, 0);
         },
         tagnamesByImageId(): { [id: string]: string[] } {
             return Object.entries(this.tagsByImageId).reduce((accumulator, [
@@ -68,6 +90,13 @@ export const useTagsStore = defineStore('tags', {
                 }
 
                 accumulator[image_id].push(this.tagsById[tag_id]);
+
+                return accumulator;
+            }, {});
+        },
+        tagsByName(): { [name: string]: StoreTag } {
+            return this.tags.reduce((accumulator: Tag[], item: Tag): Tag[] => {
+                accumulator[item.name] = item;
 
                 return accumulator;
             }, {});
