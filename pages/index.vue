@@ -29,7 +29,10 @@
 
             <hr>
 
-            <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            <div
+                class="grid gap-4"
+                :class="[$style['item-grid']]"
+            >
                 <Item
                     v-for="{id, url: imageUrl, title, tags} in imageStore.imagesLoop"
                     :id="id"
@@ -72,3 +75,9 @@ await imageStore.getImages($supabase);
 
 watch(query, (): void => tagStore.modifyQuery(query.value));
 </script>
+
+<style module lang="postcss">
+.item-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+</style>
