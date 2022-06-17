@@ -1,13 +1,11 @@
 <template>
-    <NuxtLayout name="default">
+    <div>
         <div class="grid gap-4 p-4">
             <div>
                 <div class="font-bold mb-2">Add a meme:</div>
                 <FormAdd />
             </div>
-
             <hr>
-
             <div>
                 <div class="font-bold mb-2">Search for meme's:</div>
                 <label
@@ -26,9 +24,7 @@
                     >
                 </label>
             </div>
-
             <hr>
-
             <div
                 class="grid gap-4"
                 :class="[$style['item-grid']]"
@@ -49,7 +45,7 @@
             :key="id"
             :properties="properties"
         />
-    </NuxtLayout>
+    </div>
 </template>
 
 <script setup lang="ts">
