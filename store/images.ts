@@ -47,12 +47,16 @@ export const useImageStore = defineStore('images', {
             return this.images.map((image: Image): StoreImage => ({
                 ...image,
                 tags: tagsByImageId[image.id],
-            })).filter((image: StoreImage) => {
+            })).filter((image: StoreImage): boolean => {
                 if (filteredTags.length === 0) {
+                    return false;
+                }
+
+                if (filteredTags.every(tag => tag === -1)) {
                     return true;
                 }
 
-                return image.tags.some(({ id }) => filteredTags.includes(id));
+                return image.tags.some(({ id }): boolean => filteredTags.includes(id));
             });
         },
         largestImageID(): number {

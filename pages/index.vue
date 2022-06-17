@@ -25,19 +25,7 @@
                 </label>
             </div>
             <hr>
-            <div
-                class="grid gap-4"
-                :class="[$style['item-grid']]"
-            >
-                <Item
-                    v-for="{id, url: imageUrl, title, tags} in imageStore.imagesLoop"
-                    :id="id"
-                    :key="id"
-                    :url="imageUrl"
-                    :title="title"
-                    :tags="tags"
-                />
-            </div>
+            <Grid class="-m-2" />
         </div>
         <Dialog
             v-for="{id, ...properties} in dialogStore.dialogsById"
@@ -71,9 +59,3 @@ await imageStore.getImages($supabase);
 
 watch(query, (): void => tagStore.modifyQuery(query.value));
 </script>
-
-<style module lang="postcss">
-.item-grid {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-}
-</style>
