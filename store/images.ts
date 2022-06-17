@@ -16,7 +16,7 @@ export const useImageStore = defineStore('images', {
         upsert(modified: Image): void {
             const arrayID = this.images.findIndex((original: StoreImage): boolean => original.id === modified.id);
 
-            if (arrayID > 0) {
+            if (arrayID > -1) {
                 this.images[arrayID] = modified;
 
                 return;
