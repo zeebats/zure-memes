@@ -22,7 +22,7 @@
     "@supabase/supabase-js": "1.35.3",
     "@types/node": "18.0.0",
     "@unocss/nuxt": "0.39.3",
-    "@unocss/reset": "0.39.0",
+    "@unocss/reset": "0.39.3",
     "@vuelidate/core": "2.0.0-alpha.41",
     "@vuelidate/validators": "2.0.0-alpha.29",
     "colord": "2.9.2",
