@@ -69,7 +69,7 @@ onMounted((): void => {
 
     url.value = imageStore.imagesById[properties.edit].url;
     title.value = imageStore.imagesById[properties.edit].title;
-    tags.value = imageStore.imagesById[properties.edit].tags.map(tag => tag.name).join(',');
+    tags.value = (imageStore.imagesById[properties.edit].tags || []).map(tag => tag.name).join(',');
 });
 
 // eslint-disable-next-line max-statements, max-lines-per-function
@@ -126,8 +126,14 @@ const handleSubmit = async (): Promise<void> => {
 
         tagStore.upsert(tagsUpdated);
 
+        let newTagsForImage = [];
+
         // eslint-disable-next-line unicorn/consistent-destructuring
-        const newTagsForImage = tagsUpdated.filter((potentialNew: Tag) => !tagStore.tagsByImageId[imageUpdated.id].some(existing => existing.name === potentialNew.name));
+        const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || [];
+
+        if (existingTagsForUpdatedImage) {
+            newTagsForImage = tagsUpdated.filter((potentialNew: Tag) => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
+        }
 
         let { largestMemeID } = memeStore;
 

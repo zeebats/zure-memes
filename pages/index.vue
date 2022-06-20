@@ -1,13 +1,11 @@
 <template>
-    <NuxtLayout name="default">
+    <div>
         <div class="grid gap-4 p-4">
             <div>
                 <div class="font-bold mb-2">Add a meme:</div>
                 <FormAdd />
             </div>
-
             <hr>
-
             <div>
                 <div class="font-bold mb-2">Search for meme's:</div>
                 <label
@@ -26,22 +24,8 @@
                     >
                 </label>
             </div>
-
             <hr>
-
-            <div
-                class="grid gap-4"
-                :class="[$style['item-grid']]"
-            >
-                <Item
-                    v-for="{id, url: imageUrl, title, tags} in imageStore.imagesLoop"
-                    :id="id"
-                    :key="id"
-                    :url="imageUrl"
-                    :title="title"
-                    :tags="tags"
-                />
-            </div>
+            <Grid class="-m-2" />
         </div>
         <Dialog
             v-for="{id, ...properties} in dialogStore.dialogsById"
@@ -49,7 +33,7 @@
             :key="id"
             :properties="properties"
         />
-    </NuxtLayout>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -75,9 +59,3 @@ await imageStore.getImages($supabase);
 
 watch(query, (): void => tagStore.modifyQuery(query.value));
 </script>
-
-<style module lang="postcss">
-.item-grid {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-}
-</style>
