@@ -39,7 +39,7 @@ export const useTagsStore = defineStore('tags', {
     getters: {
         filteredTags(): number[] {
             if (!this.query) {
-                return [];
+                return [-1];
             }
 
             return filterTags({
