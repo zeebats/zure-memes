@@ -69,7 +69,7 @@ onMounted((): void => {
 
     url.value = imageStore.imagesById[properties.edit].url;
     title.value = imageStore.imagesById[properties.edit].title;
-    tags.value = (imageStore.imagesById[properties.edit].tags || []).map(tag => tag.name).join(',');
+    tags.value = (tagStore.tagsByImageId[properties.edit] || []).map(tag => tag.name).join(',');
 });
 
 // eslint-disable-next-line max-statements, max-lines-per-function

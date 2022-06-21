@@ -1,12 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
-import { StoreTag, useTagsStore } from '@/store/tags';
+import { useTagsStore } from '@/store/tags';
 import { getAllImages, Image } from '@/utilities/images';
-
-export interface StoreImage extends Image {
-    tags: StoreTag[]
-}
 
 export const useImageStore = defineStore('images', {
     actions: {
@@ -14,7 +10,7 @@ export const useImageStore = defineStore('images', {
             this.images = await getAllImages({ $supabase });
         },
         upsert(modified: Image): void {
-            const arrayID = this.images.findIndex((original: StoreImage): boolean => original.id === modified.id);
+            const arrayID = this.images.findIndex((original: Image): boolean => original.id === modified.id);
 
             if (arrayID > -1) {
                 this.images[arrayID] = modified;
@@ -29,14 +25,14 @@ export const useImageStore = defineStore('images', {
         },
     },
     getters: {
-        imagesById(): { [id: string]: StoreImage } {
-            return this.imagesLoop.reduce((accumulator: { [id: string]: StoreImage }, image: StoreImage): { [id: string]: StoreImage } => {
+        imagesById(): { [id: string]: Image } {
+            return this.imagesLoop.reduce((accumulator: { [id: string]: Image }, image: Image): { [id: string]: Image } => {
                 accumulator[image.id] = image;
 
                 return accumulator;
             }, {});
         },
-        imagesLoop(): StoreImage[] {
+        imagesLoop(): Image[] {
             const tagsStore = useTagsStore();
 
             const {
@@ -44,10 +40,7 @@ export const useImageStore = defineStore('images', {
                 tagsByImageId,
             } = tagsStore;
 
-            return this.images.map((image: Image): StoreImage => ({
-                ...image,
-                tags: tagsByImageId[image.id],
-            })).filter((image: StoreImage): boolean => {
+            return this.images.map((image: Image): Image => ({ ...image })).filter((image: Image): boolean => {
                 if (filteredTags.length === 0) {
                     return false;
                 }
@@ -56,11 +49,11 @@ export const useImageStore = defineStore('images', {
                     return true;
                 }
 
-                return image.tags.some(({ id }): boolean => filteredTags.includes(id));
+                return tagsByImageId[image.id].some(({ id }): boolean => filteredTags.includes(id));
             });
         },
         largestImageID(): number {
-            return this.images.reduce((accumulator: number, image: StoreImage): number => {
+            return this.images.reduce((accumulator: number, image: Image): number => {
                 if (accumulator > image.id) {
                     return accumulator;
                 }
