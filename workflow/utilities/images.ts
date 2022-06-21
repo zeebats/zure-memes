@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
+import sharp from 'sharp';
 
 import { Image, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
@@ -35,7 +36,17 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient 
             const arrayBuffer = await request.arrayBuffer();
             const image = Buffer.from(new Uint8Array(arrayBuffer));
 
-            writeFile(`./.cache/images/${createFilename(url)}`, image);
+            sharp(image)
+                .resize(128, 128, {
+                    background: {
+                        alpha: 0,
+                        b: 0,
+                        g: 0,
+                        r: 0,
+                    },
+                    fit: 'contain',
+                })
+                .toFile(`./.cache/images/${createFilename(url)}`);
         }),
     );
 };

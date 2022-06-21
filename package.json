@@ -12,8 +12,8 @@
     "generate": "nuxt generate",
     "netlify": "netlify",
     "preview": "nuxt preview",
-    "workflow:build": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --outfile=workflow/export/index.js",
-    "workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
+    "workflow:build": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --external:sharp --minify --outfile=workflow/export/index.js",
+    "workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --external:sharp --watch --outfile=workflow/export/index.js"
   },
   "dependencies": {
     "@egjs/vue3-infinitegrid": "4.4.0",
@@ -32,7 +32,8 @@
     "nanoid": "4.0.0",
     "node-fetch": "3.2.6",
     "nuxt": "3.0.0-rc.4",
-    "pinia": "2.0.14"
+    "pinia": "2.0.14",
+    "sharp": "0.30.6"
   },
   "devDependencies": {
     "@commitlint/cli": "17.0.2",
