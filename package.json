@@ -32,7 +32,8 @@
     "nanoid": "4.0.0",
     "node-fetch": "3.2.6",
     "nuxt": "3.0.0-rc.4",
-    "pinia": "2.0.14"
+    "pinia": "2.0.14",
+    "sharp": "0.30.6"
   },
   "devDependencies": {
     "@commitlint/cli": "17.0.2",
