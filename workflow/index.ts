@@ -22,12 +22,13 @@ const $supabase = createClient(
         // eslint-disable-next-line no-console
         console.log(JSON.stringify({
             items: images.map(({
+                tags,
                 title,
                 url,
             }) => ({
                 arg: url,
-                icon: { path: `./.cache/images/${createFilename(url)}` },
-                subtitle: 'Press enter to copy to clipboard',
+                icon: { path: `./.cache/images/${createFilename(url)}.jpg` },
+                subtitle: tags,
                 title,
             }),
             ),

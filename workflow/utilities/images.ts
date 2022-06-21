@@ -1,10 +1,16 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { exec } from 'node:child_process';
+import { readFile, unlink, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
 
 import { Image, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
+import { getTagsStringForImageId } from '@/workflow/utilities/tags';
+
+interface ImageWithTags extends Image {
+    tags: string;
+}
 
 export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
     const {
@@ -30,28 +36,56 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient 
     }
 
     return Promise.all(
+        // eslint-disable-next-line max-statements
         images.map(async ({ url }): Promise<void> => {
-            const request = await fetch(url);
+            const fileURL = new URL(url);
+
+            if (fileURL.host === 'cdn.discordapp.com') {
+                fileURL.host = 'media.discordapp.net';
+            }
+
+            if (fileURL.host === 'media.discordapp.net') {
+                fileURL.searchParams.set('width', '128');
+                fileURL.searchParams.set('height', '128');
+            }
+
+            const request = await fetch(fileURL.href);
             const arrayBuffer = await request.arrayBuffer();
             const image = Buffer.from(new Uint8Array(arrayBuffer));
 
-            writeFile(`./.cache/images/${createFilename(url)}`, image);
+            const filename = `./.cache/images/${createFilename(url)}`;
+
+            await writeFile(filename, image);
+
+            const command = [
+                'sips',
+                '-z 128 128',
+                '-s format jpeg',
+                filename,
+                `--out ${filename}.jpg`,
+            ];
+
+            exec(command.join(' '), error => {
+                if (error) {
+                    throw error;
+                }
+
+                unlink(filename);
+            });
         }),
     );
 };
 
-export const getImages = async ({ imageIds }: { imageIds: number[] }): Promise<Omit<Image, 'id'>[]> => {
+export const getImages = async ({ imageIds }: { imageIds: number[] }): Promise<ImageWithTags[]> => {
     const local = await readFile('./.cache/images.json', { encoding: 'utf8' });
 
-    let images: Image[] = JSON.parse(local);
+    const images: Image[] = JSON.parse(local);
 
-    images = images.filter(image => imageIds.includes(image.id));
+    const filtered = images.filter(image => imageIds.includes(image.id));
+    const tagged = Promise.all(filtered.map(async image => ({
+        ...image,
+        tags: await getTagsStringForImageId({ id: image.id }),
+    })));
 
-    return images.map(({
-        title,
-        url,
-    }): Omit<Image, 'id'> => ({
-        title,
-        url,
-    }));
+    return tagged;
 };
