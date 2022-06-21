@@ -31,7 +31,7 @@
     "types": ["node"]
   },
   "include": [
-    "./.nuxt/nuxt.d.ts",
+    "./.nuxt/**/*.d.ts",
     "**/*"
   ]
 }
