@@ -40,7 +40,7 @@ import { setTimestamp } from '@/utilities/timestamp';
 
 const properties = withDefaults(defineProps<{
     edit?: DialogProperties['image'];
-}>(), { edit: null });
+}>(), { edit: undefined });
 
 /* eslint-disable unicorn/prevent-abbreviations, no-unused-vars */
 const emit = defineEmits<{

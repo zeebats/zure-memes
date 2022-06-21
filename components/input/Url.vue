@@ -36,14 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { useVuelidate, Validation } from '@vuelidate/core';
+import { useVuelidate } from '@vuelidate/core';
 import { helpers, required, url } from '@vuelidate/validators';
 
 const properties = withDefaults(defineProps<{
     modelValue: string;
     disabled: boolean;
 }>(), {
-    modelValue: null,
+    modelValue: undefined,
     disabled: false,
 });
 
@@ -77,7 +77,7 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, { model }, { $rewardEarly: true });
 
-const validation = computed(() => v$.value.model as Validation);
+const validation = computed(() => v$.value.model);
 </script>
 
 <script lang="ts">

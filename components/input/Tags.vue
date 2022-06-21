@@ -36,7 +36,7 @@ const properties = withDefaults(defineProps<{
     modelValue: string;
     disabled: boolean;
 }>(), {
-    modelValue: null,
+    modelValue: undefined,
     disabled: false,
 });
 
