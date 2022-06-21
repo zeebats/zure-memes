@@ -3,7 +3,6 @@ import { readFile, unlink, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
-import sharp from 'sharp';
 
 import { Image, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
