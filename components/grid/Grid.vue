@@ -11,11 +11,10 @@
         @request-append="handleRequestAppend"
     >
         <GridItem
-            v-for="{id, key, groupKey, url: imageUrl, title, tags} in items"
+            v-for="{id, key, groupKey, url: imageUrl, title} in items"
             :id="id"
             :key="key"
             :data-grid-groupkey="groupKey"
-            :tags="tags"
             :title="title"
             :url="imageUrl"
         />
@@ -25,13 +24,14 @@
 <script setup lang="ts">
 import { MasonryInfiniteGrid } from '@egjs/vue3-infinitegrid';
 
-import { StoreImage, useImageStore } from '@/store/images';
+import { useImageStore } from '@/store/images';
 import { useTagsStore } from '@/store/tags';
+import { Image } from '@/utilities/images';
 
 const imageStore = useImageStore();
 const tagStore = useTagsStore();
 
-interface TemplateImage extends StoreImage {
+interface TemplateImage extends Image {
     key: number;
     groupKey: number;
 }

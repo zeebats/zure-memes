@@ -152,21 +152,20 @@
 
 <script setup lang="ts">
 import { useDialogStore } from '@/store/dialog';
-import { StoreTag } from '@/store/tags';
+import { useTagsStore } from '@/store/tags';
 
 const properties = withDefaults(defineProps<{
     id: number;
     url: string;
     title: string;
-    tags?: StoreTag[]
 }>(), {
     id: null,
     url: null,
     title: null,
-    tags: (): StoreTag[] => ([]),
 });
 
 const dialogStore = useDialogStore();
+const tagStore = useTagsStore();
 
 const item = ref(null);
 
@@ -177,6 +176,8 @@ const copyStatus = ref<'success'|'error'|''>('');
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
 
 const hover = ref<Boolean>(false);
+
+const tags = computed(() => tagStore.tagsByImageId[properties.id]);
 
 const handleCopyReset = (): void => {
     copied.value = false;
