@@ -78,9 +78,14 @@ const handleRequestAppend = event => {
     ];
 };
 
-watch(() => tagStore.query, () => {
+const handleChange = () => {
     items.value = handleGetItems(0, numberOfItems);
 
     masonry.value.renderItems({ useResize: true });
-});
+};
+
+watch(() => [
+    tagStore.query,
+    imageStore.largestImageID,
+], handleChange);
 </script>
