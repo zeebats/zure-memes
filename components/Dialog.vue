@@ -26,7 +26,7 @@ const properties = withDefaults(defineProps<{
 
 const dialogStore = useDialogStore();
 
-const dialog = ref<undefined | HTMLDialogElement>();
+const dialog = ref<HTMLDialogElement>();
 
 onMounted((): void => {
     if (dialog.value?.open) {
