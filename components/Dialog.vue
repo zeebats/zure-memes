@@ -18,8 +18,10 @@ const properties = withDefaults(defineProps<{
     id: DialogBase['id'];
     properties: DialogProperties;
 }>(), {
+    /* eslint-disable no-undefined */
     id: undefined,
     properties: undefined,
+    /* eslint-enable no-undefined */
 });
 
 const dialogStore = useDialogStore();

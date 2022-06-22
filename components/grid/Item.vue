@@ -159,23 +159,26 @@ const properties = withDefaults(defineProps<{
     url: string;
     title: string;
 }>(), {
-    id: null,
-    url: null,
-    title: null,
+    /* eslint-disable no-undefined */
+    id: undefined,
+    url: undefined,
+    title: undefined,
+    /* eslint-enable no-undefined */
 });
 
 const dialogStore = useDialogStore();
 const tagStore = useTagsStore();
 
-const item = ref(null);
+const item = ref<HTMLDivElement>();
 
-const copied = ref<Boolean>(false);
-const copyContent = ref<String>('');
+const copied = ref<boolean>(false);
+const copyContent = ref<string | unknown>('');
 const copyStatus = ref<'success'|'error'|''>('');
 
-let copyTimer: ReturnType<typeof setTimeout> | null = null;
+// eslint-disable-next-line init-declarations
+let copyTimer: ReturnType<typeof setTimeout> | undefined;
 
-const hover = ref<Boolean>(false);
+const hover = ref<boolean>(false);
 
 const tags = computed(() => tagStore.tagsByImageId[properties.id]);
 
@@ -192,9 +195,9 @@ const handleCopy = async (): Promise<void> => {
         await navigator.clipboard.writeText(properties.url);
         copyStatus.value = 'success';
         copyContent.value = 'Copied to clipboard!';
-    } catch (error) {
+    } catch ({ message }) {
         copyStatus.value = 'error';
-        copyContent.value = error;
+        copyContent.value = message;
     } finally {
         copied.value = true;
 
@@ -202,7 +205,7 @@ const handleCopy = async (): Promise<void> => {
     }
 };
 
-const handleEdit = () => {
+const handleEdit = (): void => {
     dialogStore.create({ image: properties.id });
 };
 
@@ -234,7 +237,7 @@ const handleFocus = (): void => {
     hover.value = true;
 
     document.addEventListener('focus', function focusChecker(): void {
-        if (item.value.contains(document.activeElement)) {
+        if (item.value?.contains(document.activeElement)) {
             return;
         }
 
@@ -246,6 +249,10 @@ const handleFocus = (): void => {
 
 onMounted((): void => {
     document.addEventListener('click', event => {
+        if (!item.value) {
+            return;
+        }
+
         if (!event.composedPath().includes(item.value) && hover.value) {
             hover.value = false;
         }

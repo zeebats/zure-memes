@@ -44,12 +44,11 @@ export const useDialogStore = defineStore('dialogs', {
         },
     },
     getters: {
-        dialogsById(): Dialog[] {
-            return this.dialogs.reduce((accumulator: Dialog[], dialog: Dialog): Dialog[] => {
-                accumulator[dialog.id] = dialog;
-
-                return accumulator;
-            }, {});
+        dialogsById(): { [id: string]: Dialog } {
+            return Object.fromEntries(this.dialogs.map(dialog => [
+                dialog.id,
+                dialog,
+            ]));
         },
     },
     state: (): { dialogs: Dialog[] } => ({ dialogs: [] }),

@@ -15,7 +15,7 @@ export const rng = (seed = ''): number => {
     };
 
     for (let k = 0; k < seed.length + 64; k++) {
-        x ^= Math.trunc(seed.codePointAt(k));
+        x ^= Math.trunc(Number(seed.codePointAt(k)));
         next();
     }
 
@@ -26,4 +26,8 @@ export const getRandomBetween = ({
     seed = '',
     min = 0,
     max = min + 1,
-} = {}): number => Math.floor(rng(seed) * (max - min + 1)) + min;
+} : {
+    seed: string;
+    min?: number;
+    max?: number;
+}): number => Math.floor(rng(seed) * (max - min + 1)) + min;

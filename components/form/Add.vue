@@ -40,7 +40,11 @@ import { setTimestamp } from '@/utilities/timestamp';
 
 const properties = withDefaults(defineProps<{
     edit?: DialogProperties['image'];
-}>(), { edit: undefined });
+}>(), {
+    /* eslint-disable no-undefined */
+    edit: undefined,
+    /* eslint-enable no-undefined */
+});
 
 /* eslint-disable unicorn/prevent-abbreviations, no-unused-vars */
 const emit = defineEmits<{
@@ -60,7 +64,7 @@ const tagStore = useTagsStore();
 const memeStore = useMemesStore();
 const imageStore = useImageStore();
 
-const v$ = useVuelidate();
+const v$ = useVuelidate({}, {}, { $rewardEarly: true });
 
 onMounted((): void => {
     if (!properties.edit) {
@@ -107,7 +111,7 @@ const handleSubmit = async (): Promise<void> => {
 
         let { largestTagID } = tagStore;
 
-        const tagsToUpdate = tags.value.split(',').map((tag: string) => ({
+        const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
             // eslint-disable-next-line unicorn/consistent-destructuring
             id: tagStore.tagsByName[tag]?.id || (largestTagID += 1),
             name: tag,
@@ -126,18 +130,18 @@ const handleSubmit = async (): Promise<void> => {
 
         tagStore.upsert(tagsUpdated);
 
-        let newTagsForImage = [];
+        let newTagsForImage: Tag[] = [];
 
         // eslint-disable-next-line unicorn/consistent-destructuring
         const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || [];
 
         if (existingTagsForUpdatedImage) {
-            newTagsForImage = tagsUpdated.filter((potentialNew: Tag) => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
+            newTagsForImage = tagsUpdated.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
         }
 
         let { largestMemeID } = memeStore;
 
-        const memesToUpdate = newTagsForImage.map((tag: Tag) => ({
+        const memesToUpdate = newTagsForImage.map((tag: Tag): Meme => ({
             // eslint-disable-next-line unicorn/consistent-destructuring
             id: (largestMemeID += 1),
             /* eslint-disable camelcase */

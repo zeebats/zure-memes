@@ -43,7 +43,9 @@ const properties = withDefaults(defineProps<{
     modelValue: string;
     disabled: boolean;
 }>(), {
+    /* eslint-disable no-undefined */
     modelValue: undefined,
+    /* eslint-enable no-undefined */
     disabled: false,
 });
 
