@@ -1,7 +1,7 @@
 <template>
     <dialog
         ref="dialog"
-        class="dialog grid gap-y-4 p-8 w-full max-w-2xl"
+        class="dialog grid gap-y-4 p-8 m-auto max-w-2xl"
         @close="handleClose"
     >
         <FormAdd
@@ -43,8 +43,13 @@ const handleAdded = (): void => {
 };
 </script>
 
-<style>
-.dialog::backdrop {
-    background-color: rgb(0 0 0 / 0.75);
+<style lang="postcss">
+.dialog {
+    width: min(100% - 2rem, 42rem);
+    height: min(100% - 2rem, auto);
+
+    &::backdrop {
+        background-color: rgb(0 0 0 / 0.75);
+    }
 }
 </style>

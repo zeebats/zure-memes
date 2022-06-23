@@ -1,18 +1,24 @@
 <template>
     <div>
-        <div class="grid gap-4 p-4">
-            <div>
-                <div class="font-bold mb-2">Add a meme:</div>
-                <FormAdd />
-            </div>
-            <hr>
-            <div>
-                <div class="font-bold mb-2">Search for meme's:</div>
+        <div
+            class="grid min-h-[100dvh]"
+            :class="[
+                $style['layout'],
+                touch && $style['layout--mobile'],
+            ]"
+        >
+            <div
+                class="flex items-baseline gap-x-4 sticky p-4 bg-white relative z-1 top-0"
+                :class="[
+                    $style['layout__form'],
+                    touch && 'top-auto bottom-0',
+                ]"
+            >
                 <label
                     for="search"
-                    class="flex gap-x-4 items-baseline mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    class="flex flex-grow gap-x-4 items-baseline text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                    Query
+                    <span class="sr-only">Your search query</span>
                     <input
                         id="search"
                         v-model.trim="search"
@@ -21,11 +27,25 @@
                         autocorrect="off"
                         spellcheck="false"
                         class="text-[16px] appearance-none bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                        placeholder="Search for meme's"
                     >
                 </label>
+                <Button
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    @click="handleAdd"
+                >
+                    Add
+                </Button>
             </div>
-            <hr>
-            <Grid class="-m-2" />
+            <div
+                class="px-4 pb-4"
+                :class="[
+                    $style['layout__grid'],
+                    touch && 'pt-4 pb-0',
+                ]"
+            >
+                <Grid class="-m-2" />
+            </div>
         </div>
         <Dialog
             v-for="{id, ...properties} in dialogStore.dialogsById"
@@ -37,6 +57,9 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
+import { useDeviceStore } from '@/store/device';
 import { useDialogStore } from '@/store/dialog';
 import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
@@ -55,10 +78,17 @@ const tagStore = useTagsStore();
 const memeStore = useMemesStore();
 const imageStore = useImageStore();
 const dialogStore = useDialogStore();
+const deviceStore = useDeviceStore();
+
+const { touch } = storeToRefs(deviceStore);
 
 await tagStore.init($supabase);
 await memeStore.init($supabase);
 await imageStore.init($supabase);
+
+const handleAdd = () => {
+    dialogStore.create({});
+};
 
 watch(search, (): void => {
     imageStore.modifySearch(search.value);
@@ -76,3 +106,26 @@ onMounted((): void => {
     search.value = decodeURIComponent(`${searchParameter}`);
 });
 </script>
+
+<style module lang="postcss">
+.layout {
+    grid-template-columns: [grid-start form-start] 1fr [form-end grid-end];
+    grid-template-rows: [form-start] max-content [form-end grid-start] 1fr [grid-end];
+
+    &__form {
+        grid-area: form;
+    }
+
+    &__grid {
+        grid-area: grid;
+    }
+
+    &--mobile {
+        grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
+
+        ^&__form {
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+        }
+    }
+}
+</style>

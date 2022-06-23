@@ -7,6 +7,12 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@unocss/nuxt',
     ],
+    postcss: {
+        plugins: {
+            'postcss-nested': {},
+            'postcss-nested-ancestors': {},
+        },
+    },
     unocss: {
         theme: {
             breakpoints: {
