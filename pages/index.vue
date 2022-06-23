@@ -48,6 +48,9 @@ const $supabase = useSupabaseClient();
 
 const query = ref<string>('');
 
+const route = useRoute();
+const router = useRouter();
+
 const tagStore = useTagsStore();
 const memeStore = useMemesStore();
 const imageStore = useImageStore();
@@ -57,5 +60,19 @@ await tagStore.getTags($supabase);
 await memeStore.getMemes($supabase);
 await imageStore.getImages($supabase);
 
-watch(query, (): void => tagStore.modifyQuery(query.value));
+watch(query, (): void => {
+    tagStore.modifyQuery(query.value);
+
+    router.push({ query: query.value ? { query: query.value } : {} });
+});
+
+onMounted((): void => {
+    const { query: browserQuery = '' } = route.query;
+
+    if (!query) {
+        return;
+    }
+
+    query.value = `${browserQuery}`;
+});
 </script>
