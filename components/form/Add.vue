@@ -40,17 +40,11 @@ import { setTimestamp } from '@/utilities/timestamp';
 
 const properties = withDefaults(defineProps<{
     edit?: DialogProperties['image'];
-}>(), {
-    /* eslint-disable no-undefined */
-    edit: undefined,
-    /* eslint-enable no-undefined */
-});
+}>(), { edit: undefined /* eslint-disable-line no-undefined */ });
 
-/* eslint-disable unicorn/prevent-abbreviations, no-unused-vars */
 const emit = defineEmits<{
-    (e: 'added'): void;
+    (e: 'added'): void; /* eslint-disable-line unicorn/prevent-abbreviations, no-unused-vars */
 }>();
-/* eslint-enable unicorn/prevent-abbreviations, no-unused-vars */
 
 const $supabase = useSupabaseClient();
 
@@ -112,8 +106,7 @@ const handleSubmit = async (): Promise<void> => {
         let { largestTagID } = tagStore;
 
         const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
-            // eslint-disable-next-line unicorn/consistent-destructuring
-            id: tagStore.tagsByName[tag]?.id || (largestTagID += 1),
+            id: tagStore.tagsByName[tag]?.id || (largestTagID += 1), /* eslint-disable-line unicorn/consistent-destructuring */
             name: tag,
         }));
 
@@ -132,8 +125,7 @@ const handleSubmit = async (): Promise<void> => {
 
         let newTagsForImage: Tag[] = [];
 
-        // eslint-disable-next-line unicorn/consistent-destructuring
-        const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || [];
+        const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || []; /* eslint-disable-line unicorn/consistent-destructuring */
 
         if (existingTagsForUpdatedImage) {
             newTagsForImage = tagsUpdated.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
@@ -142,12 +134,9 @@ const handleSubmit = async (): Promise<void> => {
         let { largestMemeID } = memeStore;
 
         const memesToUpdate = newTagsForImage.map((tag: Tag): Meme => ({
-            // eslint-disable-next-line unicorn/consistent-destructuring
             id: (largestMemeID += 1),
-            /* eslint-disable camelcase */
-            tag_id: tag.id,
-            image_id: imageUpdated.id,
-            /* eslint-enable camelcase */
+            tag_id: tag.id, /* eslint-disable-line camelcase */
+            image_id: imageUpdated.id, /* eslint-disable-line camelcase */
         }));
 
         const {

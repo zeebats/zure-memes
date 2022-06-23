@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 

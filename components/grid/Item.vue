@@ -159,11 +159,9 @@ const properties = withDefaults(defineProps<{
     url: string;
     title: string;
 }>(), {
-    /* eslint-disable no-undefined */
-    id: undefined,
-    url: undefined,
-    title: undefined,
-    /* eslint-enable no-undefined */
+    id: undefined, /* eslint-disable-line no-undefined */
+    url: undefined, /* eslint-disable-line no-undefined */
+    title: undefined, /* eslint-disable-line no-undefined */
 });
 
 const dialogStore = useDialogStore();
@@ -175,8 +173,7 @@ const copied = ref<boolean>(false);
 const copyContent = ref<string | unknown>('');
 const copyStatus = ref<'success'|'error'|''>('');
 
-// eslint-disable-next-line init-declarations
-let copyTimer: ReturnType<typeof setTimeout> | undefined;
+let copyTimer: ReturnType<typeof setTimeout> | undefined; /* eslint-disable-line init-declarations */
 
 const hover = ref<boolean>(false);
 
