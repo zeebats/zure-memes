@@ -55,6 +55,13 @@ export const useTagsStore = defineStore('tags', {
                 tags: this.tags,
             });
         },
+        filteredTagsInverse(): number[] {
+            if (this.filteredTags.every(tag => tag === -1)) {
+                return [];
+            }
+
+            return this.tags.filter(tag => !this.filteredTags.includes(tag.id)).map(tag => tag.id);
+        },
         largestTagID(): number {
             return Math.max(...this.tags.map(tag => tag.id));
         },

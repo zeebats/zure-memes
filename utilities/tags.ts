@@ -1,6 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
-import { Fzf, FzfOptions, FzfResultItem } from 'fzf';
+import {
+    extendedMatch,
+    Fzf,
+    FzfOptions,
+    FzfResultItem,
+} from 'fzf';
 
 export interface Tag {
     id: number;
@@ -16,7 +21,10 @@ export const filterTags = ({
     query: string;
     tags: Tag[]
 }) => {
-    const options: FzfOptions<Tag> = { selector: item => `${item.name}` };
+    const options: FzfOptions<Tag> = {
+        match: extendedMatch,
+        selector: item => `${item.name}`,
+    };
 
     const fzf = new Fzf<Tag[]>(tags, options);
 

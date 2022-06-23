@@ -36,6 +36,7 @@ export const useImageStore = defineStore('images', {
 
             const {
                 filteredTags,
+                filteredTagsInverse,
                 tagsByImageId,
             } = tagsStore;
 
@@ -48,7 +49,7 @@ export const useImageStore = defineStore('images', {
                     return true;
                 }
 
-                return tagsByImageId[image.id].some(({ id }): boolean => filteredTags.includes(id));
+                return tagsByImageId[image.id].some(({ id }): boolean => filteredTags.includes(id)) && !tagsByImageId[image.id].some(({ id }): boolean => filteredTagsInverse.includes(id));
             });
         },
         largestImageID(): number {
