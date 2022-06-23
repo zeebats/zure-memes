@@ -45,7 +45,11 @@ export const filterImages = ({
 }) : ImageSearchable[] => {
     const options: FzfOptions<ImageSearchable> = {
         match: extendedMatch,
-        selector: image => `${image.title} ${image.tags.join(' ')}}`,
+        selector: image => {
+            const concat = `${image.title} ${image.tags.map(tag => tag.name).join(' ')}}`;
+
+            return concat;
+        },
     };
 
     const fzf = new Fzf<ImageSearchable[]>(images, options);
