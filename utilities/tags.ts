@@ -12,6 +12,9 @@ export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }): Supabas
 export const filterTags = ({
     query,
     tags,
+} : {
+    query: string;
+    tags: Tag[]
 }) => {
     const options: FzfOptions<Tag> = { selector: item => `${item.name}` };
 

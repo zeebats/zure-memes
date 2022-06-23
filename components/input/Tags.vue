@@ -1,12 +1,12 @@
 <template>
     <label
-        for="title"
+        for="tags"
         class="flex flex-grow gap-x-4 items-baseline mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
     >
         Tags:
         <span class="grid gap-y-2 flex-grow">
             <input
-                id="title"
+                id="tags"
                 v-bind="$attrs"
                 v-model.trim="model"
                 autocapitalize="none"
@@ -36,7 +36,7 @@ const properties = withDefaults(defineProps<{
     modelValue: string;
     disabled: boolean;
 }>(), {
-    modelValue: null,
+    modelValue: undefined, /* eslint-disable-line no-undefined */
     disabled: false,
 });
 

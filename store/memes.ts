@@ -24,34 +24,7 @@ export const useMemesStore = defineStore('memes', {
     },
     getters: {
         largestMemeID(): number {
-            return this.memes.reduce((accumulator: number, meme: Meme): number => {
-                if (accumulator > meme.id) {
-                    return accumulator;
-                }
-
-                return meme.id;
-            }, 0);
-        },
-        memesByImageId(): { [image_id: number]: Meme } {
-            return this.memes.reduce((accumulator: Meme[], item: Meme): Meme[] => {
-                accumulator[item.image_id] = item;
-
-                return accumulator;
-            }, {});
-        },
-        memesByMemeId(): { [id: number]: Meme } {
-            return this.memes.reduce((accumulator: Meme[], item: Meme): Meme[] => {
-                accumulator[item.id] = item;
-
-                return accumulator;
-            }, {});
-        },
-        memesByTagId(): { [tag_id: number]: Meme } {
-            return this.memes.reduce((accumulator: Meme[], item: Meme): Meme[] => {
-                accumulator[item.tag_id] = item;
-
-                return accumulator;
-            }, {});
+            return Math.max(...this.memes.map(meme => meme.id));
         },
     },
     state: (): { memes: Meme[] } => ({ memes: [] }),
