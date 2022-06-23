@@ -1,9 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 import { getImages } from '@/workflow/utilities/images';
-import { getMemes } from '@/workflow/utilities/memes';
 import { createFilename } from '@/workflow/utilities/string';
-import { getTags } from '@/workflow/utilities/tags';
 import { performUpdate } from '@/workflow/utilities/update';
 
 const $supabase = createClient(
@@ -15,9 +13,7 @@ const $supabase = createClient(
     try {
         await performUpdate({ $supabase });
 
-        const tagIds = await getTags({ query: process.argv[2]?.trim() });
-        const imageIds = await getMemes({ tagIds });
-        const images = await getImages({ imageIds });
+        const images = await getImages({ search: process.argv[2]?.trim() });
 
         // eslint-disable-next-line no-console
         console.log(JSON.stringify({

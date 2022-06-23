@@ -1,11 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
-import {
-    extendedMatch,
-    Fzf,
-    FzfOptions,
-    FzfResultItem,
-} from 'fzf';
+
+import { Image } from '@/utilities/images';
+import { Meme } from '@/utilities/memes';
 
 export interface Tag {
     id: number;
@@ -13,50 +10,6 @@ export interface Tag {
 }
 
 export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Tag> => $supabase.from<Tag>('tags');
-
-export const filterTags = ({
-    query,
-    tags,
-} : {
-    query: string;
-    tags: Tag[]
-}) => {
-    const options: FzfOptions<Tag> = {
-        match: extendedMatch,
-        selector: item => `${item.name}`,
-    };
-
-    const fzf = new Fzf<Tag[]>(tags, options);
-
-    // eslint-disable-next-line unicorn/no-array-callback-reference
-    const matches: FzfResultItem<Tag>[] = fzf.find(query);
-
-    return matches.map(({ item }): number => item.id);
-};
-
-// eslint-disable-next-line max-statements
-export const getTags = async ({
-    $supabase,
-    query,
-}: {
-    $supabase: SupabaseClient,
-    query: string
-}): Promise<number[]> => {
-    const {
-        data: tags,
-        error,
-    } = await queryTags({ $supabase })
-        .select('id, name');
-
-    if (error) {
-        throw error;
-    }
-
-    return filterTags({
-        query,
-        tags,
-    });
-};
 
 export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Tag[]> => {
     const {
@@ -69,4 +22,19 @@ export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): 
     }
 
     return tags;
+};
+
+export const matchTagsToImageId = ({
+    id,
+    memes,
+    tags,
+} : {
+    id: Image['id'],
+    memes: Meme[],
+    tags: Tag[]
+}): Tag[] => {
+    const foundMemes = memes.filter(meme => meme.image_id === id) || [];
+    const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id));
+
+    return foundTags as Tag[];
 };

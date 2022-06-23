@@ -15,7 +15,7 @@
                     Query
                     <input
                         id="search"
-                        v-model.trim="query"
+                        v-model.trim="search"
                         type="search"
                         autocapitalize="none"
                         autocorrect="off"
@@ -46,7 +46,7 @@ definePageMeta({ middleware: 'auth' });
 
 const $supabase = useSupabaseClient();
 
-const query = ref<string>('');
+const search = ref<string>('');
 
 const route = useRoute();
 const router = useRouter();
@@ -56,23 +56,23 @@ const memeStore = useMemesStore();
 const imageStore = useImageStore();
 const dialogStore = useDialogStore();
 
-await tagStore.getTags($supabase);
-await memeStore.getMemes($supabase);
-await imageStore.getImages($supabase);
+await tagStore.init($supabase);
+await memeStore.init($supabase);
+await imageStore.init($supabase);
 
-watch(query, (): void => {
-    tagStore.modifyQuery(query.value);
+watch(search, (): void => {
+    imageStore.modifySearch(search.value);
 
-    router.push({ query: query.value ? { query: query.value } : {} });
+    router.push({ query: search.value ? { search: encodeURIComponent(search.value) } : {} });
 });
 
 onMounted((): void => {
-    const { query: browserQuery = '' } = route.query;
+    const { search: searchParameter = '' } = route.query;
 
-    if (!query) {
+    if (!search) {
         return;
     }
 
-    query.value = `${browserQuery}`;
+    search.value = decodeURIComponent(`${searchParameter}`);
 });
 </script>
