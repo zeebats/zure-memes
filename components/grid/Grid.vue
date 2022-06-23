@@ -26,11 +26,9 @@ import { OnRequestAppend } from '@egjs/infinitegrid';
 import { MasonryInfiniteGrid } from '@egjs/vue3-infinitegrid';
 
 import { useImageStore } from '@/store/images';
-import { useTagsStore } from '@/store/tags';
 import { Image } from '@/utilities/images';
 
 const imageStore = useImageStore();
-const tagStore = useTagsStore();
 
 interface TemplateImage extends Image {
     key: number;
@@ -90,7 +88,7 @@ const handleChange = (): void => {
 };
 
 watch((): (string | number)[] => [
-    tagStore.query,
+    imageStore.search,
     imageStore.largestImageID,
 ], handleChange);
 </script>

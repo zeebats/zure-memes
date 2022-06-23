@@ -1,9 +1,9 @@
 import { Handler, HandlerEvent } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 
-import { getImages } from '@/utilities/images';
-import { getMemes } from '@/utilities/memes';
-import { getTags } from '@/utilities/tags';
+import { filterImages, getAllImages } from '@/utilities/images';
+import { getAllMemes } from '@/utilities/memes';
+import { getAllTags, matchTagsToImageId } from '@/utilities/tags';
 
 const {
     SUPABASE_KEY,
@@ -14,29 +14,30 @@ const $supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export const handler: Handler = async ({ queryStringParameters }: HandlerEvent) => {
     try {
-        const { query } = queryStringParameters || {};
+        const { search } = queryStringParameters || {};
 
-        if (!query) {
+        if (!search) {
             throw new Error('Ben je contextueel gehandicapt ofzo');
         }
 
-        const tagIds = await getTags({
-            $supabase,
-            query,
-        });
+        const tags = await getAllTags({ $supabase });
+        const memes = await getAllMemes({ $supabase });
+        const images = await getAllImages({ $supabase });
 
-        const imageIds = await getMemes({
-            $supabase,
-            tagIds,
-        });
-
-        const urls = await getImages({
-            $supabase,
-            imageIds,
+        const foundImages = filterImages({
+            images: images.map(image => ({
+                ...image,
+                tags: matchTagsToImageId({
+                    id: image.id,
+                    memes,
+                    tags,
+                }),
+            })),
+            search: decodeURIComponent(search),
         });
 
         return {
-            body: JSON.stringify(urls),
+            body: JSON.stringify(foundImages),
             headers: { 'Content-Type': 'application/json' },
             statusCode: 200,
         };

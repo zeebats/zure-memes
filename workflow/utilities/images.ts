@@ -4,13 +4,9 @@ import { readFile, unlink, writeFile } from 'node:fs/promises';
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
 
-import { Image, queryImages } from '@/utilities/images';
+import { filterImages, Image, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
-import { getTagsStringForImageId } from '@/workflow/utilities/tags';
-
-interface ImageWithTags extends Image {
-    tags: string;
-}
+import { getTagsForImageId } from '@/workflow/utilities/tags';
 
 export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
     const {
@@ -76,16 +72,23 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient 
     );
 };
 
-export const getImages = async ({ imageIds }: { imageIds: number[] }): Promise<ImageWithTags[]> => {
+export const getImages = async ({ search }: { search: string }) => {
     const local = await readFile('./.cache/images.json', { encoding: 'utf8' });
 
     const images: Image[] = JSON.parse(local);
 
-    const filtered = images.filter(image => imageIds.includes(image.id));
-    const tagged = Promise.all(filtered.map(async image => ({
+    const prepared = await Promise.all(images.map(async image => ({
         ...image,
-        tags: await getTagsStringForImageId({ id: image.id }),
+        tags: await getTagsForImageId({ id: image.id }),
     })));
 
-    return tagged;
+    const filtered = filterImages({
+        images: prepared,
+        search,
+    });
+
+    return filtered.map(image => ({
+        ...image,
+        tags: `Tags: ${image.tags.map(tag => tag.name).join(', ')}`,
+    }));
 };

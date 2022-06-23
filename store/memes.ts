@@ -5,7 +5,7 @@ import { getAllMemes, Meme } from '@/utilities/memes';
 
 export const useMemesStore = defineStore('memes', {
     actions: {
-        async getMemes($supabase: SupabaseClient): Promise<void> {
+        async init($supabase: SupabaseClient): Promise<void> {
             this.memes = await getAllMemes({ $supabase });
         },
         upsert(modifiedMemes: Meme[]): void {
@@ -13,12 +13,12 @@ export const useMemesStore = defineStore('memes', {
                 const arrayID = this.memes.findIndex((original: Meme): boolean => original.id === modifiedMeme.id);
 
                 if (arrayID > 0) {
-                    this.memes[arrayID] = modifiedMeme;
+                    this.memes[arrayID] = Object.freeze(modifiedMeme);
 
                     continue;
                 }
 
-                this.memes.push(modifiedMeme);
+                this.memes.push(Object.freeze(modifiedMeme));
             }
         },
     },

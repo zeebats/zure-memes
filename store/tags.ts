@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 import { useMemesStore } from '@/store/memes';
 import { getColor } from '@/utilities/color';
-import { filterTags, getAllTags, Tag } from '@/utilities/tags';
+import { getAllTags, Tag } from '@/utilities/tags';
 
 export interface StoreTag extends Tag {
     color: {
@@ -14,25 +14,22 @@ export interface StoreTag extends Tag {
 
 export const useTagsStore = defineStore('tags', {
     actions: {
-        async getTags($supabase: SupabaseClient): Promise<void> {
+        async init($supabase: SupabaseClient): Promise<void> {
             const tags = await getAllTags({ $supabase });
 
-            this.tags = tags.map(tag => ({
+            this.tags = tags.map(tag => (Object.freeze({
                 ...tag,
                 color: getColor(tag.name),
-            }));
-        },
-        modifyQuery(query: string): void {
-            this.query = query;
+            })));
         },
         upsert(modifiedTags: Tag[]): void {
             for (const modifiedTag of modifiedTags) {
                 const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
 
-                const tagWithColor = {
+                const tagWithColor = Object.freeze({
                     ...modifiedTag,
                     color: getColor(modifiedTag.name),
-                };
+                });
 
                 if (arrayID > 0) {
                     this.tags[arrayID] = tagWithColor;
@@ -45,23 +42,6 @@ export const useTagsStore = defineStore('tags', {
         },
     },
     getters: {
-        filteredTags(): number[] {
-            if (!this.query) {
-                return [-1];
-            }
-
-            return filterTags({
-                query: this.query,
-                tags: this.tags,
-            });
-        },
-        filteredTagsInverse(): number[] {
-            if (this.filteredTags.every(tag => tag === -1)) {
-                return [];
-            }
-
-            return this.tags.filter(tag => !this.filteredTags.includes(tag.id)).map(tag => tag.id);
-        },
         largestTagID(): number {
             return Math.max(...this.tags.map(tag => tag.id));
         },
@@ -89,10 +69,6 @@ export const useTagsStore = defineStore('tags', {
         },
     },
     state: (): {
-        query: string,
         tags: StoreTag[]
-    } => ({
-        query: '',
-        tags: [],
-    }),
+    } => ({ tags: [] }),
 });

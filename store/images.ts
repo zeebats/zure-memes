@@ -2,24 +2,27 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
 import { useTagsStore } from '@/store/tags';
-import { getAllImages, Image } from '@/utilities/images';
+import { filterImages, getAllImages, Image } from '@/utilities/images';
 
 export const useImageStore = defineStore('images', {
     actions: {
-        async getImages($supabase: SupabaseClient): Promise<void> {
+        async init($supabase: SupabaseClient): Promise<void> {
             this.images = await getAllImages({ $supabase });
+        },
+        modifySearch(search: string): void {
+            this.search = search;
         },
         upsert(modified: Image): void {
             const arrayID = this.images.findIndex((original: Image): boolean => original.id === modified.id);
 
             if (arrayID > -1) {
-                this.images[arrayID] = modified;
+                this.images[arrayID] = Object.freeze(modified);
 
                 return;
             }
 
             this.images = [
-                modified,
+                Object.freeze(modified),
                 ...this.images,
             ];
         },
@@ -34,28 +37,20 @@ export const useImageStore = defineStore('images', {
         imagesLoop(): Image[] {
             const tagsStore = useTagsStore();
 
-            const {
-                filteredTags,
-                filteredTagsInverse,
-                query,
-                tagsByImageId,
-            } = tagsStore;
+            const { tagsByImageId } = tagsStore;
 
-            return this.images.filter((image: Image): boolean => {
-                if (filteredTags.length === 0) {
-                    return false;
-                }
-
-                if (filteredTags.every(tag => tag === -1)) {
-                    return true;
-                }
-
-                if (query.includes('!')) {
-                    return tagsByImageId[image.id].some(({ id }): boolean => filteredTags.includes(id)) && !tagsByImageId[image.id].some(({ id }): boolean => filteredTagsInverse.includes(id));
-                }
-
-                return tagsByImageId[image.id].some(({ id }): boolean => filteredTags.includes(id));
+            const filtered = filterImages({
+                images: this.images.map(image => (Object.freeze({
+                    ...image,
+                    tags: tagsByImageId[image.id] || [],
+                }))),
+                search: this.search,
             });
+
+            return filtered.map(({
+                tags, // eslint-disable-line @typescript-eslint/no-unused-vars
+                ...image
+            }): Image => image);
         },
         largestImageID(): number {
             return this.images.reduce((accumulator: number, image: Image): number => {
@@ -67,5 +62,11 @@ export const useImageStore = defineStore('images', {
             }, 0);
         },
     },
-    state: (): { images: Image[] } => ({ images: [] }),
+    state: (): {
+        images: Image[],
+        search: string
+    } => ({
+        images: [],
+        search: '',
+    }),
 });
