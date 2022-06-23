@@ -16,7 +16,7 @@
     "workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
   },
   "dependencies": {
-    "@egjs/vue3-infinitegrid": "4.4.0",
+    "@egjs/vue3-infinitegrid": "4.5.0",
     "@netlify/functions": "1.0.0",
     "@nuxtjs/supabase": "0.1.17",
     "@pinia/nuxt": "0.1.9",
