@@ -26,11 +26,10 @@ export const useImageStore = defineStore('images', {
     },
     getters: {
         imagesById(): { [id: string]: Image } {
-            return this.imagesLoop.reduce((accumulator: { [id: string]: Image }, image: Image): { [id: string]: Image } => {
-                accumulator[image.id] = image;
-
-                return accumulator;
-            }, {});
+            return Object.fromEntries(this.images.map(image => [
+                image.id,
+                image,
+            ]));
         },
         imagesLoop(): Image[] {
             const tagsStore = useTagsStore();
@@ -40,7 +39,7 @@ export const useImageStore = defineStore('images', {
                 tagsByImageId,
             } = tagsStore;
 
-            return this.images.map((image: Image): Image => ({ ...image })).filter((image: Image): boolean => {
+            return this.images.filter((image: Image): boolean => {
                 if (filteredTags.length === 0) {
                     return false;
                 }

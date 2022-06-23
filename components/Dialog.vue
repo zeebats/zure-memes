@@ -18,20 +18,20 @@ const properties = withDefaults(defineProps<{
     id: DialogBase['id'];
     properties: DialogProperties;
 }>(), {
-    id: null,
-    properties: null,
+    id: undefined, /* eslint-disable-line no-undefined */
+    properties: undefined, /* eslint-disable-line no-undefined */
 });
 
 const dialogStore = useDialogStore();
 
-const dialog = ref<null | HTMLDialogElement>(null);
+const dialog = ref<HTMLDialogElement>();
 
 onMounted((): void => {
-    if (dialog.value.open) {
+    if (dialog.value?.open) {
         return;
     }
 
-    dialog.value.showModal();
+    dialog.value?.showModal();
 });
 
 const handleClose = (): void => {

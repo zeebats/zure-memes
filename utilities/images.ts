@@ -28,7 +28,7 @@ export const getImages = async ({
     $supabase,
     imageIds,
 }: {
-    $supabase?: SupabaseClient,
+    $supabase: SupabaseClient,
     imageIds: number[]
 }): Promise<Image[]> => {
     const {

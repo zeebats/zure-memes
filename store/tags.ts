@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
@@ -17,22 +15,32 @@ export interface StoreTag extends Tag {
 export const useTagsStore = defineStore('tags', {
     actions: {
         async getTags($supabase: SupabaseClient): Promise<void> {
-            this.tags = await getAllTags({ $supabase });
+            const tags = await getAllTags({ $supabase });
+
+            this.tags = tags.map(tag => ({
+                ...tag,
+                color: getColor(tag.name),
+            }));
         },
         modifyQuery(query: string): void {
             this.query = query;
         },
         upsert(modifiedTags: Tag[]): void {
             for (const modifiedTag of modifiedTags) {
-                const arrayID = this.tags.findIndex((original: StoreTag): boolean => original.id === modifiedTag.id);
+                const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
+
+                const tagWithColor = {
+                    ...modifiedTag,
+                    color: getColor(modifiedTag.name),
+                };
 
                 if (arrayID > 0) {
-                    this.tags[arrayID] = modifiedTag;
+                    this.tags[arrayID] = tagWithColor;
 
                     continue;
                 }
 
-                this.tags.push(modifiedTag);
+                this.tags.push(tagWithColor);
             }
         },
     },
@@ -48,65 +56,36 @@ export const useTagsStore = defineStore('tags', {
             });
         },
         largestTagID(): number {
-            return this.tags.reduce((accumulator: number, tag: Tag): number => {
-                if (accumulator > tag.id) {
-                    return accumulator;
-                }
-
-                return tag.id;
-            }, 0);
+            return Math.max(...this.tags.map(tag => tag.id));
         },
-        tagnamesByImageId(): { [id: string]: string[] } {
-            return Object.entries(this.tagsByImageId).reduce((accumulator, [
-                image_id,
-                tags,
-            ]) => {
-                accumulator[image_id] = (tags as Tag[]).map(({ name }: Tag): string => name);
-
-                return accumulator;
-            }, {});
+        tagsById(): { [id: string]: StoreTag } {
+            return Object.fromEntries(this.tags.map(tag => [
+                tag.id,
+                tag,
+            ]));
         },
-        tagsById(): { [id: string]: StoreTag[] } {
-            return this.tags.reduce((accumulator: StoreTag[], item: Tag): StoreTag[] => {
-                accumulator[item.id] = {
-                    ...item,
-                    color: getColor(item.name),
-                };
-
-                return accumulator;
-            }, {});
-        },
-        tagsByImageId(): { [id: string]: StoreTag[] } {
+        tagsByImageId(): { [id: number]: StoreTag[] } {
             const memesStore = useMemesStore();
 
-            const { memesByMemeId } = memesStore;
+            const { memes } = memesStore;
 
-            return Object.values(memesByMemeId).reduce((accumulator, {
-                image_id,
-                tag_id,
-            }) => {
-                if (!Object.keys(accumulator).includes(`${image_id}`)) {
-                    accumulator[image_id] = [];
-                }
-
-                accumulator[image_id].push(this.tagsById[tag_id]);
-
-                return accumulator;
-            }, {});
+            return Object.fromEntries(memes.map(meme => [
+                meme.image_id,
+                memes.filter(item => item.image_id === meme.image_id).map(item => this.tagsById[item.tag_id]),
+            ]));
         },
         tagsByName(): { [name: string]: StoreTag } {
-            return this.tags.reduce((accumulator: Tag[], item: Tag): Tag[] => {
-                accumulator[item.name] = item;
-
-                return accumulator;
-            }, {});
+            return Object.fromEntries(this.tags.map(tag => [
+                tag.name,
+                tag,
+            ]));
         },
     },
     state: (): {
         query: string,
-        tags: Tag[]
+        tags: StoreTag[]
     } => ({
-        query: null,
+        query: '',
         tags: [],
     }),
 });

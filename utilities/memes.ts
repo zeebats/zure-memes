@@ -26,7 +26,7 @@ export const getMemes = async ({
     $supabase,
     tagIds,
 }: {
-    $supabase?: SupabaseClient,
+    $supabase: SupabaseClient,
     tagIds: number[]
 }): Promise<number[]> => {
     const {

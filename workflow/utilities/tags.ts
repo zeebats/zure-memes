@@ -38,7 +38,7 @@ export const getTagsStringForImageId = async ({ id } : { id: Image['id'] }): Pro
     const memes: Meme[] = JSON.parse(memesRaw);
 
     const foundMemes = memes.filter(meme => meme.image_id === id);
-    const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id).name);
+    const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id)?.name);
 
     return `Tags: ${foundTags.join(', ')}`;
 };
