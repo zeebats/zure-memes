@@ -7,7 +7,7 @@ export interface DialogBase {
 }
 
 export interface DialogProperties {
-    image: number;
+    image?: number;
 }
 
 export interface Dialog extends DialogBase, DialogProperties {}
