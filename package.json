@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@egjs/vue3-infinitegrid": "4.5.0",
+    "@kevinmarrec/nuxt-pwa": "0.3.1",
     "@netlify/functions": "1.0.0",
     "@nuxtjs/supabase": "0.1.17",
     "@pinia/nuxt": "0.1.9",
