@@ -2,17 +2,11 @@
     <div>
         <div
             class="grid min-h-[100dvh]"
-            :class="[
-                $style['layout'],
-                touch && $style['layout--mobile'],
-            ]"
+            :class="[$style['layout']]"
         >
             <div
-                class="flex items-baseline gap-x-4 sticky p-4 bg-white relative z-1 top-0"
-                :class="[
-                    $style['layout__form'],
-                    touch && 'top-auto bottom-0',
-                ]"
+                class="flex items-baseline gap-x-4 sticky p-4 bg-white relative z-1"
+                :class="[$style['layout__form']]"
             >
                 <label
                     for="search"
@@ -38,11 +32,8 @@
                 </Button>
             </div>
             <div
-                class="px-4 pb-4"
-                :class="[
-                    $style['layout__grid'],
-                    touch && 'pt-4 pb-0',
-                ]"
+                class="px-4"
+                :class="[$style['layout__grid']]"
             >
                 <Grid class="-m-2" />
             </div>
@@ -57,9 +48,6 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-
-import { useDeviceStore } from '@/store/device';
 import { useDialogStore } from '@/store/dialog';
 import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
@@ -78,15 +66,12 @@ const tagStore = useTagsStore();
 const memeStore = useMemesStore();
 const imageStore = useImageStore();
 const dialogStore = useDialogStore();
-const deviceStore = useDeviceStore();
-
-const { touch } = storeToRefs(deviceStore);
 
 await tagStore.init($supabase);
 await memeStore.init($supabase);
 await imageStore.init($supabase);
 
-const handleAdd = () => {
+const handleAdd = (): void => {
     dialogStore.create({});
 };
 
@@ -114,17 +99,27 @@ onMounted((): void => {
 
     &__form {
         grid-area: form;
+
+        @apply top-0;
     }
 
     &__grid {
         grid-area: grid;
+
+        @apply pb-4;
     }
 
-    &--mobile {
+    @media (hover: none) {
         grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
 
-        ^&__form {
+        &__form {
             padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+
+            @apply top-auto bottom-0;
+        }
+
+        &__grid {
+            @apply pt-4 pb-0;
         }
     }
 }
