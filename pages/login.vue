@@ -31,6 +31,10 @@ const user = useSupabaseUser();
 const { auth } = useSupabaseClient();
 
 const handleSignIn = (): void => {
+    if (user.value) {
+        navigateTo('/');
+    }
+
     auth.signIn({ provider: 'github' }, { redirectTo: window.location.origin });
 };
 
