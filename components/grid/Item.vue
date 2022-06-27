@@ -98,7 +98,7 @@
                         />
                         <span
                             class="text-white text-shadow-sm font-semibold text-lg"
-                            style="--un-text-shadow-color: black"
+                            :style="`--un-text-shadow-color: #000;`"
                         >{{ title }}</span>
                         <ul
                             v-if="tags"
@@ -259,45 +259,48 @@ onMounted((): void => {
 
 <style lang="postcss" module>
 .gradient--top {
-    background-image: linear-gradient(
-        to top,
-        hsla(0, 0%, 0%, 0) 0%,
-        hsla(0, 0%, 0%, 0.013) 4.9%,
-        hsla(0, 0%, 0%, 0.049) 9.5%,
-        hsla(0, 0%, 0%, 0.104) 14%,
-        hsla(0, 0%, 0%, 0.175) 18.6%,
-        hsla(0, 0%, 0%, 0.259) 23.3%,
-        hsla(0, 0%, 0%, 0.352) 28.1%,
-        hsla(0, 0%, 0%, 0.45) 33.4%,
-        hsla(0, 0%, 0%, 0.55) 39%,
-        hsla(0, 0%, 0%, 0.648) 45.2%,
-        hsla(0, 0%, 0%, 0.741) 52.1%,
-        hsla(0, 0%, 0%, 0.825) 59.7%,
-        hsla(0, 0%, 0%, 0.896) 68.2%,
-        hsla(0, 0%, 0%, 0.951) 77.7%,
-        hsla(0, 0%, 0%, 0.987) 88.2%,
-        hsl(0, 0%, 0%) 100%
-    );
+    background-image:
+        linear-gradient(
+            to top,
+            hsl(0deg 0% 0% / 0%) 0%,
+            hsl(0deg 0% 0% / 1.3%) 4.9%,
+            hsl(0deg 0% 0% / 4.9%) 9.5%,
+            hsl(0deg 0% 0% / 10.4%) 14%,
+            hsl(0deg 0% 0% / 17.5%) 18.6%,
+            hsl(0deg 0% 0% / 25.9%) 23.3%,
+            hsl(0deg 0% 0% / 35.2%) 28.1%,
+            hsl(0deg 0% 0% / 45%) 33.4%,
+            hsl(0deg 0% 0% / 55%) 39%,
+            hsl(0deg 0% 0% / 64.8%) 45.2%,
+            hsl(0deg 0% 0% / 74.1%) 52.1%,
+            hsl(0deg 0% 0% / 82.5%) 59.7%,
+            hsl(0deg 0% 0% / 89.6%) 68.2%,
+            hsl(0deg 0% 0% / 95.1%) 77.7%,
+            hsl(0deg 0% 0% / 98.7%) 88.2%,
+            hsl(0deg 0% 0%) 100%
+        );
 }
+
 .gradient--bottom {
-    background-image: linear-gradient(
-        to bottom,
-        hsla(0, 0%, 0%, 0) 0%,
-        hsla(0, 0%, 0%, 0.013) 4.9%,
-        hsla(0, 0%, 0%, 0.049) 9.5%,
-        hsla(0, 0%, 0%, 0.104) 14%,
-        hsla(0, 0%, 0%, 0.175) 18.6%,
-        hsla(0, 0%, 0%, 0.259) 23.3%,
-        hsla(0, 0%, 0%, 0.352) 28.1%,
-        hsla(0, 0%, 0%, 0.45) 33.4%,
-        hsla(0, 0%, 0%, 0.55) 39%,
-        hsla(0, 0%, 0%, 0.648) 45.2%,
-        hsla(0, 0%, 0%, 0.741) 52.1%,
-        hsla(0, 0%, 0%, 0.825) 59.7%,
-        hsla(0, 0%, 0%, 0.896) 68.2%,
-        hsla(0, 0%, 0%, 0.951) 77.7%,
-        hsla(0, 0%, 0%, 0.987) 88.2%,
-        hsl(0, 0%, 0%) 100%
-    );
+    background-image:
+        linear-gradient(
+            to bottom,
+            hsl(0deg 0% 0% / 0%) 0%,
+            hsl(0deg 0% 0% / 1.3%) 4.9%,
+            hsl(0deg 0% 0% / 4.9%) 9.5%,
+            hsl(0deg 0% 0% / 10.4%) 14%,
+            hsl(0deg 0% 0% / 17.5%) 18.6%,
+            hsl(0deg 0% 0% / 25.9%) 23.3%,
+            hsl(0deg 0% 0% / 35.2%) 28.1%,
+            hsl(0deg 0% 0% / 45%) 33.4%,
+            hsl(0deg 0% 0% / 55%) 39%,
+            hsl(0deg 0% 0% / 64.8%) 45.2%,
+            hsl(0deg 0% 0% / 74.1%) 52.1%,
+            hsl(0deg 0% 0% / 82.5%) 59.7%,
+            hsl(0deg 0% 0% / 89.6%) 68.2%,
+            hsl(0deg 0% 0% / 95.1%) 77.7%,
+            hsl(0deg 0% 0% / 98.7%) 88.2%,
+            hsl(0deg 0% 0%) 100%
+        );
 }
 </style>

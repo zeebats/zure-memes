@@ -45,11 +45,11 @@ const handleAdded = (): void => {
 
 <style lang="postcss">
 .dialog {
-    width: min(100% - 2rem, 42rem);
     height: min(100% - 2rem, auto);
+    width: min(100% - 2rem, 42rem);
 
     &::backdrop {
-        background-color: rgb(0 0 0 / 0.75);
+        background-color: rgb(0 0 0 / 75%);
     }
 }
 </style>
