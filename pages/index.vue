@@ -53,7 +53,7 @@ import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
 import { useTagsStore } from '@/store/tags';
 
-// definePageMeta({ middleware: 'auth' });
+definePageMeta({ middleware: 'auth' });
 
 const $supabase = useSupabaseClient();
 
@@ -113,7 +113,9 @@ onMounted((): void => {
         grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
 
         &__form {
-            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+            --inset: env(safe-area-inset-bottom, 0);
+
+            padding-bottom: calc(1rem + var(--inset));
 
             @apply top-auto bottom-0;
         }
