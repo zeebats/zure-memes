@@ -20,7 +20,7 @@
                         autocapitalize="none"
                         autocorrect="off"
                         spellcheck="false"
-                        class="text-[16px] appearance-none bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                        class="text-base appearance-none bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
                         placeholder="Search for meme's"
                     >
                 </label>
@@ -53,7 +53,7 @@ import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
 import { useTagsStore } from '@/store/tags';
 
-definePageMeta({ middleware: 'auth' });
+// definePageMeta({ middleware: 'auth' });
 
 const $supabase = useSupabaseClient();
 

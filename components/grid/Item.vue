@@ -40,7 +40,7 @@
                     <div class="self-start flex justify-between gap-x-2 p-4">
                         <Button
                             type="button"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            class="text-sm text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             @click="handleCopy"
                         >
                             <span class="w-4 h-4 relative -bottom-[0.3ex] mr-2 -ml-1">
@@ -69,7 +69,7 @@
                         </Button>
                         <Button
                             type="submit"
-                            class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+                            class="text-sm text-white bg-orange-700 hover:bg-orange-800 focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
                             @click="handleEdit"
                         >
                             <span class="w-4 h-4 relative -bottom-[0.4ex] mr-2 -ml-1">
@@ -133,7 +133,7 @@
                 >
                     <button
                         type="button"
-                        class="px-3 py-1.5 rounded text-white shadow-sm"
+                        class="px-3 py-1.5 rounded text-white font-medium shadow-sm"
                         :class="
                             [
                                 copyStatus === 'success' && 'bg-green-600 shadow-green-900',
