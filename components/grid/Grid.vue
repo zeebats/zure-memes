@@ -5,6 +5,7 @@
         :gap="0"
         :observe-children="true"
         :percentage="true"
+        :threshold="50"
         :use-resize-observer="true"
         :use-transform="true"
         align="start"
