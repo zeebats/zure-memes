@@ -7,6 +7,12 @@ import { useDeviceStore } from '@/store/device';
 
 useHead({
     title: 'Zure Memes',
+    meta: [
+        {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1, viewport-fit=cover',
+        },
+    ],
     link: [
         {
             rel: 'icon',
