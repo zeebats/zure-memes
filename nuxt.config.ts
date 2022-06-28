@@ -23,11 +23,11 @@ export default defineNuxtConfig({
             source: 'public/icon.png',
         },
         manifest: {
-            background_color: '#FFED5C', // eslint-disable-line camelcase
+            background_color: '#FFE100', // eslint-disable-line camelcase
             description: 'Internet\'s Zuurste Memes',
             name: 'Zure Memes',
             short_name: 'Zure Memes', // eslint-disable-line camelcase
-            theme_color: '#FFED5C', // eslint-disable-line camelcase
+            theme_color: '#FFE100', // eslint-disable-line camelcase
         },
         meta: {
             author: '@zeebats',
@@ -35,7 +35,7 @@ export default defineNuxtConfig({
             favicon: false,
             mobileAppIOS: true,
             name: '',
-            theme_color: '#FFED5C', // eslint-disable-line camelcase
+            theme_color: '#FFE100', // eslint-disable-line camelcase
         },
     },
     unocss: {

@@ -29,12 +29,28 @@ useHead({
 const deviceStore = useDeviceStore();
 
 const touchObserver = ref<MediaQueryList>();
+const viewportObserver = ref<boolean>(false);
 
 const handleTouchObserver = ({ matches }: MediaQueryListEvent | { matches: boolean }): void => {
-    deviceStore.change({
-        property: 'touch',
-        payload: matches,
+    deviceStore.change('touch', matches);
+};
+
+const handleViewportObserver = ({ target }: Event): void => {
+    if (viewportObserver.value) {
+        return;
+    }
+
+    viewportObserver.value = true;
+
+    requestAnimationFrame(() => {
+        viewportObserver.value = false;
+
+        const { height: visualHeight } = target as VisualViewport;
+        const { innerHeight: windowHeight } = window;
+
+        deviceStore.change('keyboard', visualHeight !== windowHeight);
     });
+
 };
 
 onMounted((): void => {
@@ -44,5 +60,13 @@ onMounted((): void => {
     const { matches } = touchObserver.value;
 
     handleTouchObserver({ matches });
+
+    window.visualViewport.addEventListener('resize', handleViewportObserver);
 });
 </script>
+
+<style lang="postcss">
+:root {
+    --saib: env(safe-area-inset-bottom, 0);
+}
+</style>
