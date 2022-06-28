@@ -12,7 +12,7 @@
                 class="aspect-ratio-[355/200] outline-none col-[1/-1] row-[1/-1] relative -z-1 appearance-none"
                 @focus="handleFocus"
             />
-            <figure class="col-[1/-1] row-[1/-1] self-center">
+            <div class="col-[1/-1] row-[1/-1] self-center">
                 <img
                     :src="url"
                     :alt="title"
@@ -20,7 +20,7 @@
                     loading="lazy"
                     decoding="async"
                 >
-            </figure>
+            </div>
             <Transition
                 enter-from-class="transform opacity-0"
                 enter-active-class="duration-200 ease-out"

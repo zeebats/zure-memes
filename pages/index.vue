@@ -25,7 +25,7 @@
                     >
                 </label>
                 <Button
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="text-black bg-primary-500 hover:bg-primary-600 focus:ring-primary-700 dark:bg-primary-800 dark:hover:bg-primary-700 dark:focus:ring-primary-600"
                     @click="handleAdd"
                 >
                     Add
@@ -53,7 +53,7 @@ import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
 import { useTagsStore } from '@/store/tags';
 
-definePageMeta({ middleware: 'auth' });
+// definePageMeta({ middleware: 'auth' });
 
 const $supabase = useSupabaseClient();
 
