@@ -5,8 +5,11 @@
             :class="[$style['layout']]"
         >
             <div
-                class="flex items-baseline gap-x-4 sticky p-4 bg-white relative z-1"
-                :class="[$style['layout__form']]"
+                class="flex items-baseline gap-x-4 sticky pt-4 px-4 bg-white relative z-1"
+                :class="[
+                    $style['layout__form'],
+                    keyboard && $style['is-keyboard'],
+                ]"
             >
                 <label
                     for="search"
@@ -48,12 +51,15 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
+import { useDeviceStore } from '@/store/device';
 import { useDialogStore } from '@/store/dialog';
 import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
 import { useTagsStore } from '@/store/tags';
 
-// definePageMeta({ middleware: 'auth' });
+definePageMeta({ middleware: 'auth' });
 
 const $supabase = useSupabaseClient();
 
@@ -62,10 +68,11 @@ const search = ref<string>('');
 const route = useRoute();
 const router = useRouter();
 
-const tagStore = useTagsStore();
-const memeStore = useMemesStore();
-const imageStore = useImageStore();
+const deviceStore = useDeviceStore();
 const dialogStore = useDialogStore();
+const imageStore = useImageStore();
+const memeStore = useMemesStore();
+const tagStore = useTagsStore();
 
 await tagStore.init($supabase);
 await memeStore.init($supabase);
@@ -74,6 +81,8 @@ await imageStore.init($supabase);
 const handleAdd = (): void => {
     dialogStore.create({});
 };
+
+const { keyboard } = storeToRefs(deviceStore);
 
 watch(search, (): void => {
     imageStore.modifySearch(search.value);
@@ -100,7 +109,7 @@ onMounted((): void => {
     &__form {
         grid-area: form;
 
-        @apply top-0;
+        @apply top-0 pb-4;
     }
 
     &__grid {
@@ -113,11 +122,13 @@ onMounted((): void => {
         grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
 
         &__form {
-            --inset: env(safe-area-inset-bottom, 0);
-
-            padding-bottom: calc(1rem + var(--inset));
+            padding-bottom: calc(1rem + var(--saib));
 
             @apply top-auto bottom-0;
+
+            &.is-keyboard {
+                transform: translateY(var(--saib));
+            }
         }
 
         &__grid {
