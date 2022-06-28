@@ -1,20 +1,15 @@
 import { defineStore } from 'pinia';
 
+const State = {
+    keyboard: false,
+    touch: false,
+};
+
 export const useDeviceStore = defineStore('device', {
     actions: {
-        change({
-            payload,
-            property,
-        } : {
-            property: unknown,
-            payload: unknown
-        }) {
-            if (!property) {
-                return;
-            }
-
-            this[property] = payload;
+        change<K extends keyof typeof State>(property: K, payload: typeof State[K]): void {
+            this.$state[property] = payload;
         },
     },
-    state: (): { touch: boolean } => ({ touch: false }),
+    state: (): typeof State => State,
 });
