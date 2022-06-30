@@ -47,7 +47,7 @@
     "@zeebats/stylelint-config": "1.0.1",
     "c8": "7.11.3",
     "case-police": "0.5.3",
-    "esbuild": "0.14.47",
+    "esbuild": "0.14.48",
     "netlify-cli": "10.6.3",
     "simple-git-hooks": "2.8.0",
     "vitest": "0.16.0",
