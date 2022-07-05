@@ -59,7 +59,10 @@ import { useImageStore } from '@/store/images';
 import { useMemesStore } from '@/store/memes';
 import { useTagsStore } from '@/store/tags';
 
-definePageMeta({ middleware: 'auth' });
+definePageMeta({
+	middleware: 'index',
+	pageTransition: false,
+});
 
 const $supabase = useSupabaseClient();
 
