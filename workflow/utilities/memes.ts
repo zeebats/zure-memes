@@ -5,14 +5,14 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { queryMemes } from '@/utilities/memes';
 
 export const downloadMemesJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
-    const {
-        data: memes,
-        error,
-    } = await queryMemes({ $supabase });
+	const {
+		data: memes,
+		error,
+	} = await queryMemes({ $supabase });
 
-    if (error) {
-        throw error;
-    }
+	if (error) {
+		throw error;
+	}
 
-    return writeFile('./.cache/memes.json', JSON.stringify(memes));
+	return writeFile('./.cache/memes.json', JSON.stringify(memes));
 };

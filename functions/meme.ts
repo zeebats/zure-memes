@@ -6,46 +6,46 @@ import { getAllMemes } from '@/utilities/memes';
 import { getAllTags, matchTagsToImageId } from '@/utilities/tags';
 
 const {
-    SUPABASE_KEY,
-    SUPABASE_URL,
+	SUPABASE_KEY,
+	SUPABASE_URL,
 } = process.env;
 
 const $supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export const handler: Handler = async ({ queryStringParameters }: HandlerEvent) => {
-    try {
-        const { search } = queryStringParameters || {};
+	try {
+		const { search } = queryStringParameters || {};
 
-        if (!search) {
-            throw new Error('Ben je contextueel gehandicapt ofzo');
-        }
+		if (!search) {
+			throw new Error('Ben je contextueel gehandicapt ofzo');
+		}
 
-        const tags = await getAllTags({ $supabase });
-        const memes = await getAllMemes({ $supabase });
-        const images = await getAllImages({ $supabase });
+		const tags = await getAllTags({ $supabase });
+		const memes = await getAllMemes({ $supabase });
+		const images = await getAllImages({ $supabase });
 
-        const foundImages = filterImages({
-            images: images.map(image => ({
-                ...image,
-                tags: matchTagsToImageId({
-                    id: image.id,
-                    memes,
-                    tags,
-                }),
-            })),
-            search: decodeURIComponent(search),
-        });
+		const foundImages = filterImages({
+			images: images.map(image => ({
+				...image,
+				tags: matchTagsToImageId({
+					id: image.id,
+					memes,
+					tags,
+				}),
+			})),
+			search: decodeURIComponent(search),
+		});
 
-        return {
-            body: JSON.stringify(foundImages),
-            headers: { 'Content-Type': 'application/json' },
-            statusCode: 200,
-        };
-    } catch ({ message }) {
-        return {
-            body: JSON.stringify({ message }),
-            headers: { 'Content-Type': 'application/json' },
-            statusCode: 500,
-        };
-    }
+		return {
+			body: JSON.stringify(foundImages),
+			headers: { 'Content-Type': 'application/json' },
+			statusCode: 200,
+		};
+	} catch ({ message }) {
+		return {
+			body: JSON.stringify({ message }),
+			headers: { 'Content-Type': 'application/json' },
+			statusCode: 500,
+		};
+	}
 };
