@@ -12,29 +12,29 @@ export interface Tag {
 export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Tag> => $supabase.from<Tag>('tags');
 
 export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Tag[]> => {
-    const {
-        data: tags,
-        error,
-    } = await queryTags({ $supabase }).select();
+	const {
+		data: tags,
+		error,
+	} = await queryTags({ $supabase }).select();
 
-    if (error) {
-        throw error;
-    }
+	if (error) {
+		throw error;
+	}
 
-    return tags;
+	return tags;
 };
 
 export const matchTagsToImageId = ({
-    id,
-    memes,
-    tags,
+	id,
+	memes,
+	tags,
 } : {
     id: Image['id'],
     memes: Meme[],
     tags: Tag[]
 }): Tag[] => {
-    const foundMemes = memes.filter(meme => meme.image_id === id) || [];
-    const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id));
+	const foundMemes = memes.filter(meme => meme.image_id === id) || [];
+	const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id));
 
-    return foundTags as Tag[];
+	return foundTags as Tag[];
 };

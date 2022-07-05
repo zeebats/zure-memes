@@ -13,62 +13,62 @@ export interface StoreTag extends Tag {
 }
 
 export const useTagsStore = defineStore('tags', {
-    actions: {
-        async init($supabase: SupabaseClient): Promise<void> {
-            const tags = await getAllTags({ $supabase });
+	actions: {
+		async init($supabase: SupabaseClient): Promise<void> {
+			const tags = await getAllTags({ $supabase });
 
-            this.tags = tags.map(tag => (Object.freeze({
-                ...tag,
-                color: getColor(tag.name),
-            })));
-        },
-        upsert(modifiedTags: Tag[]): void {
-            for (const modifiedTag of modifiedTags) {
-                const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
+			this.tags = tags.map(tag => (Object.freeze({
+				...tag,
+				color: getColor(tag.name),
+			})));
+		},
+		upsert(modifiedTags: Tag[]): void {
+			for (const modifiedTag of modifiedTags) {
+				const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
 
-                const tagWithColor = Object.freeze({
-                    ...modifiedTag,
-                    color: getColor(modifiedTag.name),
-                });
+				const tagWithColor = Object.freeze({
+					...modifiedTag,
+					color: getColor(modifiedTag.name),
+				});
 
-                if (arrayID > 0) {
-                    this.tags[arrayID] = tagWithColor;
+				if (arrayID > 0) {
+					this.tags[arrayID] = tagWithColor;
 
-                    continue;
-                }
+					continue;
+				}
 
-                this.tags.push(tagWithColor);
-            }
-        },
-    },
-    getters: {
-        largestTagID(): number {
-            return Math.max(...this.tags.map(tag => tag.id));
-        },
-        tagsById(): { [id: string]: StoreTag } {
-            return Object.fromEntries(this.tags.map(tag => [
-                tag.id,
-                tag,
-            ]));
-        },
-        tagsByImageId(): { [id: number]: StoreTag[] } {
-            const memesStore = useMemesStore();
+				this.tags.push(tagWithColor);
+			}
+		},
+	},
+	getters: {
+		largestTagID(): number {
+			return Math.max(...this.tags.map(tag => tag.id));
+		},
+		tagsById(): { [id: string]: StoreTag } {
+			return Object.fromEntries(this.tags.map(tag => [
+				tag.id,
+				tag,
+			]));
+		},
+		tagsByImageId(): { [id: number]: StoreTag[] } {
+			const memesStore = useMemesStore();
 
-            const { memes } = memesStore;
+			const { memes } = memesStore;
 
-            return Object.fromEntries(memes.map(meme => [
-                meme.image_id,
-                memes.filter(item => item.image_id === meme.image_id).map(item => this.tagsById[item.tag_id]),
-            ]));
-        },
-        tagsByName(): { [name: string]: StoreTag } {
-            return Object.fromEntries(this.tags.map(tag => [
-                tag.name,
-                tag,
-            ]));
-        },
-    },
-    state: (): {
+			return Object.fromEntries(memes.map(meme => [
+				meme.image_id,
+				memes.filter(item => item.image_id === meme.image_id).map(item => this.tagsById[item.tag_id]),
+			]));
+		},
+		tagsByName(): { [name: string]: StoreTag } {
+			return Object.fromEntries(this.tags.map(tag => [
+				tag.name,
+				tag,
+			]));
+		},
+	},
+	state: (): {
         tags: StoreTag[]
     } => ({ tags: [] }),
 });

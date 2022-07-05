@@ -1,29 +1,29 @@
 <template>
-    <form
-        class="grid gap-4"
-        @submit.prevent="handleSubmit"
-    >
-        <InputUrl
-            v-model="url"
-            :disabled="loading"
-        />
-        <InputTitle
-            v-model="title"
-            :disabled="loading"
-        />
-        <InputTags
-            v-model="tags"
-            :disabled="loading"
-        />
-        <Button
-            type="submit"
-            class="flex-grow text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-opacity"
-            :disabled="loading"
-            :class="[loading && 'op-50']"
-        >
-            {{ properties.edit ? 'Update meme' : 'Add meme' }}
-        </Button>
-    </form>
+	<form
+		class="grid gap-4"
+		@submit.prevent="handleSubmit"
+	>
+		<InputUrl
+			v-model="url"
+			:disabled="loading"
+		/>
+		<InputTitle
+			v-model="title"
+			:disabled="loading"
+		/>
+		<InputTags
+			v-model="tags"
+			:disabled="loading"
+		/>
+		<Button
+			type="submit"
+			class="flex-grow text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-opacity"
+			:disabled="loading"
+			:class="[loading && 'op-50']"
+		>
+			{{ properties.edit ? 'Update meme' : 'Add meme' }}
+		</Button>
+	</form>
 </template>
 
 <script setup lang="ts">
@@ -61,111 +61,111 @@ const imageStore = useImageStore();
 const v$ = useVuelidate({}, {}, { $rewardEarly: true });
 
 onMounted((): void => {
-    if (!properties.edit) {
-        return;
-    }
+	if (!properties.edit) {
+		return;
+	}
 
-    url.value = imageStore.imagesById[properties.edit].url;
-    title.value = imageStore.imagesById[properties.edit].title;
-    tags.value = (tagStore.tagsByImageId[properties.edit] || []).map(tag => tag.name).join(',');
+	url.value = imageStore.imagesById[properties.edit].url;
+	title.value = imageStore.imagesById[properties.edit].title;
+	tags.value = (tagStore.tagsByImageId[properties.edit] || []).map(tag => tag.name).join(',');
 });
 
 // eslint-disable-next-line max-statements, max-lines-per-function
 const handleSubmit = async (): Promise<void> => {
-    try {
-        const valid = await v$.value.$validate();
+	try {
+		const valid = await v$.value.$validate();
 
-        if (!valid) {
-            v$.value.$commit();
+		if (!valid) {
+			v$.value.$commit();
 
-            return;
-        }
+			return;
+		}
 
-        loading.value = true;
+		loading.value = true;
 
-        let { largestImageID } = imageStore;
+		let { largestImageID } = imageStore;
 
-        const {
-            data: imageUpdated,
-            error: imageError,
-        } = await $supabase
-            .from<Image>('images')
-            .upsert({
-                id: properties.edit || (largestImageID += 1),
-                url: url.value,
-                title: title.value,
-            })
-            .single();
+		const {
+			data: imageUpdated,
+			error: imageError,
+		} = await $supabase
+			.from<Image>('images')
+			.upsert({
+				id: properties.edit || (largestImageID += 1),
+				url: url.value,
+				title: title.value,
+			})
+			.single();
 
-        if (imageError) {
-            throw imageError;
-        }
+		if (imageError) {
+			throw imageError;
+		}
 
-        imageStore.upsert(imageUpdated);
+		imageStore.upsert(imageUpdated);
 
-        let { largestTagID } = tagStore;
+		let { largestTagID } = tagStore;
 
-        const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
-            id: tagStore.tagsByName[tag]?.id || (largestTagID += 1), /* eslint-disable-line unicorn/consistent-destructuring */
-            name: tag,
-        }));
+		const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
+			id: tagStore.tagsByName[tag]?.id || (largestTagID += 1), /* eslint-disable-line unicorn/consistent-destructuring */
+			name: tag,
+		}));
 
-        const {
-            data: tagsUpdated,
-            error: tagsError,
-        } = await $supabase
-            .from<Tag>('tags')
-            .upsert(tagsToUpdate);
+		const {
+			data: tagsUpdated,
+			error: tagsError,
+		} = await $supabase
+			.from<Tag>('tags')
+			.upsert(tagsToUpdate);
 
-        if (tagsError) {
-            throw tagsError;
-        }
+		if (tagsError) {
+			throw tagsError;
+		}
 
-        tagStore.upsert(tagsUpdated);
+		tagStore.upsert(tagsUpdated);
 
-        let newTagsForImage: Tag[] = [];
+		let newTagsForImage: Tag[] = [];
 
-        const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || []; /* eslint-disable-line unicorn/consistent-destructuring */
+		const existingTagsForUpdatedImage = tagStore.tagsByImageId[imageUpdated.id] || []; /* eslint-disable-line unicorn/consistent-destructuring */
 
-        if (existingTagsForUpdatedImage) {
-            newTagsForImage = tagsUpdated.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
-        }
+		if (existingTagsForUpdatedImage) {
+			newTagsForImage = tagsUpdated.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
+		}
 
-        let { largestMemeID } = memeStore;
+		let { largestMemeID } = memeStore;
 
-        const memesToUpdate = newTagsForImage.map((tag: Tag): Meme => ({
-            id: (largestMemeID += 1),
-            tag_id: tag.id, /* eslint-disable-line camelcase */
-            image_id: imageUpdated.id, /* eslint-disable-line camelcase */
-        }));
+		const memesToUpdate = newTagsForImage.map((tag: Tag): Meme => ({
+			id: (largestMemeID += 1),
+			tag_id: tag.id, /* eslint-disable-line camelcase */
+			image_id: imageUpdated.id, /* eslint-disable-line camelcase */
+		}));
 
-        const {
-            data: memesUpdated,
-            error: memesError,
-        } = await $supabase
-            .from<Meme>('memes')
-            .upsert(memesToUpdate);
+		const {
+			data: memesUpdated,
+			error: memesError,
+		} = await $supabase
+			.from<Meme>('memes')
+			.upsert(memesToUpdate);
 
-        if (memesError) {
-            throw memesError;
-        }
+		if (memesError) {
+			throw memesError;
+		}
 
-        memeStore.upsert(memesUpdated);
+		memeStore.upsert(memesUpdated);
 
-        await setTimestamp({ $supabase });
+		await setTimestamp({ $supabase });
 
-        url.value = '';
-        title.value = '';
-        tags.value = '';
+		url.value = '';
+		title.value = '';
+		tags.value = '';
 
-        v$.value.$reset();
+		v$.value.$reset();
 
-        loading.value = false;
+		loading.value = false;
 
-        emit('added');
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-    }
+		emit('added');
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.error(error);
+	}
 };
 </script>

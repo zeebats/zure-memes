@@ -1,8 +1,8 @@
 // eslint-disable-next-line consistent-return
 export default defineNuxtRouteMiddleware(() => {
-    const user = useSupabaseUser();
+	const user = useSupabaseUser();
 
-    if (!user.value) {
-        return navigateTo('/login');
-    }
+	if (!user.value) {
+		return navigateTo('/login');
+	}
 });
