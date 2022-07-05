@@ -1,14 +1,14 @@
 <template>
-    <dialog
-        ref="dialog"
-        class="dialog grid gap-y-4 p-8 m-auto max-w-2xl"
-        @close="handleClose"
-    >
-        <FormAdd
-            :edit="properties.properties.image"
-            @added="handleAdded"
-        />
-    </dialog>
+	<dialog
+		ref="dialog"
+		class="dialog grid gap-y-4 p-8 m-auto max-w-2xl"
+		@close="handleClose"
+	>
+		<FormAdd
+			:edit="properties.properties.image"
+			@added="handleAdded"
+		/>
+	</dialog>
 </template>
 
 <script setup lang="ts">
@@ -18,8 +18,8 @@ const properties = withDefaults(defineProps<{
     id: DialogBase['id'];
     properties: DialogProperties;
 }>(), {
-    id: undefined, /* eslint-disable-line no-undefined */
-    properties: undefined, /* eslint-disable-line no-undefined */
+	id: undefined, /* eslint-disable-line no-undefined */
+	properties: undefined, /* eslint-disable-line no-undefined */
 });
 
 const dialogStore = useDialogStore();
@@ -27,19 +27,19 @@ const dialogStore = useDialogStore();
 const dialog = ref<HTMLDialogElement>();
 
 onMounted((): void => {
-    if (dialog.value?.open) {
-        return;
-    }
+	if (dialog.value?.open) {
+		return;
+	}
 
-    dialog.value?.showModal();
+	dialog.value?.showModal();
 });
 
 const handleClose = (): void => {
-    dialogStore.delete({ id: properties.id });
+	dialogStore.delete({ id: properties.id });
 };
 
 const handleAdded = (): void => {
-    handleClose();
+	handleClose();
 };
 </script>
 
