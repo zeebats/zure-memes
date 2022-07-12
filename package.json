@@ -51,6 +51,6 @@
 		"netlify-cli": "10.8.0",
 		"simple-git-hooks": "2.8.0",
 		"vitest": "0.18.0",
-		"vue-tsc": "0.38.3"
+		"vue-tsc": "0.38.5"
 	}
 }
