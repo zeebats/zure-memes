@@ -34,7 +34,7 @@
 		"filenamify-url": "3.0.0",
 		"fzf": "0.5.1",
 		"nanoid": "4.0.0",
-		"node-fetch": "3.2.7",
+		"node-fetch": "3.2.8",
 		"nuxt": "3.0.0-rc.4",
 		"pinia": "2.0.15",
 		"postcss-nested": "5.0.6",
