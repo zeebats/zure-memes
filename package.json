@@ -22,7 +22,7 @@
 		"@kevinmarrec/nuxt-pwa": "0.3.1",
 		"@netlify/functions": "1.0.0",
 		"@nuxtjs/supabase": "0.1.19",
-		"@pinia/nuxt": "0.3.0",
+		"@pinia/nuxt": "0.3.1",
 		"@supabase/supabase-js": "1.35.4",
 		"@types/node": "18.0.6",
 		"@unocss/nuxt": "0.44.5",
@@ -48,7 +48,7 @@
 		"c8": "7.12.0",
 		"case-police": "0.5.6",
 		"esbuild": "0.14.49",
-		"netlify-cli": "10.10.2",
+		"netlify-cli": "10.11.2",
 		"simple-git-hooks": "2.8.0",
 		"vitest": "0.18.1",
 		"vue-tsc": "0.38.9"
