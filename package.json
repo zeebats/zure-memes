@@ -50,7 +50,7 @@
 		"esbuild": "0.14.51",
 		"netlify-cli": "10.12.1",
 		"simple-git-hooks": "2.8.0",
-		"vitest": "0.19.1",
+		"vitest": "0.21.0",
 		"vue-tsc": "0.39.2"
 	}
 }
