@@ -24,7 +24,7 @@
 		"@nuxtjs/supabase": "0.1.19",
 		"@pinia/nuxt": "0.4.0",
 		"@supabase/supabase-js": "1.35.6",
-		"@types/node": "18.6.2",
+		"@types/node": "18.7.3",
 		"@unocss/nuxt": "0.45.6",
 		"@unocss/reset": "0.45.6",
 		"@unocss/transformer-directives": "0.45.6",
