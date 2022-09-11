@@ -1,3 +1,4 @@
+import transformerDirective from '@unocss/transformer-directives';
 import { defineNuxtConfig } from 'nuxt';
 
 export default defineNuxtConfig({
@@ -59,6 +60,7 @@ export default defineNuxtConfig({
 				},
 			},
 		},
+		transformers: [transformerDirective()],
 		uno: true,
 	},
 	vite: { build: { sourcemap: true } },
