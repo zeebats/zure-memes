@@ -61,7 +61,7 @@ onMounted((): void => {
 
 	handleTouchObserver({ matches });
 
-	window.visualViewport.addEventListener('resize', handleViewportObserver);
+	(window.visualViewport as VisualViewport).addEventListener('resize', handleViewportObserver);
 });
 </script>
 
