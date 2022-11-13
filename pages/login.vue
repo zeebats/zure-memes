@@ -1,5 +1,5 @@
 <template>
-	<div class="grid min-h-[100dvh] place-content-center gap-y-4">
+	<div class="grid min-h-100vh min-h-[100dvh] place-content-center gap-y-4">
 		<button
 			type="button"
 			class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
@@ -42,7 +42,7 @@
 			<span class="grid place-items-center">
 				<span
 					class="col-[1/-1] row-[1/-1] invisible"
-					aria-hidden
+					aria-hidden="true"
 				>Sign in with GitHub</span>
 				<span
 					v-if="loading"
@@ -59,9 +59,7 @@
 </template>
 
 <script setup lang="ts">
-const user = useSupabaseUser();
 const { auth } = useSupabaseClient();
-const router = useRouter();
 
 definePageMeta({
 	middleware: 'login',
@@ -69,36 +67,23 @@ definePageMeta({
 });
 
 const loading = useLoading();
-const init = ref<boolean>(false);
 const errorMessage = ref<string>('');
+const { IS_DEV } = useRuntimeConfig();
 
 const handleSignIn = async (): Promise<void> => {
 	try {
 		loading.value = true;
 
-		const { error } = await auth.signIn({ provider: 'github' });
+		const { error } = await auth.signInWithOAuth({
+			provider: 'github',
+			options: { redirectTo: `${IS_DEV ? 'http://localhost:4449' : 'https://zure-memes.netlify.app'}/loading` },
+		});
 
 		if (error) {
 			throw error;
 		}
-
-		router.push('/');
 	} catch ({ message }) {
 		errorMessage.value = `${message}`;
-	} finally {
-		loading.value = false;
 	}
 };
-
-watchEffect(() => {
-	if (user.value) {
-		router.push('/');
-	} else if (init.value) {
-		loading.value = false;
-	}
-});
-
-onMounted(() => {
-	init.value = true;
-});
 </script>

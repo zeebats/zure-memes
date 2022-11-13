@@ -1,1 +1,3 @@
-export const useLoading = () => useState<boolean>('loading', (): boolean => true);
+import { Ref } from 'vue';
+
+export const useLoading = (): Ref<boolean> => useState<boolean>('loading', (): boolean => false);

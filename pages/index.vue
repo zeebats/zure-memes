@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			class="grid min-h-[100dvh]"
+			class="grid min-h-100vh min-h-[100dvh]"
 			:class="[$style['layout']]"
 		>
 			<div
@@ -106,37 +106,37 @@ onMounted((): void => {
 
 <style module lang="postcss">
 .layout {
-    grid-template-columns: [grid-start form-start] 1fr [form-end grid-end];
-    grid-template-rows: [form-start] max-content [form-end grid-start] 1fr [grid-end];
+	grid-template-columns: [grid-start form-start] 1fr [form-end grid-end];
+	grid-template-rows: [form-start] max-content [form-end grid-start] 1fr [grid-end];
 
-    &__form {
-        grid-area: form;
+	&__form {
+		grid-area: form;
 
-        @apply top-0 pb-4;
-    }
+		@apply top-0 pb-4;
+	}
 
-    &__grid {
-        grid-area: grid;
+	&__grid {
+		grid-area: grid;
 
-        @apply pb-4;
-    }
+		@apply pb-4;
+	}
 
-    @media (hover: none) {
-        grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
+	@media (hover: none) {
+		grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
 
-        &__form {
-            padding-bottom: calc(1rem + var(--saib));
+		&__form {
+			padding-bottom: calc(1rem + var(--saib));
 
-            @apply top-auto bottom-0;
+			@apply top-auto bottom-0;
 
-            &.is-keyboard {
-                transform: translateY(var(--saib));
-            }
-        }
+			&.is-keyboard {
+				transform: translateY(var(--saib));
+			}
+		}
 
-        &__grid {
-            @apply pt-4 pb-0;
-        }
-    }
+		&__grid {
+			@apply pt-4 pb-0;
+		}
+	}
 }
 </style>

@@ -1,5 +1,5 @@
 import transformerDirective from '@unocss/transformer-directives';
-import { defineNuxtConfig } from 'nuxt';
+import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
 	css: ['@unocss/reset/tailwind.css'],
@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 			'postcss-nested-ancestors': {},
 		},
 	},
+	publicRuntimeConfig: { IS_DEV: process.env.NETLIFY_DEV },
 	pwa: {
 		icon: {
 			sizes: [
@@ -37,6 +38,12 @@ export default defineNuxtConfig({
 			mobileAppIOS: true,
 			name: '',
 			theme_color: '#FFE100', // eslint-disable-line camelcase
+		},
+	},
+	supabase: {
+		redirect: {
+			callback: '/loading',
+			login: '/login',
 		},
 	},
 	unocss: {
