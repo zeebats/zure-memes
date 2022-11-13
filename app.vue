@@ -18,11 +18,11 @@ useHead({
 			rel: 'apple-touch-icon',
 			href: '/apple-touch-icon.png',
 		},
-		{
-			rel: 'icon',
-			href: '/favicon.svg',
-			type: 'image/svg+xml',
-		},
+		// {
+		// rel: 'icon',
+		// href: '/favicon.svg',
+		// type: 'image/svg+xml',
+		// },
 	],
 });
 
@@ -67,6 +67,6 @@ onMounted((): void => {
 
 <style lang="postcss">
 :root {
-    --saib: env(safe-area-inset-bottom, 0);
+	--saib: env(safe-area-inset-bottom, 0);
 }
 </style>
