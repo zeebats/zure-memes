@@ -1,8 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
-import { useTagsStore } from '@/store/tags';
-import { filterImages, getAllImages, Image } from '@/utilities/images';
+import { useTagsStore } from '@/src/store/tags';
+import { filterImages, getAllImages, Image } from '@/src/utilities/images';
 
 export const useImageStore = defineStore('images', {
 	actions: {

@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 
-import { getTimestamp } from '@/utilities/timestamp';
+import { getTimestamp } from '@/src/utilities/timestamp';
 import { downloadImages, downloadImagesJSON } from '@/workflow/utilities/images';
 import { downloadMemesJSON } from '@/workflow/utilities/memes';
 import { probe } from '@/workflow/utilities/node';

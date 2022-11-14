@@ -1,8 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
 
-import { Image } from '@/utilities/images';
-import { Meme } from '@/utilities/memes';
+import { Image } from '@/src/utilities/images';
+import { Meme } from '@/src/utilities/memes';
 
 export interface Tag {
     id: number;

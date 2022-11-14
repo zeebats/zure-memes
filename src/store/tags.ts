@@ -1,9 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
-import { useMemesStore } from '@/store/memes';
-import { getColor } from '@/utilities/color';
-import { getAllTags, Tag } from '@/utilities/tags';
+import { useMemesStore } from '@/src/store/memes';
+import { getColor } from '@/src/utilities/color';
+import { getAllTags, Tag } from '@/src/utilities/tags';
 
 export interface StoreTag extends Tag {
     color: {

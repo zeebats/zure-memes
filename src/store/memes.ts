@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 
-import { getAllMemes, Meme } from '@/utilities/memes';
+import { getAllMemes, Meme } from '@/src/utilities/memes';
 
 export const useMemesStore = defineStore('memes', {
 	actions: {

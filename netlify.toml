@@ -6,14 +6,13 @@
 
 [dev]
 	command = "npm run dev"
-	framework = "#custom"
+	framework = "astro"
 	port = 4449
-	targetPort = 3000
 
-# [[redirects]]
-#   from = "/api/*"
-#   to = "/.netlify/functions/:splat"
-#   status = 200
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [[headers]]
 	for = "/*"

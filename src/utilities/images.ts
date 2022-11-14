@@ -7,7 +7,7 @@ import {
 	FzfResultItem,
 } from 'fzf';
 
-import { Tag } from '@/utilities/tags';
+import { Tag } from '@/src/utilities/tags';
 
 export interface Image {
     id: number;

@@ -1,7 +1,7 @@
 import { colord, type Colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
 
-import { getRandomBetween } from '@/utilities/random';
+import { getRandomBetween } from '@/src/utilities/random';
 
 extend([a11yPlugin]);
 
