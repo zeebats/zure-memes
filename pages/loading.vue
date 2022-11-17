@@ -35,7 +35,13 @@
 <script setup lang="ts">
 const user = useSupabaseUser();
 
-watchEffect(() => {
+watchEffect(async () => {
+	console.log({ user });
+
+	await new Promise(resolve => setTimeout(resolve, 1500));
+
+	console.log({ user });
+
 	if (user.value) {
 		navigateTo('/');
 	}
