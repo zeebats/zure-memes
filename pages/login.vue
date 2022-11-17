@@ -68,15 +68,24 @@ definePageMeta({
 
 const loading = useLoading();
 const errorMessage = ref<string>('');
-const { IS_DEV } = useRuntimeConfig();
 
 const handleSignIn = async (): Promise<void> => {
 	try {
 		loading.value = true;
 
+		const { origin } = window.location;
+		const redirectTo = `${origin}/loading`;
+
+		console.log({
+			origin,
+			redirectTo,
+		});
+
+		await new Promise(resolve => setTimeout(resolve, 7500));
+
 		const { error } = await auth.signInWithOAuth({
 			provider: 'github',
-			options: { redirectTo: `${IS_DEV ? 'http://localhost:4449' : 'https://zure-memes.netlify.app'}/loading` },
+			options: { redirectTo },
 		});
 
 		if (error) {

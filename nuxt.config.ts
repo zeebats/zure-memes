@@ -39,7 +39,6 @@ export default defineNuxtConfig({
 			theme_color: '#FFE100', // eslint-disable-line camelcase
 		},
 	},
-	runtimeConfig: { public: { IS_DEV: process.env.NETLIFY_DEV || '' } },
 	supabase: {
 		redirect: {
 			callback: '/loading',
