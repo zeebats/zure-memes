@@ -23,11 +23,11 @@
 		"@netlify/functions": "1.3.0",
 		"@nuxtjs/supabase": "0.3.0",
 		"@pinia/nuxt": "0.4.6",
-		"@supabase/supabase-js": "2.1.3",
-		"@types/node": "18.11.13",
-		"@unocss/nuxt": "0.47.5",
-		"@unocss/reset": "0.47.5",
-		"@unocss/transformer-directives": "0.47.5",
+		"@supabase/supabase-js": "2.2.1",
+		"@types/node": "18.11.17",
+		"@unocss/nuxt": "0.47.6",
+		"@unocss/reset": "0.47.6",
+		"@unocss/transformer-directives": "0.47.6",
 		"@vuelidate/core": "2.0.0",
 		"@vuelidate/validators": "2.0.0",
 		"colord": "2.9.3",
@@ -47,10 +47,10 @@
 		"@zeebats/stylelint-config": "1.1.0",
 		"c8": "7.12.0",
 		"case-police": "0.5.10",
-		"esbuild": "0.16.4",
-		"netlify-cli": "12.2.9",
+		"esbuild": "0.16.10",
+		"netlify-cli": "12.4.0",
 		"simple-git-hooks": "2.8.1",
-		"vitest": "0.25.7"
+		"vitest": "0.26.1"
 	},
 	"overrides": {
 		"vue": "3"
