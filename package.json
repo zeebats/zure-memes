@@ -25,9 +25,9 @@
 		"@pinia/nuxt": "0.4.6",
 		"@supabase/supabase-js": "2.2.3",
 		"@types/node": "18.11.18",
-		"@unocss/nuxt": "0.48.1",
-		"@unocss/reset": "0.48.1",
-		"@unocss/transformer-directives": "0.48.1",
+		"@unocss/nuxt": "0.48.3",
+		"@unocss/reset": "0.48.3",
+		"@unocss/transformer-directives": "0.48.3",
 		"@vuelidate/core": "2.0.0",
 		"@vuelidate/validators": "2.0.0",
 		"colord": "2.9.3",
@@ -41,16 +41,16 @@
 		"postcss-nested-ancestors": "3.0.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "17.4.0",
+		"@commitlint/cli": "17.4.1",
 		"@commitlint/config-conventional": "17.4.0",
 		"@zeebats/eslint-config": "1.3.1",
 		"@zeebats/stylelint-config": "1.1.0",
 		"c8": "7.12.0",
 		"case-police": "0.5.10",
-		"esbuild": "0.16.14",
-		"netlify-cli": "12.5.0",
+		"esbuild": "0.16.16",
+		"netlify-cli": "12.6.0",
 		"simple-git-hooks": "2.8.1",
-		"vitest": "0.26.3"
+		"vitest": "0.27.0"
 	},
 	"overrides": {
 		"vue": "3"
