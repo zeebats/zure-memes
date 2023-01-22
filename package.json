@@ -23,7 +23,7 @@
 		"@netlify/functions": "1.4.0",
 		"@nuxtjs/supabase": "0.3.0",
 		"@pinia/nuxt": "0.4.6",
-		"@supabase/supabase-js": "2.4.0",
+		"@supabase/supabase-js": "2.4.1",
 		"@types/node": "18.11.18",
 		"@unocss/nuxt": "0.48.4",
 		"@unocss/reset": "0.48.4",
@@ -36,7 +36,7 @@
 		"nanoid": "4.0.0",
 		"node-fetch": "3.3.0",
 		"nuxt": "3.0.0",
-		"pinia": "2.0.28",
+		"pinia": "2.0.29",
 		"postcss-nested": "6.0.0",
 		"postcss-nested-ancestors": "3.0.0"
 	},
@@ -47,10 +47,10 @@
 		"@zeebats/stylelint-config": "1.1.0",
 		"c8": "7.12.0",
 		"case-police": "0.5.10",
-		"esbuild": "0.17.0",
-		"netlify-cli": "12.7.2",
+		"esbuild": "0.17.4",
+		"netlify-cli": "12.9.1",
 		"simple-git-hooks": "2.8.1",
-		"vitest": "0.27.1"
+		"vitest": "0.27.3"
 	},
 	"overrides": {
 		"vue": "3"
