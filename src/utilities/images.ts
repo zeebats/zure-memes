@@ -7,7 +7,7 @@ import {
 	FzfResultItem,
 } from 'fzf';
 
-import { Tag } from '@/src/utilities/tags';
+import { Tag } from '@/utilities/tags';
 
 export interface Image {
     id: number;
@@ -21,7 +21,7 @@ export interface ImageSearchable extends Image {
 
 export const queryImages = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Image> => $supabase.from<Image>('images');
 
-export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Image[]> => {
+export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient }) => {
 	const {
 		data: images,
 		error,
@@ -42,11 +42,11 @@ export const filterImages = ({
 } : {
     images: ImageSearchable[]
     search: string;
-}) : ImageSearchable[] => {
+}) => {
 	const options: FzfOptions<ImageSearchable> = {
 		match: extendedMatch,
 		selector: image => {
-			const concat = `${image.title} ${image.tags.map(tag => tag.name).join(' ')}}`;
+			const concat = `${image.title} ${(image.tags).map(tag => tag.name).join(' ')}`;
 
 			return concat;
 		},
@@ -56,5 +56,5 @@ export const filterImages = ({
 
 	const matches: FzfResultItem<ImageSearchable>[] = fzf.find(search); // eslint-disable-line unicorn/no-array-callback-reference
 
-	return matches.map(({ item }): ImageSearchable => item);
+	return matches.map(({ item }) => item);
 };

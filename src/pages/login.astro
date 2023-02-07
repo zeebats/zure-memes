@@ -1,22 +1,35 @@
 ---
-import LoginButton from "@/src/components/login/Button.vue";
-import { auth, login } from "@/src/store/supabase";
+import { $auth } from "@/api/supabase";
 
-// const {
-// 	data: { user },
-// } = await supabase.auth.getUser();
+import Layout from "@/layout/layout.astro";
 
-// if (user) {
-// 	return Astro.redirect("/");
-// }
+import LoginButton from "@/components/login/Button.vue";
+
+const {
+	data: { user },
+} = await $auth.getUser();
+
+if (user) {
+	return Astro.redirect("/");
+}
 
 let errorMessage = "";
-
-login();
 ---
 
-<div class="grid min-h-100vh min-h-[100dvh] place-content-center gap-y-4">
-	{JSON.stringify(auth)}
-	<LoginButton client:idle />
-	{errorMessage}
-</div>
+<Layout>
+	<div class="layout">
+		<form></form>
+		<LoginButton client:load />
+		{errorMessage}
+	</div>
+</Layout>
+
+<style lang="postcss">
+	.layout {
+		display: grid;
+		min-height: 100vh;
+		min-height: 100dvh;
+		place-content: center;
+		gap: 1rem 0;
+	}
+</style>

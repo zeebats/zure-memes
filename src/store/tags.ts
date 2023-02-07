@@ -1,9 +1,15 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { defineStore } from 'pinia';
+import {
+	action,
+	atom,
+	computed,
+	onMount,
+	task,
+} from 'nanostores';
 
-import { useMemesStore } from '@/src/store/memes';
-import { getColor } from '@/src/utilities/color';
-import { getAllTags, Tag } from '@/src/utilities/tags';
+import { $supabase } from '@/api/supabase';
+import { memes } from '@/store/memes';
+import { getColor } from '@/utilities/color';
+import { getAllTags, Tag } from '@/utilities/tags';
 
 export interface StoreTag extends Tag {
     color: {
@@ -12,63 +18,89 @@ export interface StoreTag extends Tag {
     },
 }
 
-export const useTagsStore = defineStore('tags', {
-	actions: {
-		async init($supabase: SupabaseClient): Promise<void> {
-			const tags = await getAllTags({ $supabase });
+export const tags = atom<StoreTag[]>([]);
 
-			this.tags = tags.map(tag => (Object.freeze({
-				...tag,
-				color: getColor(tag.name),
-			})));
-		},
-		upsert(modifiedTags: Tag[]): void {
-			for (const modifiedTag of modifiedTags) {
-				const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
+export const largestTagID = computed([tags], tags => Math.max(...tags.map(tag => tag.id)));
+export const tagsByID = computed([tags], tags => Object.fromEntries(tags.map(tag => [
+	tag.id,
+	tag,
+])));
+export const tagsByName = computed([tags], tags => Object.fromEntries(tags.map(tag => [
+	tag.name,
+	tag,
+])));
+export const tagsByImageID = computed([
+	tagsByID,
+	memes,
+], (tagsByID, memes) => Object.fromEntries(memes.map(meme => [
+	meme.image_id,
+	memes.filter(item => item.image_id === meme.image_id).map(item => tagsByID[item.tag_id] || {}),
+])));
 
-				const tagWithColor = Object.freeze({
-					...modifiedTag,
-					color: getColor(modifiedTag.name),
-				});
+export const upsert = action(tags, 'upsert', async (store, {
+	id,
+	title,
+	url,
+}) => {
+	// const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
+	// 	id: tagStore.tagsByName[tag]?.id || (largestTagID.get() + 1), /* eslint-disable-line unicorn/consistent-destructuring */
+	// 	name: tag,
+	// }));
 
-				if (arrayID > 0) {
-					this.tags[arrayID] = tagWithColor;
+	// const {
+	// 	data: tagsUpdated,
+	// 	error: tagsError,
+	// } = await $supabase
+	// 	.from<Tag>('tags')
+	// 	.upsert(tagsToUpdate);
 
-					continue;
-				}
+	// if (tagsError) {
+	// 	throw tagsError;
+	// }
 
-				this.tags.push(tagWithColor);
-			}
-		},
-	},
-	getters: {
-		largestTagID(): number {
-			return Math.max(...this.tags.map(tag => tag.id));
-		},
-		tagsById(): { [id: string]: StoreTag } {
-			return Object.fromEntries(this.tags.map(tag => [
-				tag.id,
-				tag,
-			]));
-		},
-		tagsByImageId(): { [id: number]: StoreTag[] } {
-			const memesStore = useMemesStore();
+	// return { updatedImageID: imageUpdated };
 
-			const { memes } = memesStore;
+	// const arrayID = store.get().findIndex((original: Image): boolean => original.id === modified.id);
 
-			return Object.fromEntries(memes.map(meme => [
-				meme.image_id,
-				memes.filter(item => item.image_id === meme.image_id).map(item => this.tagsById[item.tag_id]),
-			]));
-		},
-		tagsByName(): { [name: string]: StoreTag } {
-			return Object.fromEntries(this.tags.map(tag => [
-				tag.name,
-				tag,
-			]));
-		},
-	},
-	state: (): {
-        tags: StoreTag[]
-    } => ({ tags: [] }),
+	// if (arrayID > -1) {
+	// 	store.set(Object.assign([], store.get(), { [arrayID]: Object.freeze(modified) }));
+
+	// 	return;
+	// }
+
+	// store.set([
+	// 	Object.freeze(modified),
+	// 	...store.get(),
+	// ]);
+
+	// upsert(modifiedTags: Tag[]): void {
+	// 	for(const modifiedTag of modifiedTags) {
+	// 		const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
+
+	// 		const tagWithColor = Object.freeze({
+	// 			...modifiedTag,
+	// 			color: getColor(modifiedTag.name),
+	// 		});
+
+	// 		if (arrayID > 0) {
+	// 			this.tags[arrayID] = tagWithColor;
+
+	// 			continue;
+	// 		}
+
+	// 		this.tags.push(tagWithColor);
+	// 	}
+	// },
+
+});
+
+onMount(tags, () => {
+	task(async () => {
+		const response = await getAllTags({ $supabase });
+
+		tags.set(response.map(tag => (Object.freeze({
+			...tag,
+			color: getColor(tag.name),
+		}))));
+	});
 });

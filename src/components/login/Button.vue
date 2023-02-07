@@ -60,15 +60,13 @@
 import { useStore } from '@nanostores/vue';
 import { ref } from 'vue';
 
-import { login } from '@/src/store/supabase';
-
 const loading = ref<boolean>(false);
 
 const handleSignIn = async (): Promise<void> => {
 	try {
 		loading.value = true;
 
-		await login();
+		// await login();
 
 		// const { error } = await properties.supabase.auth.signInWithOAuth({
 		// 	provider: 'github',

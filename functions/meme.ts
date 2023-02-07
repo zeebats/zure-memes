@@ -1,9 +1,9 @@
 import { Handler, HandlerEvent } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 
-import { filterImages, getAllImages } from '@/src/utilities/images';
-import { getAllMemes } from '@/src/utilities/memes';
-import { getAllTags, matchTagsToImageId } from '@/src/utilities/tags';
+import { filterImages, getAllImages } from '@/utilities/images';
+import { getAllMemes } from '@/utilities/memes';
+import { getAllTags, matchTagsToImageId } from '@/utilities/tags';
 
 const {
 	SUPABASE_KEY,

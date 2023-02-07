@@ -1,15 +1,4 @@
-import { defineStore } from 'pinia';
+import { atom } from 'nanostores';
 
-const State = {
-	keyboard: false,
-	touch: false,
-};
-
-export const useDeviceStore = defineStore('device', {
-	actions: {
-		change<K extends keyof typeof State>(property: K, payload: typeof State[K]): void {
-			this.$state[property] = payload;
-		},
-	},
-	state: (): typeof State => State,
-});
+export const keyboard = atom<boolean>(false);
+export const touch = atom<boolean>(false);

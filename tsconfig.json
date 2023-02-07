@@ -8,51 +8,12 @@
 		"moduleResolution": "Node",
 		"noEmit": true,
 		"paths": {
-			"#app": [
-				"node_modules/nuxt/dist/app"
-			],
-			"#app/*": [
-				"node_modules/nuxt/dist/app/*"
-			],
-			"#build": [
-				".nuxt"
-			],
-			"#build/*": [
-				".nuxt/*"
-			],
-			"#components": [
-				".nuxt/components"
-			],
-			"#head": [
-				"node_modules/nuxt/dist/head/runtime"
-			],
-			"#head/*": [
-				"node_modules/nuxt/dist/head/runtime/*"
-			],
-			"#imports": [
-				".nuxt/imports"
-			],
 			"@": [
 				"."
 			],
 			"@/*": [
-				"./*"
+				"./src/*"
 			],
-			"assets": [
-				"assets"
-			],
-			"pinia": [
-				"pinia/dist/pinia"
-			],
-			"public": [
-				"public"
-			],
-			"public/*": [
-				"public/*"
-			],
-			"vue-demi": [
-				"node_modules/nuxt/dist/app/compat/vue-demi"
-			]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,

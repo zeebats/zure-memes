@@ -1,12 +1,12 @@
-import { colord, type Colord, extend } from 'colord';
+import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
 
-import { getRandomBetween } from '@/src/utilities/random';
+import { getRandomBetween } from '@/utilities/random';
 
 extend([a11yPlugin]);
 
 /* eslint-disable sort-keys */
-export const seededRandomColor = (seed: string): Colord => colord({
+export const seededRandomColor = (seed: string) => colord({
 	h: getRandomBetween({
 		seed,
 		min: 0,
@@ -25,7 +25,7 @@ export const seededRandomColor = (seed: string): Colord => colord({
 });
 /* eslint-enable sort-keys */
 
-export const getColor = (seed: string): { background: string; foreground: string; } => {
+export const getColor = (seed: string) => {
 	const background = seededRandomColor(seed).toRgbString();
 	const foreground = colord(colord(background).isReadable() ? '#fff' : '#000').toHslString();
 

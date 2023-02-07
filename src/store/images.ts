@@ -1,72 +1,88 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { defineStore } from 'pinia';
+import {
+	action,
+	atom,
+	computed,
+	onMount,
+	task,
+} from 'nanostores';
 
-import { useTagsStore } from '@/src/store/tags';
-import { filterImages, getAllImages, Image } from '@/src/utilities/images';
+import { $supabase } from '@/api/supabase';
+import { tagsByImageID } from '@/store/tags';
+import { filterImages, getAllImages, Image } from '@/utilities/images';
+import { getAllMemes } from '@/utilities/memes';
+import { getAllTags } from '@/utilities/tags';
 
-export const useImageStore = defineStore('images', {
-	actions: {
-		async init($supabase: SupabaseClient): Promise<void> {
-			this.images = await getAllImages({ $supabase });
-		},
-		modifySearch(search: string): void {
-			this.search = search;
-		},
-		upsert(modified: Image): void {
-			const arrayID = this.images.findIndex((original: Image): boolean => original.id === modified.id);
+export const images = atom<Image[]>([]);
+export const search = atom<string>('');
 
-			if (arrayID > -1) {
-				this.images[arrayID] = Object.freeze(modified);
+export const imagesById = computed([images], images => Object.fromEntries(images.map(image => [
+	image.id,
+	image,
+])));
 
-				return;
-			}
+export const imagesLoop = computed([
+	images,
+	search,
+	tagsByImageID,
+], (images, search, tagsByImageID) => {
+	const filtered = filterImages({
+		images: images.map(image => (Object.freeze({
+			...image,
+			tags: tagsByImageID[image.id],
+		}))),
+		search,
+	});
 
-			this.images = [
-				Object.freeze(modified),
-				...this.images,
-			];
-		},
-	},
-	getters: {
-		imagesById(): { [id: string]: Image } {
-			return Object.fromEntries(this.images.map(image => [
-				image.id,
-				image,
-			]));
-		},
-		imagesLoop(): Image[] {
-			const tagsStore = useTagsStore();
+	return filtered.map(({
+		tags, // eslint-disable-line @typescript-eslint/no-unused-vars
+		...image
+	}): Image => image);
+});
 
-			const { tagsByImageId } = tagsStore;
+export const largestImageID = computed([images], images => Math.max(...images.map(images => images.id)));
 
-			const filtered = filterImages({
-				images: this.images.map(image => (Object.freeze({
-					...image,
-					tags: tagsByImageId[image.id] || [],
-				}))),
-				search: this.search,
-			});
+export const upsert = action(images, 'upsert', async (store, {
+	id,
+	title,
+	url,
+}) => {
+	const {
+		data: imageUpdated,
+		error: imageError,
+	} = await $supabase
+		.from<Image>('images')
+		.upsert({
+			id: id || (largestImageID.get() + 1),
+			title: title.value,
+			url: url.value,
+		})
+		.single();
 
-			return filtered.map(({
-				tags, // eslint-disable-line @typescript-eslint/no-unused-vars
-				...image
-			}): Image => image);
-		},
-		largestImageID(): number {
-			return this.images.reduce((accumulator: number, image: Image): number => {
-				if (accumulator > image.id) {
-					return accumulator;
-				}
+	if (imageError) {
+		throw imageError;
+	}
 
-				return image.id;
-			}, 0);
-		},
-	},
-	state: (): {
-        images: Image[],
-        search: string
-    } => ({
-		images: [],
-		search: '',
-	}),
+	return { updatedImageID: imageUpdated };
+
+	// const arrayID = store.get().findIndex((original: Image): boolean => original.id === modified.id);
+
+	// if (arrayID > -1) {
+	// 	store.set(Object.assign([], store.get(), { [arrayID]: Object.freeze(modified) }));
+
+	// 	return;
+	// }
+
+	// store.set([
+	// 	Object.freeze(modified),
+	// 	...store.get(),
+	// ]);
+});
+
+onMount(images, () => {
+	task(async () => {
+		await getAllMemes({ $supabase });
+		await getAllTags({ $supabase });
+		const response = await getAllImages({ $supabase });
+		images.set(response);
+	});
 });

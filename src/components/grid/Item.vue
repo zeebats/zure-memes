@@ -101,19 +101,19 @@
 							:style="`--un-text-shadow-color: #000;`"
 						>{{ title }}</span>
 						<ul
-							v-if="tags"
+							v-if="tags && tags.length > 0"
 							class="flex flex-wrap gap-x-2 gap-y-1"
 						>
 							<li
-								v-for="{ id: tagId, name, color } in tags"
-								:key="tagId"
+								v-for="tag in tags"
+								:key="tag.id"
 								:style="{
-									'color': color.foreground,
-									'backgroundColor': color.background,
+									'color': tag?.color?.foreground,
+									'backgroundColor': tag?.color?.background,
 								}"
 								class="text-xs py-1 px-1.5 leading-tight rounded"
 							>
-								{{ name }}
+								{{ tag.name }}
 							</li>
 						</ul>
 					</div>
@@ -151,8 +151,12 @@
 </template>
 
 <script setup lang="ts">
-import { useDialogStore } from '@/store/dialog';
-import { StoreTag, useTagsStore } from '@/store/tags';
+import { useStore } from '@nanostores/vue';
+import { computed, onMounted, ref } from 'vue';
+
+import Button from '@/components/Button.vue';
+import { create as createDialog } from '@/store/dialogs';
+import { tagsByImageID } from '@/store/tags';
 
 const properties = withDefaults(defineProps<{
     id: number;
@@ -164,9 +168,6 @@ const properties = withDefaults(defineProps<{
 	title: undefined, /* eslint-disable-line no-undefined */
 });
 
-const dialogStore = useDialogStore();
-const tagStore = useTagsStore();
-
 const item = ref<HTMLDivElement>();
 
 const copied = ref<boolean>(false);
@@ -177,7 +178,8 @@ let copyTimer: ReturnType<typeof setTimeout> | undefined; /* eslint-disable-line
 
 const hover = ref<boolean>(false);
 
-const tags = computed((): StoreTag[] => tagStore.tagsByImageId[properties.id]);
+const $tags = useStore(tagsByImageID);
+const tags = computed(() => $tags.value[properties.id]);
 
 const handleCopyReset = (): void => {
 	copied.value = false;
@@ -203,7 +205,7 @@ const handleCopy = async (): Promise<void> => {
 };
 
 const handleEdit = (): void => {
-	dialogStore.create({ image: properties.id });
+	createDialog({ image: properties.id });
 };
 
 const handleClick = (): void => {
@@ -259,48 +261,48 @@ onMounted((): void => {
 
 <style lang="postcss" module>
 .gradient--top {
-    background-image:
-        linear-gradient(
-            to top,
-            hsl(0deg 0% 0% / 0%) 0%,
-            hsl(0deg 0% 0% / 1.3%) 4.9%,
-            hsl(0deg 0% 0% / 4.9%) 9.5%,
-            hsl(0deg 0% 0% / 10.4%) 14%,
-            hsl(0deg 0% 0% / 17.5%) 18.6%,
-            hsl(0deg 0% 0% / 25.9%) 23.3%,
-            hsl(0deg 0% 0% / 35.2%) 28.1%,
-            hsl(0deg 0% 0% / 45%) 33.4%,
-            hsl(0deg 0% 0% / 55%) 39%,
-            hsl(0deg 0% 0% / 64.8%) 45.2%,
-            hsl(0deg 0% 0% / 74.1%) 52.1%,
-            hsl(0deg 0% 0% / 82.5%) 59.7%,
-            hsl(0deg 0% 0% / 89.6%) 68.2%,
-            hsl(0deg 0% 0% / 95.1%) 77.7%,
-            hsl(0deg 0% 0% / 98.7%) 88.2%,
-            hsl(0deg 0% 0%) 100%
-        );
+	background-image:
+		linear-gradient(
+			to top,
+			hsl(0deg 0% 0% / 0%) 0%,
+			hsl(0deg 0% 0% / 1.3%) 4.9%,
+			hsl(0deg 0% 0% / 4.9%) 9.5%,
+			hsl(0deg 0% 0% / 10.4%) 14%,
+			hsl(0deg 0% 0% / 17.5%) 18.6%,
+			hsl(0deg 0% 0% / 25.9%) 23.3%,
+			hsl(0deg 0% 0% / 35.2%) 28.1%,
+			hsl(0deg 0% 0% / 45%) 33.4%,
+			hsl(0deg 0% 0% / 55%) 39%,
+			hsl(0deg 0% 0% / 64.8%) 45.2%,
+			hsl(0deg 0% 0% / 74.1%) 52.1%,
+			hsl(0deg 0% 0% / 82.5%) 59.7%,
+			hsl(0deg 0% 0% / 89.6%) 68.2%,
+			hsl(0deg 0% 0% / 95.1%) 77.7%,
+			hsl(0deg 0% 0% / 98.7%) 88.2%,
+			hsl(0deg 0% 0%) 100%
+		);
 }
 
 .gradient--bottom {
-    background-image:
-        linear-gradient(
-            to bottom,
-            hsl(0deg 0% 0% / 0%) 0%,
-            hsl(0deg 0% 0% / 1.3%) 4.9%,
-            hsl(0deg 0% 0% / 4.9%) 9.5%,
-            hsl(0deg 0% 0% / 10.4%) 14%,
-            hsl(0deg 0% 0% / 17.5%) 18.6%,
-            hsl(0deg 0% 0% / 25.9%) 23.3%,
-            hsl(0deg 0% 0% / 35.2%) 28.1%,
-            hsl(0deg 0% 0% / 45%) 33.4%,
-            hsl(0deg 0% 0% / 55%) 39%,
-            hsl(0deg 0% 0% / 64.8%) 45.2%,
-            hsl(0deg 0% 0% / 74.1%) 52.1%,
-            hsl(0deg 0% 0% / 82.5%) 59.7%,
-            hsl(0deg 0% 0% / 89.6%) 68.2%,
-            hsl(0deg 0% 0% / 95.1%) 77.7%,
-            hsl(0deg 0% 0% / 98.7%) 88.2%,
-            hsl(0deg 0% 0%) 100%
-        );
+	background-image:
+		linear-gradient(
+			to bottom,
+			hsl(0deg 0% 0% / 0%) 0%,
+			hsl(0deg 0% 0% / 1.3%) 4.9%,
+			hsl(0deg 0% 0% / 4.9%) 9.5%,
+			hsl(0deg 0% 0% / 10.4%) 14%,
+			hsl(0deg 0% 0% / 17.5%) 18.6%,
+			hsl(0deg 0% 0% / 25.9%) 23.3%,
+			hsl(0deg 0% 0% / 35.2%) 28.1%,
+			hsl(0deg 0% 0% / 45%) 33.4%,
+			hsl(0deg 0% 0% / 55%) 39%,
+			hsl(0deg 0% 0% / 64.8%) 45.2%,
+			hsl(0deg 0% 0% / 74.1%) 52.1%,
+			hsl(0deg 0% 0% / 82.5%) 59.7%,
+			hsl(0deg 0% 0% / 89.6%) 68.2%,
+			hsl(0deg 0% 0% / 95.1%) 77.7%,
+			hsl(0deg 0% 0% / 98.7%) 88.2%,
+			hsl(0deg 0% 0%) 100%
+		);
 }
 </style>

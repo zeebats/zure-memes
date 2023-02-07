@@ -25,16 +25,21 @@
 <script setup lang="ts">
 import { OnRequestAppend } from '@egjs/infinitegrid';
 import { MasonryInfiniteGrid } from '@egjs/vue3-infinitegrid';
+import { useStore } from '@nanostores/vue';
+import { ref, watch } from 'vue';
 
-import { useImageStore } from '@/store/images';
+import GridItem from '@/components/grid/Item.vue';
+import { imagesLoop, largestImageID, search } from '@/store/images';
 import { Image } from '@/utilities/images';
-
-const imageStore = useImageStore();
 
 interface TemplateImage extends Image {
     key: number;
     groupKey: number;
 }
+
+const $imagesLoop = useStore(imagesLoop);
+const $largestImageID = useStore(largestImageID);
+const $search = useStore(search);
 
 const numberOfItems = 7;
 
@@ -47,7 +52,7 @@ const handleGetItems = (groupKey: number, amountOfImages: number): TemplateImage
 		.map((_, index): TemplateImage => {
 			const key = imageGroup + index;
 
-			const item = imageStore.imagesLoop[key];
+			const item = $imagesLoop.value[key];
 
 			return {
 				key,
@@ -66,7 +71,7 @@ const items = ref<TemplateImage[]>(handleGetItems(0, numberOfItems));
 const handleRequestAppend = (event: OnRequestAppend): void => {
 	const nextGroupKey = (Number(event.groupKey!) || 0) + 1;
 
-	const remainingImages = imageStore.imagesLoop.length - (numberOfItems * nextGroupKey);
+	const remainingImages = $imagesLoop.value.length - (numberOfItems * nextGroupKey);
 
 	if (remainingImages <= 0) {
 		return;
@@ -89,7 +94,7 @@ const handleChange = (): void => {
 };
 
 watch((): (string | number)[] => [
-	imageStore.search,
-	imageStore.largestImageID,
+	$search.value,
+	$largestImageID.value,
 ], handleChange);
 </script>

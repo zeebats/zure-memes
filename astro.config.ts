@@ -1,6 +1,6 @@
 import netlify from '@astrojs/netlify/functions';
 import vue from '@astrojs/vue';
-import unocss from '@unocss/astro';
+import UnoCSS from '@unocss/astro';
 import presetUno from '@unocss/preset-uno';
 import transformerDirective from '@unocss/transformer-directives';
 import { defineConfig } from 'astro/config';
@@ -9,14 +9,21 @@ export default defineConfig({
 	adapter: netlify(),
 	integrations: [
 		vue(),
-		unocss({
+		UnoCSS({ // eslint-disable-line new-cap
 			presets: [presetUno()],
 			theme: {
+				/* eslint-disable sort-keys */
 				breakpoints: {
+					'sm': '640px',
+					'md': '768px',
+					'lg': '1024px',
+					'xl': '1280px',
+					'2xl': '1536px',
 					'3xl': '1980px',
 					'4xl': '2560px',
 					'5xl': '3200px',
 				},
+				/* eslint-enable sort-keys */
 				colors: {
 					primary: {
 						100: '#FFFCE3',

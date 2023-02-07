@@ -2,9 +2,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 
-import { Image } from '@/src/utilities/images';
-import { Meme } from '@/src/utilities/memes';
-import { matchTagsToImageId, queryTags, Tag } from '@/src/utilities/tags';
+import { Image } from '@/utilities/images';
+import { Meme } from '@/utilities/memes';
+import { matchTagsToImageId, queryTags, Tag } from '@/utilities/tags';
 
 export const downloadTagsJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
 	const {

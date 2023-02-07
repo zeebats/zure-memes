@@ -1,13 +1,67 @@
 ---
-// import { supabase } from "@/src/api/supabase";
+import { $supabase } from "@/api/supabase";
+
+import Layout from "@/layout/layout.astro";
+
+import LayoutBar from "@/components/layout/Bar.vue";
+import Grid from "@/components/grid/Grid.vue";
+import Dialogs from "@/components/Dialogs.vue";
 
 // const {
 // 	data: { user },
-// } = await supabase.auth.getUser();
+// } = await $supabase.auth.getUser();
 
 // if (!user) {
 // 	return Astro.redirect("/login");
 // }
 ---
 
-<h1>Herro world!</h1>
+<Layout>
+	<div class="grid min-h-100vh min-h-[100dvh] layout">
+		<LayoutBar client:idle />
+
+		<div class="px-4 layout__grid">
+			<div class="-m-2">
+				<Grid client:load />
+			</div>
+		</div>
+	</div>
+	<!-- <Dialogs client:idle /> -->
+</Layout>
+
+<style lang="postcss">
+	.layout {
+		grid-template-columns: [grid-start form-start] 1fr [form-end grid-end];
+		grid-template-rows: [form-start] max-content [form-end grid-start] 1fr [grid-end];
+
+		&__form {
+			grid-area: form;
+
+			@apply top-0 pb-4;
+		}
+
+		&__grid {
+			grid-area: grid;
+
+			@apply pb-4;
+		}
+
+		@media (hover: none) {
+			grid-template-rows: [grid-start] 1fr [grid-end form-start] max-content [form-end];
+
+			&__form {
+				padding-bottom: calc(1rem + var(--saib));
+
+				@apply top-auto bottom-0;
+
+				&.is-keyboard {
+					transform: translateY(var(--saib));
+				}
+			}
+
+			&__grid {
+				@apply pt-4 pb-0;
+			}
+		}
+	}
+</style>
