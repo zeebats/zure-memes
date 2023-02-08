@@ -3,24 +3,23 @@ import { $auth } from "@/api/supabase";
 
 import Layout from "@/layout/layout.astro";
 
-import LoginButton from "@/components/login/Button.vue";
+import Form from "@/components/form/Login.vue";
 
 const {
 	data: { user },
-} = await $auth.getUser();
+} = await $auth.setSession({
+	refresh_token: Astro.cookies.get("refresh").value || "",
+	access_token: Astro.cookies.get("access").value || "",
+});
 
 if (user) {
 	return Astro.redirect("/");
 }
-
-let errorMessage = "";
 ---
 
 <Layout>
 	<div class="layout">
-		<form></form>
-		<LoginButton client:load />
-		{errorMessage}
+		<Form client:only="vue" />
 	</div>
 </Layout>
 

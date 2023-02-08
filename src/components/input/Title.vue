@@ -29,7 +29,6 @@
 				>
 					{{ $message }}
 				</p>
-
 			</span>
 		</span>
 	</label>

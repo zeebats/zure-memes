@@ -1,18 +1,21 @@
 ---
-import { $supabase } from "@/api/supabase";
+import { $auth } from "@/api/supabase";
 
 import Layout from "@/layout/layout.astro";
 
 import LayoutBar from "@/components/layout/Bar.vue";
 import Grid from "@/components/grid/Grid.vue";
 
-// const {
-// 	data: { user },
-// } = await $supabase.auth.getUser();
+const {
+	data: { user },
+} = await $auth.setSession({
+	refresh_token: Astro.cookies.get("refresh").value || "",
+	access_token: Astro.cookies.get("access").value || "",
+});
 
-// if (!user) {
-// 	return Astro.redirect("/login");
-// }
+if (!user) {
+	return Astro.redirect("/login");
+}
 ---
 
 <Layout>

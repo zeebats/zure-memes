@@ -68,7 +68,7 @@ onMounted((): void => {
 });
 
 // eslint-disable-next-line max-statements
-const handleSubmit = async (): Promise<void> => {
+const handleSubmit = async () => {
 	try {
 		const valid = await v$.value.$validate();
 
