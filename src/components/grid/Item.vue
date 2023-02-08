@@ -147,6 +147,15 @@
 				</div>
 			</Transition>
 		</div>
+		<Dialog
+			v-if="dialog"
+			@close="handleClose"
+		>
+			<FormAdd
+				:edit="id"
+				@added="handleClose"
+			/>
+		</Dialog>
 	</div>
 </template>
 
@@ -155,20 +164,17 @@ import { useStore } from '@nanostores/vue';
 import { computed, onMounted, ref } from 'vue';
 
 import Button from '@/components/Button.vue';
-import { create as createDialog } from '@/store/dialogs';
+import Dialog from '@/components/Dialog.vue';
+import FormAdd from '@/components/form/Add.vue';
+import { imagesByID } from '@/store/images';
 import { tagsByImageID } from '@/store/tags';
+import { Image } from '@/utilities/images';
 
-const properties = withDefaults(defineProps<{
-    id: number;
-    url: string;
-    title: string;
-}>(), {
-	id: undefined, /* eslint-disable-line no-undefined */
-	url: undefined, /* eslint-disable-line no-undefined */
-	title: undefined, /* eslint-disable-line no-undefined */
-});
+const properties = withDefaults(defineProps<{ id: Image['id'] }>(), { id: undefined /* eslint-disable-line no-undefined */ });
 
 const item = ref<HTMLDivElement>();
+
+const dialog = ref(false);
 
 const copied = ref<boolean>(false);
 const copyContent = ref<string | unknown>('');
@@ -178,10 +184,14 @@ let copyTimer: ReturnType<typeof setTimeout> | undefined; /* eslint-disable-line
 
 const hover = ref<boolean>(false);
 
+const $images = useStore(imagesByID);
+const title = computed(() => $images.value[properties.id].title);
+const url = computed(() => $images.value[properties.id].url);
+
 const $tags = useStore(tagsByImageID);
 const tags = computed(() => $tags.value[properties.id]);
 
-const handleCopyReset = (): void => {
+const handleCopyReset = () => {
 	copied.value = false;
 	copyStatus.value = '';
 	copyContent.value = '';
@@ -189,9 +199,9 @@ const handleCopyReset = (): void => {
 	clearTimeout(copyTimer);
 };
 
-const handleCopy = async (): Promise<void> => {
+const handleCopy = async () => {
 	try {
-		await navigator.clipboard.writeText(properties.url);
+		await navigator.clipboard.writeText(url.value);
 		copyStatus.value = 'success';
 		copyContent.value = 'Copied to clipboard!';
 	} catch ({ message }) {
@@ -204,11 +214,15 @@ const handleCopy = async (): Promise<void> => {
 	}
 };
 
-const handleEdit = (): void => {
-	createDialog({ image: properties.id });
+const handleEdit = () => {
+	dialog.value = true;
 };
 
-const handleClick = (): void => {
+const handleClose = () => {
+	dialog.value = false;
+};
+
+const handleClick = () => {
 	if (!window.matchMedia('(pointer:coarse)').matches) {
 		return;
 	}
@@ -216,7 +230,7 @@ const handleClick = (): void => {
 	hover.value = !hover.value;
 };
 
-const handlePointerEnter = (): void => {
+const handlePointerEnter = () => {
 	if (!window.matchMedia('(pointer:fine)').matches) {
 		return;
 	}
@@ -224,7 +238,7 @@ const handlePointerEnter = (): void => {
 	hover.value = true;
 };
 
-const handlePointerLeave = (): void => {
+const handlePointerLeave = () => {
 	if (!window.matchMedia('(pointer:fine)').matches) {
 		return;
 	}
@@ -232,10 +246,10 @@ const handlePointerLeave = (): void => {
 	hover.value = false;
 };
 
-const handleFocus = (): void => {
+const handleFocus = () => {
 	hover.value = true;
 
-	document.addEventListener('focus', function focusChecker(): void {
+	document.addEventListener('focus', function focusChecker() {
 		if (item.value?.contains(document.activeElement)) {
 			return;
 		}
@@ -246,7 +260,7 @@ const handleFocus = (): void => {
 	}, true);
 };
 
-onMounted((): void => {
+onMounted(() => {
 	document.addEventListener('click', event => {
 		if (!item.value) {
 			return;

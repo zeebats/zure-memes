@@ -28,22 +28,36 @@
 		>
 			Add
 		</Button>
+		<Dialog
+			v-if="dialog"
+			@close="handleClose"
+		>
+			<FormAdd @added="handleClose" />
+		</Dialog>
 	</div>
 </template>
 
 <script setup>
 import { useStore, useVModel } from '@nanostores/vue';
+import { ref } from 'vue';
 
 import Button from '@/components/Button.vue';
+import Dialog from '@/components/Dialog.vue';
+import FormAdd from '@/components/form/Add.vue';
 import { keyboard } from '@/store/device';
-import { create as createDialog } from '@/store/dialogs';
 import { search } from '@/store/images';
 
 const $search = useVModel(search);
 const $keyboard = useStore(keyboard);
 
+const dialog = ref(false);
+
 const handleAdd = () => {
-	createDialog();
+	dialog.value = true;
+};
+
+const handleClose = () => {
+	dialog.value = false;
 };
 </script>
 

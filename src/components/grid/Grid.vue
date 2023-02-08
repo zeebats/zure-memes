@@ -93,7 +93,7 @@ const handleChange = (): void => {
 	masonry.value.renderItems({ useResize: true });
 };
 
-watch((): (string | number)[] => [
+watch(() => [
 	$search.value,
 	$largestImageID.value,
 ], handleChange);

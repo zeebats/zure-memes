@@ -28,18 +28,21 @@
 
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
+import { onMounted, ref } from 'vue';
 
 import { $supabase } from '@/api/supabase';
-import { DialogProperties } from '@/store/dialogs';
-import { imagesById, upsert as upsertImage } from '@/store/images';
-import { useMemesStore } from '@/store/memes';
-import { useTagsStore } from '@/store/tags';
-import { Meme } from '@/utilities/memes';
-import { Tag } from '@/utilities/tags';
+import Button from '@/components/Button.vue';
+import InputTags from '@/components/input/Tags.vue';
+import InputTitle from '@/components/input/Title.vue';
+import InputUrl from '@/components/input/Url.vue';
+import { imagesByID, upsert as upsertImage } from '@/store/images';
+import { upsert as upsertMemes } from '@/store/memes';
+import { tagsByImageID, upsert as upsertTags } from '@/store/tags';
+import { Image } from '@/utilities/images';
 import { setTimestamp } from '@/utilities/timestamp';
 
 const properties = withDefaults(defineProps<{
-    edit?: DialogProperties['image'];
+    edit?: Image['id'];
 }>(), { edit: undefined /* eslint-disable-line no-undefined */ });
 
 const emit = defineEmits<{
@@ -52,9 +55,6 @@ const url = ref<string>('');
 const title = ref<string>('');
 const tags = ref<string>('');
 
-const tagStore = useTagsStore();
-const memeStore = useMemesStore();
-
 const v$ = useVuelidate({}, {}, { $rewardEarly: true });
 
 onMounted((): void => {
@@ -62,12 +62,12 @@ onMounted((): void => {
 		return;
 	}
 
-	url.value = imagesById.get()[properties.edit].url;
-	title.value = imagesById.get()[properties.edit].title;
-	tags.value = (tagStore.tagsByImageId[properties.edit] || []).map(tag => tag.name).join(',');
+	url.value = imagesByID.get()[properties.edit].url;
+	title.value = imagesByID.get()[properties.edit].title;
+	tags.value = (tagsByImageID.get()[properties.edit] || []).map(tag => tag.name).join(',');
 });
 
-// eslint-disable-next-line max-statements, max-lines-per-function
+// eslint-disable-next-line max-statements
 const handleSubmit = async (): Promise<void> => {
 	try {
 		const valid = await v$.value.$validate();
@@ -80,44 +80,18 @@ const handleSubmit = async (): Promise<void> => {
 
 		loading.value = true;
 
-		// const { updatedImageID } = upsertImage({
-		// 	id: properties.edit,
-		// 	title: title.value,
-		// 	url: url.value,
-		// });
+		const imageID = await upsertImage({
+			id: properties.edit,
+			title: title.value,
+			url: url.value,
+		});
 
-		// let { largestTagID } = tagStore;
+		const updatedTags = await upsertTags(tags.value);
 
-		// tagStore.upsert(tagsUpdated);
-
-		// let newTagsForImage: Tag[] = [];
-
-		// const existingTagsForUpdatedImage = tagStore.tagsByImageId[updatedImageID] || []; /* eslint-disable-line unicorn/consistent-destructuring */
-
-		// if (existingTagsForUpdatedImage) {
-		// 	newTagsForImage = tagsUpdated.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
-		// }
-
-		// let { largestMemeID } = memeStore;
-
-		// const memesToUpdate = newTagsForImage.map((tag: Tag): Meme => ({
-		// 	id: (largestMemeID += 1),
-		// 	tag_id: tag.id, /* eslint-disable-line camelcase */
-		// 	image_id: updatedImageID, /* eslint-disable-line camelcase */
-		// }));
-
-		// const {
-		// 	data: memesUpdated,
-		// 	error: memesError,
-		// } = await $supabase
-		// 	.from<Meme>('memes')
-		// 	.upsert(memesToUpdate);
-
-		// if (memesError) {
-		// 	throw memesError;
-		// }
-
-		// memeStore.upsert(memesUpdated);
+		await upsertMemes({
+			imageID,
+			updatedTags,
+		});
 
 		await setTimestamp({ $supabase });
 

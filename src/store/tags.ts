@@ -37,61 +37,46 @@ export const tagsByImageID = computed([
 	memes.filter(item => item.image_id === meme.image_id).map(item => tagsByID[item.tag_id] || {}),
 ])));
 
-export const upsert = action(tags, 'upsert', async (store, {
-	id,
-	title,
-	url,
-}) => {
-	// const tagsToUpdate = tags.value.split(',').map((tag: string): Tag => ({
-	// 	id: tagStore.tagsByName[tag]?.id || (largestTagID.get() + 1), /* eslint-disable-line unicorn/consistent-destructuring */
-	// 	name: tag,
-	// }));
+// eslint-disable-next-line max-statements
+export const upsert = action(tags, 'upsert', async (store, newTags: string) => {
+	let newLargestTagID = largestTagID.get();
 
-	// const {
-	// 	data: tagsUpdated,
-	// 	error: tagsError,
-	// } = await $supabase
-	// 	.from<Tag>('tags')
-	// 	.upsert(tagsToUpdate);
+	const tagsToUpdate = newTags.split(',').map((tag: string) => ({
+		id: tagsByName.get()[tag]?.id || (newLargestTagID += 1),
+		name: tag,
+	}));
 
-	// if (tagsError) {
-	// 	throw tagsError;
-	// }
+	const { error } = await $supabase
+		.from<Tag>('tags')
+		.upsert(tagsToUpdate);
 
-	// return { updatedImageID: imageUpdated };
+	if (error) {
+		throw error;
+	}
 
-	// const arrayID = store.get().findIndex((original: Image): boolean => original.id === modified.id);
+	for (const tag of tagsToUpdate) {
+		const arrayIndex = store.get().findIndex(storeTag => storeTag.id === tag.id);
 
-	// if (arrayID > -1) {
-	// 	store.set(Object.assign([], store.get(), { [arrayID]: Object.freeze(modified) }));
+		const tagWithColor = Object.freeze({
+			...tag,
+			color: getColor(tag.name),
+		});
 
-	// 	return;
-	// }
+		if (arrayIndex === -1) {
+			store.set([
+				...store.get(),
+				tagWithColor,
+			]);
+		} else {
+			store.set([
+				...store.get().slice(0, arrayIndex),
+				tagWithColor,
+				...store.get().slice(arrayIndex + 1),
+			]);
+		}
+	}
 
-	// store.set([
-	// 	Object.freeze(modified),
-	// 	...store.get(),
-	// ]);
-
-	// upsert(modifiedTags: Tag[]): void {
-	// 	for(const modifiedTag of modifiedTags) {
-	// 		const arrayID = this.tags.findIndex(({ id }: StoreTag): boolean => id === modifiedTag.id);
-
-	// 		const tagWithColor = Object.freeze({
-	// 			...modifiedTag,
-	// 			color: getColor(modifiedTag.name),
-	// 		});
-
-	// 		if (arrayID > 0) {
-	// 			this.tags[arrayID] = tagWithColor;
-
-	// 			continue;
-	// 		}
-
-	// 		this.tags.push(tagWithColor);
-	// 	}
-	// },
-
+	return tagsToUpdate;
 });
 
 onMount(tags, () => {

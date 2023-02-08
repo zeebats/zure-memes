@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const properties = withDefaults(defineProps<{
     modelValue: string;
     disabled: boolean;

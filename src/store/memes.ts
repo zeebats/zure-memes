@@ -7,61 +7,65 @@ import {
 } from 'nanostores';
 
 import { $supabase } from '@/api/supabase';
+import { tagsByImageID } from '@/store/tags';
+import { Image } from '@/utilities/images';
 import { getAllMemes, Meme } from '@/utilities/memes';
+import { Tag } from '@/utilities/tags';
 
 export const memes = atom<Meme[]>([]);
 
 export const largestMemeID = computed([memes], memes => Math.max(...memes.map(meme => meme.id)));
 
+// eslint-disable-next-line max-statements
 export const upsert = action(memes, 'upsert', async (store, {
-	id,
-	title,
-	url,
+	imageID,
+	updatedTags,
+} : {
+	imageID: Image['id'];
+	updatedTags: Tag[]
 }) => {
-	const {
-		data: imageUpdated,
-		error: imageError,
-	} = await $supabase
-		.from<Image>('images')
-		.upsert({
-			id: id || (largestImageID.get() + 1),
-			title: title.value,
-			url: url.value,
-		})
-		.single();
+	let newTagsForImage: Tag[] = [];
 
-	if (imageError) {
-		throw imageError;
+	const existingTagsForUpdatedImage = tagsByImageID.get()[imageID] || [];
+
+	if (existingTagsForUpdatedImage) {
+		newTagsForImage = updatedTags.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
 	}
 
-	return { updatedImageID: imageUpdated };
+	let newLargestMemeID = largestMemeID.get();
 
-	// const arrayID = store.get().findIndex((original: Image): boolean => original.id === modified.id);
+	const memesToUpdate = newTagsForImage.map((tag: Tag) => ({
+		id: (newLargestMemeID += 1),
+		image_id: imageID, /* eslint-disable-line camelcase */
+		tag_id: tag.id, /* eslint-disable-line camelcase */
+	}));
 
-	// if (arrayID > -1) {
-	// 	store.set(Object.assign([], store.get(), { [arrayID]: Object.freeze(modified) }));
+	const { error } = await $supabase
+		.from<Meme>('memes')
+		.upsert(memesToUpdate);
 
-	// 	return;
-	// }
+	if (error) {
+		throw error;
+	}
 
-	// store.set([
-	// 	Object.freeze(modified),
-	// 	...store.get(),
-	// ]);
+	for (const meme of memesToUpdate) {
+		const arrayIndex = store.get().findIndex(storeMeme => storeMeme.id === meme.id);
 
-	// upsert(modifiedMemes: Meme[]): void {
-	// 	for(const modifiedMeme of modifiedMemes) {
-	// 		const arrayID = this.memes.findIndex((original: Meme): boolean => original.id === modifiedMeme.id);
+		if (arrayIndex === -1) {
+			store.set([
+				...store.get(),
+				Object.freeze(meme),
+			]);
+		} else {
+			store.set([
+				...store.get().slice(0, arrayIndex),
+				Object.freeze(meme),
+				...store.get().slice(arrayIndex + 1),
+			]);
+		}
+	}
 
-	// 		if (arrayID > 0) {
-	// 			this.memes[arrayID] = Object.freeze(modifiedMeme);
-
-	// 			continue;
-	// 		}
-
-	// 		this.memes.push(Object.freeze(modifiedMeme));
-	// 	}
-	// },
+	return memesToUpdate;
 });
 
 onMount(memes, () => {

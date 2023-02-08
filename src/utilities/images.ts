@@ -46,7 +46,7 @@ export const filterImages = ({
 	const options: FzfOptions<ImageSearchable> = {
 		match: extendedMatch,
 		selector: image => {
-			const concat = `${image.title} ${(image.tags).map(tag => tag.name).join(' ')}`;
+			const concat = `${image.title} ${(image.tags || []).map(tag => tag.name).join(' ')}`;
 
 			return concat;
 		},

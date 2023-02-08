@@ -1,4 +1,4 @@
-import netlify from '@astrojs/netlify/functions';
+import netlify from '@astrojs/netlify';
 import vue from '@astrojs/vue';
 import UnoCSS from '@unocss/astro';
 import presetUno from '@unocss/preset-uno';

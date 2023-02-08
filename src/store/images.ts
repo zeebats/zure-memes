@@ -15,7 +15,7 @@ import { getAllTags } from '@/utilities/tags';
 export const images = atom<Image[]>([]);
 export const search = atom<string>('');
 
-export const imagesById = computed([images], images => Object.fromEntries(images.map(image => [
+export const imagesByID = computed([images], images => Object.fromEntries(images.map(image => [
 	image.id,
 	image,
 ])));
@@ -42,44 +42,51 @@ export const imagesLoop = computed([
 export const largestImageID = computed([images], images => Math.max(...images.map(images => images.id)));
 
 export const upsert = action(images, 'upsert', async (store, {
-	id,
+	id = largestImageID.get() + 1,
 	title,
 	url,
 }) => {
-	const {
-		data: imageUpdated,
-		error: imageError,
-	} = await $supabase
+	const { error } = await $supabase
 		.from<Image>('images')
 		.upsert({
-			id: id || (largestImageID.get() + 1),
-			title: title.value,
-			url: url.value,
-		})
-		.single();
+			id,
+			title,
+			url,
+		});
 
-	if (imageError) {
-		throw imageError;
+	if (error) {
+		throw error;
 	}
 
-	return { updatedImageID: imageUpdated };
+	const arrayIndex = store.get().findIndex(image => image.id === id);
 
-	// const arrayID = store.get().findIndex((original: Image): boolean => original.id === modified.id);
+	if (arrayIndex === -1) {
+		store.set([
+			Object.freeze({
+				id,
+				title,
+				url,
+			}),
+			...store.get(),
+		]);
+	} else {
+		store.set([
+			...store.get().slice(0, arrayIndex),
+			Object.freeze({
+				id,
+				title,
+				url,
+			}),
+			...store.get().slice(arrayIndex + 1),
+		]);
+	}
 
-	// if (arrayID > -1) {
-	// 	store.set(Object.assign([], store.get(), { [arrayID]: Object.freeze(modified) }));
-
-	// 	return;
-	// }
-
-	// store.set([
-	// 	Object.freeze(modified),
-	// 	...store.get(),
-	// ]);
+	return id;
 });
 
 onMount(images, () => {
 	task(async () => {
+
 		await getAllMemes({ $supabase });
 		await getAllTags({ $supabase });
 		const response = await getAllImages({ $supabase });
