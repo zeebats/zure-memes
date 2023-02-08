@@ -47,7 +47,7 @@ export const upsert = action(images, 'upsert', async (store, {
 	url,
 }) => {
 	const { error } = await $supabase
-		.from<Image>('images')
+		.from('images')
 		.upsert({
 			id,
 			title,

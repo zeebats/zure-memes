@@ -47,7 +47,7 @@ export const upsert = action(tags, 'upsert', async (store, newTags: string) => {
 	}));
 
 	const { error } = await $supabase
-		.from<Tag>('tags')
+		.from('tags')
 		.upsert(tagsToUpdate);
 
 	if (error) {

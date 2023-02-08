@@ -1,5 +1,4 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
 
 import { Image } from '@/utilities/images';
 import { Meme } from '@/utilities/memes';
@@ -9,7 +8,7 @@ export interface Tag {
     name: string;
 }
 
-export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Tag> => $supabase.from<Tag>('tags');
+export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('tags');
 
 export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Tag[]> => {
 	const {

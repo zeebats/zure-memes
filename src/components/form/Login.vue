@@ -20,8 +20,8 @@
 				id="email"
 				v-model="v$.emailAddress.$model"
 				type="email"
-				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-				placeholder="name@flowbite.com"
+				class="bg-gray-50 border text-base border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				placeholder="email@domain.extension"
 				required
 				@blur="v$.emailAddress.$commit"
 			>
@@ -38,12 +38,11 @@
 			>
 				{{ $message }}
 			</p>
-
 			<input
 				id="password"
 				v-model="v$.password.$model"
 				type="password"
-				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				class="bg-gray-50 border text-base border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				required
 				@blur="v$.password.$commit"
 			>
@@ -66,6 +65,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { email, helpers, required } from '@vuelidate/validators';
+import Cookies from 'js-cookie';
 import { ref } from 'vue';
 
 import { $auth } from '@/api/supabase';
@@ -118,18 +118,15 @@ const handleSubmit = async () => {
 
 		const maxAge = 100 * 365 * 24 * 60 * 60;
 
-		await window.cookieStore.set({
-			name: 'access',
-			value: data.session?.access_token || '',
+		Cookies.set('access', data.session?.access_token || '', {
 			maxAge,
-			SameSite: 'Lax',
+			sameSite: 'Lax',
 			secure: true,
 		});
-		await window.cookieStore.set({
-			name: 'refresh',
-			value: data.session?.refresh_token || '',
+
+		Cookies.set('refresh', data.session?.refresh_token || '', {
 			maxAge,
-			SameSite: 'Lax',
+			sameSite: 'Lax',
 			secure: true,
 		});
 

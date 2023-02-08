@@ -8,12 +8,8 @@
 		"moduleResolution": "Node",
 		"noEmit": true,
 		"paths": {
-			"@": [
-				"."
-			],
-			"@/*": [
-				"./src/*"
-			],
+			"@": ["."],
+			"@/*": ["./src/*"]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
@@ -21,7 +17,8 @@
 		"target": "ESNext",
 		"types": [
 			"node",
-			"vite/client"
+			"vite/client",
+			"@types/js-cookie"
 		]
 	},
 	"include": [

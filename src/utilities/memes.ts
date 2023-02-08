@@ -1,5 +1,4 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
 
 export interface Meme {
     id: number;
@@ -7,7 +6,7 @@ export interface Meme {
     tag_id: number;
 }
 
-export const queryMemes = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Meme> => $supabase.from<Meme>('memes');
+export const queryMemes = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('memes');
 
 export const getAllMemes = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Meme[]> => {
 	const {

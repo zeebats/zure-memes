@@ -1,12 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
 
 interface Timestamp {
     id: number;
     timestamp: number;
 }
 
-export const queryTimestamp = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Timestamp> => $supabase.from<Timestamp>('timestamp');
+export const queryTimestamp = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('timestamp');
 
 export const getTimestamp = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<string> => {
 	const {

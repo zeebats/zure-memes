@@ -1,5 +1,4 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseQueryBuilder } from '@supabase/supabase-js/dist/module/lib/SupabaseQueryBuilder';
 import {
 	extendedMatch,
 	Fzf,
@@ -19,7 +18,7 @@ export interface ImageSearchable extends Image {
     tags: Tag[]
 }
 
-export const queryImages = ({ $supabase }: { $supabase: SupabaseClient }): SupabaseQueryBuilder<Image> => $supabase.from<Image>('images');
+export const queryImages = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('images');
 
 export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient }) => {
 	const {

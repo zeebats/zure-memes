@@ -41,7 +41,7 @@ export const upsert = action(memes, 'upsert', async (store, {
 	}));
 
 	const { error } = await $supabase
-		.from<Meme>('memes')
+		.from('memes')
 		.upsert(memesToUpdate);
 
 	if (error) {
