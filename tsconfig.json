@@ -8,8 +8,15 @@
 		"moduleResolution": "Node",
 		"noEmit": true,
 		"paths": {
-			"@": ["."],
-			"@/*": ["./src/*"]
+			"@": [
+				"."
+			],
+			"@/*": [
+				"./src/*"
+			],
+			"@/workflow/*": [
+				"./workflow/*"
+			]
 		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,

@@ -3,6 +3,7 @@ import vue from '@astrojs/vue';
 import UnoCSS from '@unocss/astro';
 import presetUno from '@unocss/preset-uno';
 import transformerDirective from '@unocss/transformer-directives';
+// import AstroPWA from '@vite-pwa/astro';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
@@ -40,6 +41,9 @@ export default defineConfig({
 			},
 			transformers: [transformerDirective()],
 		}),
+		// AstroPWA({ // eslint-disable-line new-cap
+		// https://github.com/vite-pwa/astro/blob/main/examples/pwa-simple
+		// }),
 	],
 	output: 'server',
 });
