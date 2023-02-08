@@ -116,18 +116,16 @@ const handleSubmit = async () => {
 
 		loading.value = false;
 
-		const maxAge = 100 * 365 * 24 * 60 * 60;
+		const expires = 100 * 365 * 24 * 60 * 60;
 
 		Cookies.set('access', data.session?.access_token || '', {
-			maxAge,
+			expires,
 			sameSite: 'Lax',
-			secure: true,
 		});
 
 		Cookies.set('refresh', data.session?.refresh_token || '', {
-			maxAge,
+			expires,
 			sameSite: 'Lax',
-			secure: true,
 		});
 
 		window.location.pathname = '/';
