@@ -6,11 +6,11 @@ import { getAllMemes } from '@/utilities/memes';
 import { getAllTags, matchTagsToImageId } from '@/utilities/tags';
 
 const {
-	SUPABASE_KEY,
-	SUPABASE_URL,
+	PUBLIC_SUPABASE_KEY,
+	PUBLIC_SUPABASE_URL,
 } = process.env;
 
-const $supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY);
 
 export const handler: Handler = async ({ queryStringParameters }: HandlerEvent) => {
 	try {

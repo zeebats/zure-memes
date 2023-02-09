@@ -3,6 +3,7 @@
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": ".",
+		"forceConsistentCasingInFileNames": true,
 		"jsx": "preserve",
 		"module": "ESNext",
 		"moduleResolution": "Node",
@@ -22,8 +23,5 @@
 			"@types/js-cookie"
 		]
 	},
-	"include": [
-		"./.nuxt/nuxt.d.ts",
-		"**/*"
-	]
+	"include": ["**/*"]
 }

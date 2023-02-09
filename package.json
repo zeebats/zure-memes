@@ -3,7 +3,7 @@
 	"private": "true",
 	"scripts": {
 		"build": "astro build",
-		"check:case": "case-police",
+		"check:case": "case-police --ignore '**/*.d.ts'",
 		"check:case:fix": "npm run check:case --fix",
 		"check:types": "vue-tsc",
 		"dev": "astro dev",
