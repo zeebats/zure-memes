@@ -85,8 +85,14 @@ const { title = "" } = Astro.props;
 
 		<link rel="canonical" href="https://zure-memes.netlify.app" />
 		<link rel="icon" href="/favicon.ico" sizes="any" />
-		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
-		<link rel="apple-touch-icon" href="/icon.png" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+		<link rel="preconnect" href="cdn.discordapp.com" />
+		<link rel="preconnect" href="c.tenor.com" />
+		<link rel="preconnect" href="media.discordapp.net" />
+		<link rel="preconnect" href="media.tenor.com" />
+
 		<!-- <link
 			rel="apple-touch-startup-image"
 			href="/master/apple-splash-2048-2732.png"
@@ -235,6 +241,7 @@ const { title = "" } = Astro.props;
 
 	<body>
 		<slot />
+		<script src="@/scripts/observers.ts"></script>
 	</body>
 </html>
 
