@@ -6,11 +6,12 @@ import {
 	FzfResultItem,
 } from 'fzf';
 
+import { Database } from '@/types/supabase';
 import { Tag } from '@/utilities/tags';
 
 export interface Image {
     id: number;
-    title: string;
+    title: string | null;
     url: string;
 }
 
@@ -18,9 +19,9 @@ export interface ImageSearchable extends Image {
     tags: Tag[]
 }
 
-export const queryImages = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('images');
+export const queryImages = ({ $supabase }: { $supabase: SupabaseClient<Database> }) => $supabase.from('images');
 
-export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient }) => {
+export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient<Database> }) => {
 	const {
 		data: images,
 		error,

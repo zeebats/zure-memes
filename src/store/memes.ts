@@ -29,7 +29,7 @@ export const upsert = action(memes, 'upsert', async (store, {
 	const existingTagsForUpdatedImage = tagsByImageID.get()[imageID] || [];
 
 	if (existingTagsForUpdatedImage) {
-		newTagsForImage = updatedTags.filter((potentialNew: Tag): boolean => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
+		newTagsForImage = updatedTags.filter((potentialNew: Tag) => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
 	}
 
 	let newLargestMemeID = largestMemeID.get();

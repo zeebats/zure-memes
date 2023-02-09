@@ -4,15 +4,16 @@ import { readFile, unlink, writeFile } from 'node:fs/promises';
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
 
+import { Database } from '@/types/supabase';
 import { filterImages, Image, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
 import { getTagsForImageId } from '@/workflow/utilities/tags';
 
-export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
+export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseClient<Database> }) => {
 	const {
 		data: images,
 		error,
-	} = await queryImages({ $supabase });
+	} = await queryImages({ $supabase }).select();
 
 	if (error) {
 		throw error;
@@ -21,7 +22,7 @@ export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseCli
 	return writeFile('./.cache/images.json', JSON.stringify(images));
 };
 
-export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void[]> => {
+export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient<Database> }) => {
 	const {
 		data: images,
 		error,
@@ -33,7 +34,7 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient 
 
 	return Promise.all(
 		// eslint-disable-next-line max-statements
-		images.map(async ({ url }): Promise<void> => {
+		images.map(async ({ url }) => {
 			const fileURL = new URL(url);
 
 			if (fileURL.host === 'cdn.discordapp.com') {

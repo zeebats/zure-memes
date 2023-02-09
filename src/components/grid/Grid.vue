@@ -45,11 +45,11 @@ const numberOfItems = 7;
 
 const masonry = ref<MasonryInfiniteGrid>();
 
-const handleGetItems = (groupKey: number, amountOfImages: number): TemplateImage[] => {
+const handleGetItems = (groupKey: number, amountOfImages: number) => {
 	const imageGroup = groupKey * amountOfImages;
 
 	return Array.from({ length: amountOfImages })
-		.map((_, index): TemplateImage => {
+		.map((_, index) => {
 			const key = imageGroup + index;
 
 			const item = $imagesLoop.value[key];
@@ -60,7 +60,7 @@ const handleGetItems = (groupKey: number, amountOfImages: number): TemplateImage
 				...item,
 			};
 		})
-		.filter((item: TemplateImage): boolean => !Object.keys(item).every(key => [
+		.filter((item: TemplateImage) => !Object.keys(item).every(key => [
 			'key',
 			'groupKey',
 		].includes(key)));
@@ -68,7 +68,7 @@ const handleGetItems = (groupKey: number, amountOfImages: number): TemplateImage
 
 const items = ref<TemplateImage[]>(handleGetItems(0, numberOfItems));
 
-const handleRequestAppend = (event: OnRequestAppend): void => {
+const handleRequestAppend = (event: OnRequestAppend) => {
 	const nextGroupKey = (Number(event.groupKey!) || 0) + 1;
 
 	const remainingImages = $imagesLoop.value.length - (numberOfItems * nextGroupKey);
@@ -83,7 +83,7 @@ const handleRequestAppend = (event: OnRequestAppend): void => {
 	];
 };
 
-const handleChange = (): void => {
+const handleChange = () => {
 	items.value = handleGetItems(0, numberOfItems);
 
 	if (!masonry.value) {

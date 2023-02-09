@@ -53,10 +53,10 @@ const emit = defineEmits<{
 }>();
 
 const model = computed({
-	get(): string {
+	get() {
 		return properties.modelValue;
 	},
-	set(value): void {
+	set(value) {
 		emit('update:modelValue', value);
 	},
 });

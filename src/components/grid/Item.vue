@@ -185,7 +185,7 @@ let copyTimer: ReturnType<typeof setTimeout> | undefined; /* eslint-disable-line
 const hover = ref<boolean>(false);
 
 const $images = useStore(imagesByID);
-const title = computed(() => $images.value[properties.id].title);
+const title = computed(() => $images.value[properties.id].title || '');
 const url = computed(() => $images.value[properties.id].url);
 
 const $tags = useStore(tagsByImageID);

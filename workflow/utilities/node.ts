@@ -1,7 +1,7 @@
 import { constants } from 'node:fs';
 import { access } from 'node:fs/promises';
 
-export const probe = async (path: string): Promise<boolean> => {
+export const probe = async (path: string) => {
 	try {
 		await access(path, constants.R_OK | constants.W_OK);
 

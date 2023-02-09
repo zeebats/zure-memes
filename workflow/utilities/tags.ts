@@ -2,15 +2,16 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 
+import { Database } from '@/types/supabase';
 import { Image } from '@/utilities/images';
 import { Meme } from '@/utilities/memes';
 import { matchTagsToImageId, queryTags, Tag } from '@/utilities/tags';
 
-export const downloadTagsJSON = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<void> => {
+export const downloadTagsJSON = async ({ $supabase }: { $supabase: SupabaseClient<Database> }) => {
 	const {
 		data: tags,
 		error,
-	} = await queryTags({ $supabase });
+	} = await queryTags({ $supabase }).select();
 
 	if (error) {
 		throw error;
@@ -19,7 +20,7 @@ export const downloadTagsJSON = async ({ $supabase }: { $supabase: SupabaseClien
 	return writeFile('./.cache/tags.json', JSON.stringify(tags));
 };
 
-export const getTags = async (): Promise<Tag[]> => {
+export const getTags = async () => {
 	const local = await readFile('./.cache/tags.json', { encoding: 'utf8' });
 
 	const tags: Tag[] = JSON.parse(local);
@@ -27,7 +28,7 @@ export const getTags = async (): Promise<Tag[]> => {
 	return tags;
 };
 
-export const getTagsForImageId = async ({ id } : { id: Image['id'] }): Promise<Tag[]> => {
+export const getTagsForImageId = async ({ id } : { id: Image['id'] }) => {
 	const tagsRaw = await readFile('./.cache/tags.json', { encoding: 'utf8' });
 	const memesRaw = await readFile('./.cache/memes.json', { encoding: 'utf8' });
 

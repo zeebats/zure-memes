@@ -17,7 +17,7 @@ const emit = defineEmits<{
 
 const dialog = ref<HTMLDialogElement>();
 
-onMounted((): void => {
+onMounted(() => {
 	if (dialog.value?.open) {
 		return;
 	}
@@ -25,7 +25,7 @@ onMounted((): void => {
 	dialog.value?.showModal();
 });
 
-const handleClose = (): void => {
+const handleClose = () => {
 	emit('close');
 };
 </script>

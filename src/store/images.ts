@@ -36,7 +36,7 @@ export const imagesLoop = computed([
 	return filtered.map(({
 		tags, // eslint-disable-line @typescript-eslint/no-unused-vars
 		...image
-	}): Image => image);
+	}) => image);
 });
 
 export const largestImageID = computed([images], images => Math.max(...images.map(images => images.id)));
@@ -86,7 +86,6 @@ export const upsert = action(images, 'upsert', async (store, {
 
 onMount(images, () => {
 	task(async () => {
-
 		await getAllMemes({ $supabase });
 		await getAllTags({ $supabase });
 		const response = await getAllImages({ $supabase });

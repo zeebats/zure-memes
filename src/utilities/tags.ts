@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
+import { Database } from '@/types/supabase';
 import { Image } from '@/utilities/images';
 import { Meme } from '@/utilities/memes';
 
@@ -8,9 +9,9 @@ export interface Tag {
     name: string;
 }
 
-export const queryTags = ({ $supabase }: { $supabase: SupabaseClient }) => $supabase.from('tags');
+export const queryTags = ({ $supabase }: { $supabase: SupabaseClient<Database> }) => $supabase.from('tags');
 
-export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }): Promise<Tag[]> => {
+export const getAllTags = async ({ $supabase }: { $supabase: SupabaseClient }) => {
 	const {
 		data: tags,
 		error,
@@ -31,7 +32,7 @@ export const matchTagsToImageId = ({
     id: Image['id'],
     memes: Meme[],
     tags: Tag[]
-}): Tag[] => {
+}) => {
 	const foundMemes = memes.filter(meme => meme.image_id === id) || [];
 	const foundTags = foundMemes.map(meme => tags.find(tag => tag.id === meme.tag_id));
 

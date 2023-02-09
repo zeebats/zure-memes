@@ -1,3 +1,3 @@
 import filenamifyUrl from 'filenamify-url';
 
-export const createFilename = (url: string): string => filenamifyUrl(url, { replacement: '-' });
+export const createFilename = (url: string) => filenamifyUrl(url, { replacement: '-' });

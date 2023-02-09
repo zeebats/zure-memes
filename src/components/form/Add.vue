@@ -3,7 +3,7 @@
 		class="grid gap-4"
 		@submit.prevent="handleSubmit"
 	>
-		<InputUrl
+		<InputLink
 			v-model="url"
 			:disabled="loading"
 		/>
@@ -32,9 +32,9 @@ import { onMounted, ref } from 'vue';
 
 import { $supabase } from '@/api/supabase';
 import Button from '@/components/Button.vue';
+import InputLink from '@/components/input/Link.vue';
 import InputTags from '@/components/input/Tags.vue';
 import InputTitle from '@/components/input/Title.vue';
-import InputUrl from '@/components/input/Url.vue';
 import { imagesByID, upsert as upsertImage } from '@/store/images';
 import { upsert as upsertMemes } from '@/store/memes';
 import { tagsByImageID, upsert as upsertTags } from '@/store/tags';
@@ -57,13 +57,13 @@ const tags = ref<string>('');
 
 const v$ = useVuelidate({}, {}, { $rewardEarly: true });
 
-onMounted((): void => {
+onMounted(() => {
 	if (!properties.edit) {
 		return;
 	}
 
 	url.value = imagesByID.get()[properties.edit].url;
-	title.value = imagesByID.get()[properties.edit].title;
+	title.value = imagesByID.get()[properties.edit].title || '';
 	tags.value = (tagsByImageID.get()[properties.edit] || []).map(tag => tag.name).join(',');
 });
 

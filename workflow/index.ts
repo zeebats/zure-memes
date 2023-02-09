@@ -1,15 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
+import { Database } from '@/types/supabase';
 import { getImages } from '@/workflow/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
 import { performUpdate } from '@/workflow/utilities/update';
 
-const $supabase = createClient(
+const $supabase = createClient<Database>(
 	'https://qqjjgrbvxjioapiqdlza.supabase.co',
 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxampncmJ2eGppb2FwaXFkbHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTQwODUzOTUsImV4cCI6MTk2OTY2MTM5NX0.jc6Fe6A6wmgLxD5clHu2h0-1PxzUjJsj-cx2aGqOtjE',
 );
 
-(async (): Promise<void> => {
+(async () => {
 	try {
 		await performUpdate({ $supabase });
 

@@ -1,10 +1,10 @@
-export const rng = (seed = ''): number => {
+export const rng = (seed = '') => {
 	let x = 0;
 	let y = 0;
 	let z = 0;
 	let w = 0;
 
-	const next = (): number => {
+	const next = () => {
 		const t = x ^ (x << 11);
 		x = y;
 		y = z;
@@ -30,4 +30,4 @@ export const getRandomBetween = ({
     seed: string;
     min?: number;
     max?: number;
-}): number => Math.floor(rng(seed) * (max - min + 1)) + min;
+}) => Math.floor(rng(seed) * (max - min + 1)) + min;

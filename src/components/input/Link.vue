@@ -54,10 +54,10 @@ const emit = defineEmits<{
 }>();
 
 const model = computed({
-	get(): string {
+	get() {
 		return properties.modelValue;
 	},
-	set(value): void {
+	set(value) {
 		emit('update:modelValue', value);
 	},
 });
@@ -68,7 +68,7 @@ const rules = computed(() => ({
 		$lazy: true,
 		required: helpers.withMessage('This can\'t be empty, please enter something', required),
 		url: helpers.withMessage('This has to be a link, for example: `https://media.discordapp.net/<something>`', url),
-		imageExtension: helpers.withMessage('This has to be a link to an image', (value: string): boolean => {
+		imageExtension: helpers.withMessage('This has to be a link to an image', (value: string) => {
 			const { pathname = '' } = new URL(value);
 
 			return (/\.(gif|jpe?g|png|webp)$/i).test(pathname);
