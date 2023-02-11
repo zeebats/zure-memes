@@ -7,7 +7,8 @@
 [dev]
 	command = "npm run dev"
 	framework = "astro"
-	port = 4449
+	port = 3338
+	targetPort = 3000
 
 [[redirects]]
   from = "/api/*"

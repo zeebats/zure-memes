@@ -8,8 +8,8 @@ import Form from "@/components/form/Login.vue";
 const {
 	data: { user },
 } = await $auth.setSession({
-	refresh_token: Astro.cookies.get("refresh").value || "",
-	access_token: Astro.cookies.get("access").value || "",
+	refresh_token: Astro.cookies.get("refresh-token").value || "",
+	access_token: Astro.cookies.get("access-token").value || "",
 });
 
 if (user) {
@@ -17,7 +17,7 @@ if (user) {
 }
 ---
 
-<Layout title="zure-memes — Login">
+<Layout title="Zure Memes">
 	<div class="layout">
 		<Form client:only="vue" />
 	</div>

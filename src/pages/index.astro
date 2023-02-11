@@ -9,8 +9,8 @@ import Grid from "@/components/grid/Grid.vue";
 const {
 	data: { user },
 } = await $auth.setSession({
-	refresh_token: Astro.cookies.get("refresh").value || "",
-	access_token: Astro.cookies.get("access").value || "",
+	refresh_token: Astro.cookies.get("refresh-token").value || "",
+	access_token: Astro.cookies.get("access-token").value || "",
 });
 
 if (!user) {
@@ -18,7 +18,7 @@ if (!user) {
 }
 ---
 
-<Layout title="zure-memes">
+<Layout title="Zure Memes">
 	<div class="grid min-h-100vh min-h-[100dvh] layout">
 		<LayoutBar client:idle />
 

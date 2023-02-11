@@ -65,7 +65,6 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { email, helpers, required } from '@vuelidate/validators';
-import Cookies from 'js-cookie';
 import { ref } from 'vue';
 
 import { $auth } from '@/api/supabase';
@@ -100,10 +99,7 @@ const handleSubmit = async () => {
 
 		loading.value = true;
 
-		const {
-			data,
-			error,
-		} = await $auth.signInWithPassword({
+		const { error } = await $auth.signInWithPassword({
 			email: emailAddress.value,
 			password: password.value,
 		});
@@ -115,18 +111,6 @@ const handleSubmit = async () => {
 		v$.value.$reset();
 
 		loading.value = false;
-
-		const expires = 100 * 365 * 24 * 60 * 60;
-
-		Cookies.set('access', data.session?.access_token || '', {
-			expires,
-			sameSite: 'Lax',
-		});
-
-		Cookies.set('refresh', data.session?.refresh_token || '', {
-			expires,
-			sameSite: 'Lax',
-		});
 
 		window.location.pathname = '/';
 	} catch (error) {
