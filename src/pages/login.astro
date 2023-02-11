@@ -7,10 +7,7 @@ import Form from "@/components/form/Login.vue";
 
 const {
 	data: { user },
-} = await $auth.setSession({
-	refresh_token: Astro.cookies.get("refresh-token").value || "",
-	access_token: Astro.cookies.get("access-token").value || "",
-});
+} = await $auth.getUser(Astro.cookies.get("access-token").value || "");
 
 if (user) {
 	return Astro.redirect("/");

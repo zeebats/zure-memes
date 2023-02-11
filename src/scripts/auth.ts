@@ -2,15 +2,7 @@ import Cookies, { CookieAttributes } from 'js-cookie';
 
 import { $auth } from '@/api/supabase';
 
-const ids = [
-	'access_token',
-	'refresh_token',
-] as const;
-
-const cookieSettings: CookieAttributes = {
-	sameSite: 'strict',
-	secure: !import.meta.env.DEV,
-};
+const cookieSettings: CookieAttributes = { sameSite: 'strict' };
 
 $auth.onAuthStateChange((event, session) => {
 	if ([
@@ -19,12 +11,15 @@ $auth.onAuthStateChange((event, session) => {
 	].includes(event)) {
 		const expires = new Date(0);
 
-		for (const id of ids) {
-			Cookies.set(id, session?.[id] || '', {
-				...cookieSettings,
-				expires,
-			});
-		}
+		Cookies.set('access-token', session?.access_token || '', {
+			...cookieSettings,
+			expires,
+		});
+
+		Cookies.set('refresh-token', session?.refresh_token || '', {
+			...cookieSettings,
+			expires,
+		});
 	} else if ([
 		'SIGNED_IN',
 		'TOKEN_REFRESHED',
@@ -32,11 +27,14 @@ $auth.onAuthStateChange((event, session) => {
 		const expires = new Date();
 		expires.setFullYear(expires.getFullYear() + 100);
 
-		for (const id of ids) {
-			Cookies.set(id, session?.[id] || '', {
-				...cookieSettings,
-				expires,
-			});
-		}
+		Cookies.set('access-token', session?.access_token || '', {
+			...cookieSettings,
+			expires,
+		});
+
+		Cookies.set('refresh-token', session?.refresh_token || '', {
+			...cookieSettings,
+			expires,
+		});
 	}
 });

@@ -6,7 +6,7 @@
 
 [dev]
 	command = "npm run dev"
-	framework = "astro"
+	framework = "#custom"
 	port = 3338
 	targetPort = 3000
 
