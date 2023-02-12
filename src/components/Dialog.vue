@@ -1,7 +1,7 @@
 <template>
 	<dialog
 		ref="dialog"
-		class="dialog grid gap-y-4 p-8 m-auto max-w-2xl"
+		class="dialog p-8 m-auto max-w-2xl"
 		@close="handleClose"
 	>
 		<slot />
