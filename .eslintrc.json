@@ -3,6 +3,11 @@
 		"@zeebats/eslint-config/vue3",
 		"@zeebats/eslint-config/typescript"
 	],
+	"ignorePatterns": [
+		"coverage/**/*",
+		"src/env.d.ts",
+		"workflow/export/**/*"
+	],
 	"overrides": [
 		{
 			"files": ["*.d.ts"],

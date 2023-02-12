@@ -22,6 +22,5 @@
 			"vite/client",
 			"@types/js-cookie"
 		]
-	},
-	"include": ["**/*"]
+	}
 }
