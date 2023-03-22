@@ -9,6 +9,8 @@ const {
 	data: { user },
 } = await $auth.getUser(Astro.cookies.get("access-token").value || "");
 
+console.log({ page: "login.astro", user });
+
 if (user) {
 	return Astro.redirect("/");
 }
