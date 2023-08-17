@@ -49,7 +49,7 @@
 		"@zeebats/stylelint-config": "1.1.1",
 		"c8": "8.0.1",
 		"case-police": "0.6.1",
-		"netlify-cli": "15.9.1",
+		"netlify-cli": "16.1.0",
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.9.0",
