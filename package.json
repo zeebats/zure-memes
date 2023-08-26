@@ -22,7 +22,7 @@
 		"@astrojs/vue": "2.2.1",
 		"@egjs/vue3-infinitegrid": "4.10.1",
 		"@nanostores/vue": "0.10.0",
-		"@netlify/functions": "1.6.0",
+		"@netlify/functions": "2.0.2",
 		"@supabase/supabase-js": "2.32.0",
 		"@types/js-cookie": "3.0.3",
 		"@types/node": "18.17.6",
