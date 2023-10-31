@@ -1,6 +1,6 @@
 import netlify from '@astrojs/netlify';
 import vue from '@astrojs/vue';
-import UnoCSS from '@unocss/astro';
+import uno from '@unocss/astro';
 import presetUno from '@unocss/preset-uno';
 import transformerDirective from '@unocss/transformer-directives';
 // import AstroPWA from '@vite-pwa/astro';
@@ -10,7 +10,7 @@ export default defineConfig({
 	adapter: netlify(),
 	integrations: [
 		vue(),
-		UnoCSS({ // eslint-disable-line new-cap
+		uno({ // eslint-disable-line new-cap
 			presets: [presetUno()],
 			theme: {
 				/* eslint-disable sort-keys */
