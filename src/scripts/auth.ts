@@ -5,11 +5,6 @@ import { $auth } from '@/api/supabase';
 const cookieSettings: CookieAttributes = { sameSite: 'strict' };
 
 $auth.onAuthStateChange((event, session) => {
-	console.log({
-		event,
-		session,
-	});
-
 	if ([
 		'SIGNED_OUT',
 		'USER_DELETED',

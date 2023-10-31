@@ -1,24 +1,24 @@
 [build]
-	functions = "functions"
+functions = "functions"
 
 [functions]
-	node_bundler = "esbuild"
+node_bundler = "esbuild"
 
 [dev]
-	command = "npm run dev"
-	framework = "#custom"
-	port = 3338
-	targetPort = 3000
+command = "npm run dev"
+framework = "#custom"
+port = 3338
+targetPort = 4321
 
 [[redirects]]
-	from = "/api/*"
-	to = "/.netlify/functions/:splat"
-	status = 200
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200
 
 [[headers]]
-	for = "/*"
-	[headers.values]
-		Referrer-Policy = "strict-origin-when-cross-origin"
-		X-Content-Type-Options = "nosniff"
-		X-Frame-Options = "DENY"
-		X-XSS-Protection = "1; mode=block"
+for = "/*"
+[headers.values]
+Referrer-Policy = "strict-origin-when-cross-origin"
+X-Content-Type-Options = "nosniff"
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"

@@ -1,9 +1,9 @@
 <template>
 	<label
 		for="tags"
-		class="flex flex-grow gap-x-4 items-baseline mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+		class="flex flex-grow gap-x-4 items-start mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
 	>
-		Tags:
+		<span class="pt-[1.75ex]">Tags:</span>
 		<span class="grid gap-y-2 flex-grow">
 			<input
 				id="tags"
