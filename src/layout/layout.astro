@@ -1,4 +1,6 @@
 ---
+import { pwaInfo } from 'virtual:pwa-info';
+
 const { title = '' } = Astro.props;
 ---
 
@@ -234,12 +236,15 @@ const { title = '' } = Astro.props;
 			rel="manifest"
 			href="/_nuxt/manifest.bb863d30.json"
 		/> -->
+		<script src="/src/assets/scripts/observers.ts"></script>
+
+		<script src="/src/assets/scripts/pwa.ts"></script>
+		{ pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
 	</head>
 
 	<body>
 		<slot />
-		<script src="@/scripts/auth.ts"></script>
-		<script src="@/scripts/observers.ts"></script>
+		<script src="/src/assets/scripts/auth.ts"></script>
 	</body>
 </html>
 

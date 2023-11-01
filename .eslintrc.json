@@ -22,5 +22,16 @@
 			"files": ["*.astro"],
 			"rules": { "consistent-return": "off" }
 		}
-	]
+	],
+	"rules": {
+		"import/no-unresolved": [
+			"error",
+			{
+				"ignore": [
+					"^virtual:",
+					"^astro:"
+				]
+			}
+		]
+	}
 }

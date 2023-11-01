@@ -20,7 +20,9 @@
 		"types": [
 			"node",
 			"vite/client",
-			"@types/js-cookie"
+			"@types/js-cookie",
+			"vite-plugin-pwa/info",
+			"vite-plugin-pwa/client"
 		]
 	}
 }
