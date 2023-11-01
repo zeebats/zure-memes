@@ -6,7 +6,7 @@
 		"dev": "astro dev",
 		"lint:casing": "case-police --ignore '**/*.d.ts'",
 		"lint:casing:fix": "npm run lint:casing --fix",
-		"lint:scripts": "eslint '**/*.{js,mjs,json,ts,vue}'",
+		"lint:scripts": "eslint '**/*.{astro,js,mjs,json,ts,vue}'",
 		"lint:scripts:fix": "npm run eslint -- --fix",
 		"lint:styles": "stylelint '**/*.{css,vue}'",
 		"lint:styles:fix": "npm run stylelint -- --fix",

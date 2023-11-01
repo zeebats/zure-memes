@@ -1,23 +1,26 @@
-import { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
+
+import type { Database } from '@/types/supabase';
+import type { Tag } from '@/utilities/tags';
+
 import {
-	extendedMatch,
 	Fzf,
-	FzfOptions,
-	FzfResultItem,
+	type FzfOptions,
+	type FzfResultItem,
+	extendedMatch,
 } from 'fzf';
 
-import { Database } from '@/types/supabase';
-import { Tag } from '@/utilities/tags';
-
-export interface Image {
+/* eslint-disable @typescript-eslint/no-type-alias */
+export type Image = {
     id: number;
-    title: string | null;
+    title: null | string;
     url: string;
 }
 
-export interface ImageSearchable extends Image {
-    tags: Tag[]
-}
+export type ImageSearchable = {
+    tags: Tag[] | undefined
+} & Image
+/* eslint-enable @typescript-eslint/no-type-alias */
 
 export const queryImages = ({ $supabase }: { $supabase: SupabaseClient<Database> }) => $supabase.from('images');
 
@@ -29,8 +32,8 @@ export const getAllImages = async ({ $supabase }: { $supabase: SupabaseClient<Da
 		.select()
 		.order('id', { ascending: false });
 
-	if (error) {
-		throw error;
+	if (error !== null) {
+		throw new Error(JSON.stringify(error));
 	}
 
 	return images;
@@ -46,7 +49,7 @@ export const filterImages = ({
 	const options: FzfOptions<ImageSearchable> = {
 		match: extendedMatch,
 		selector: image => {
-			const concat = `${image.title} ${(image.tags || []).map(tag => tag.name).join(' ')}`;
+			const concat = `${image.title ?? ''} ${(image.tags ?? []).map(tag => tag.name).join(' ')}`;
 
 			return concat;
 		},

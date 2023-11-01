@@ -29,17 +29,17 @@ import { useStore } from '@nanostores/vue';
 import { ref, watch } from 'vue';
 
 import GridItem from '@/components/grid/Item.vue';
-import { imagesLoop, largestImageID, search } from '@/store/images';
+import { $search as $storeSearch, imagesLoop, largestImageID } from '@/store/images';
 import { Image } from '@/utilities/images';
 
 interface TemplateImage extends Image {
-    key: number;
     groupKey: number;
+    key: number;
 }
 
 const $imagesLoop = useStore(imagesLoop);
 const $largestImageID = useStore(largestImageID);
-const $search = useStore(search);
+const $search = useStore($storeSearch);
 
 const numberOfItems = 7;
 
@@ -55,14 +55,14 @@ const handleGetItems = (groupKey: number, amountOfImages: number) => {
 			const item = $imagesLoop.value[key];
 
 			return {
-				key,
 				groupKey,
+				key,
 				...item,
 			};
 		})
 		.filter((item: TemplateImage) => !Object.keys(item).every(key => [
-			'key',
 			'groupKey',
+			'key',
 		].includes(key)));
 };
 

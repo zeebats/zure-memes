@@ -40,11 +40,11 @@ import { helpers, required } from '@vuelidate/validators';
 import { computed } from 'vue';
 
 const properties = withDefaults(defineProps<{
-    modelValue: string;
     disabled: boolean;
+    modelValue: string;
 }>(), {
-	modelValue: undefined, /* eslint-disable-line no-undefined */
 	disabled: false,
+	modelValue: undefined, /* eslint-disable-line no-undefined */
 });
 
 const emit = defineEmits<{

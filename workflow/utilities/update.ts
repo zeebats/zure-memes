@@ -1,8 +1,9 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+
+import type { Database } from '@/types/supabase';
+
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-import { SupabaseClient } from '@supabase/supabase-js';
-
-import { Database } from '@/types/supabase';
 import { getTimestamp } from '@/utilities/timestamp';
 import { downloadImages, downloadImagesJSON } from '@/workflow/utilities/images';
 import { downloadMemesJSON } from '@/workflow/utilities/memes';

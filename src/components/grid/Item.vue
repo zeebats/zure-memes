@@ -1,6 +1,6 @@
 <template>
 	<div class="w-100% p-2 md:w-1/2 lg:w1/3 2xl:w1/4 3xl:w1/5 4xl:w1/6 5xl:w1/7">
-		<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
+		<!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
 		<div
 			ref="item"
 			class="grid focus-within:ring-4 ring-blue-300 dark:ring-blue-800 overflow-hidden"
@@ -178,7 +178,7 @@ const dialog = ref(false);
 
 const copied = ref<boolean>(false);
 const copyContent = ref<string | unknown>('');
-const copyStatus = ref<'success'|'error'|''>('');
+const copyStatus = ref<''|'error'|'success'>('');
 
 let copyTimer: ReturnType<typeof setTimeout> | undefined; /* eslint-disable-line init-declarations */
 
@@ -204,9 +204,13 @@ const handleCopy = async () => {
 		await navigator.clipboard.writeText(url.value);
 		copyStatus.value = 'success';
 		copyContent.value = 'Copied to clipboard!';
-	} catch ({ message }) {
+	} catch (error) {
+		if (!(error instanceof Error)) {
+			throw error;
+		}
+
 		copyStatus.value = 'error';
-		copyContent.value = message;
+		copyContent.value = error.message;
 	} finally {
 		copied.value = true;
 

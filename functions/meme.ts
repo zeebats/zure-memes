@@ -1,4 +1,5 @@
-import { Handler, HandlerEvent } from '@netlify/functions';
+import type { Handler, HandlerEvent } from '@netlify/functions';
+
 import { createClient } from '@supabase/supabase-js';
 
 import { filterImages, getAllImages } from '@/utilities/images';
@@ -12,11 +13,12 @@ const {
 
 const $supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY);
 
+// eslint-disable-next-line max-statements
 export const handler: Handler = async ({ queryStringParameters }: HandlerEvent) => {
 	try {
-		const { search } = queryStringParameters || {};
+		const { search = '' } = queryStringParameters ?? {};
 
-		if (!search) {
+		if (search === '') {
 			throw new Error('Ben je contextueel gehandicapt ofzo');
 		}
 
@@ -38,13 +40,17 @@ export const handler: Handler = async ({ queryStringParameters }: HandlerEvent) 
 
 		return {
 			body: JSON.stringify(foundImages),
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json' /* eslint-disable-line @typescript-eslint/naming-convention */ },
 			statusCode: 200,
 		};
-	} catch ({ message }) {
+	} catch (error) {
+		if (!(error instanceof Error)) {
+			throw error;
+		}
+
 		return {
-			body: JSON.stringify({ message }),
-			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ message: error.message }),
+			headers: { 'Content-Type': 'application/json' /* eslint-disable-line @typescript-eslint/naming-convention */ },
 			statusCode: 500,
 		};
 	}

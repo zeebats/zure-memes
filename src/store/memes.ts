@@ -1,3 +1,6 @@
+import type { Image } from '@/utilities/images';
+import type { Tag } from '@/utilities/tags';
+
 import {
 	action,
 	atom,
@@ -8,16 +11,14 @@ import {
 
 import { $supabase } from '@/api/supabase';
 import { tagsByImageID } from '@/store/tags';
-import { Image } from '@/utilities/images';
-import { getAllMemes, Meme } from '@/utilities/memes';
-import { Tag } from '@/utilities/tags';
+import { type Meme, getAllMemes } from '@/utilities/memes';
 
-export const memes = atom<Meme[]>([]);
+export const $memes = atom<Meme[]>([]);
 
-export const largestMemeID = computed([memes], memes => Math.max(...memes.map(meme => meme.id)));
+export const largestMemeID = computed([$memes], memes => Math.max(...memes.map(({ id }) => id)));
 
 // eslint-disable-next-line max-statements
-export const upsert = action(memes, 'upsert', async (store, {
+export const upsert = action($memes, 'upsert', async (store, {
 	imageID,
 	updatedTags,
 } : {
@@ -26,8 +27,10 @@ export const upsert = action(memes, 'upsert', async (store, {
 }) => {
 	let newTagsForImage: Tag[] = [];
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
 	const existingTagsForUpdatedImage = tagsByImageID.get()[imageID] || [];
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
 	if (existingTagsForUpdatedImage) {
 		newTagsForImage = updatedTags.filter((potentialNew: Tag) => !existingTagsForUpdatedImage.some(existing => existing.name === potentialNew.name));
 	}
@@ -36,16 +39,16 @@ export const upsert = action(memes, 'upsert', async (store, {
 
 	const memesToUpdate = newTagsForImage.map((tag: Tag) => ({
 		id: (newLargestMemeID += 1),
-		image_id: imageID, /* eslint-disable-line camelcase */
-		tag_id: tag.id, /* eslint-disable-line camelcase */
+		image_id: imageID, /* eslint-disable-line camelcase, @typescript-eslint/naming-convention */
+		tag_id: tag.id, /* eslint-disable-line camelcase, @typescript-eslint/naming-convention */
 	}));
 
 	const { error } = await $supabase
 		.from('memes')
 		.upsert(memesToUpdate);
 
-	if (error) {
-		throw error;
+	if (error !== null) {
+		throw new Error(JSON.stringify(error));
 	}
 
 	for (const meme of memesToUpdate) {
@@ -68,10 +71,11 @@ export const upsert = action(memes, 'upsert', async (store, {
 	return memesToUpdate;
 });
 
-onMount(memes, () => {
-	task(async () => {
+onMount($memes, () => {
+	// eslint-disable-next-line no-void
+	void task(async () => {
 		const response = await getAllMemes({ $supabase });
 
-		memes.set(response);
+		$memes.set(response);
 	});
 });

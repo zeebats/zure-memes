@@ -45,9 +45,9 @@ import Button from '@/components/Button.vue';
 import Dialog from '@/components/Dialog.vue';
 import FormAdd from '@/components/form/Add.vue';
 import { keyboard } from '@/store/device';
-import { search } from '@/store/images';
+import { $search as $storeSearch } from '@/store/images';
 
-const $search = useVModel(search);
+const $search = useVModel($storeSearch);
 const $keyboard = useStore(keyboard);
 
 const dialog = ref(false);

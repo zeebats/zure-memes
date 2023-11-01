@@ -22,6 +22,7 @@ export const rng = (seed = '') => {
 	return next();
 };
 
+/* eslint-disable perfectionist/sort-objects, perfectionist/sort-object-types */
 export const getRandomBetween = ({
 	seed = '',
 	min = 0,
@@ -31,3 +32,4 @@ export const getRandomBetween = ({
     min?: number;
     max?: number;
 }) => Math.floor(rng(seed) * (max - min + 1)) + min;
+/* eslint-enable perfectionist/sort-objects, perfectionist/sort-object-types */

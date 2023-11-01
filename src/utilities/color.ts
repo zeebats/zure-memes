@@ -5,7 +5,7 @@ import { getRandomBetween } from '@/utilities/random';
 
 extend([a11yPlugin]);
 
-/* eslint-disable sort-keys */
+/* eslint-disable perfectionist/sort-objects */
 export const seededRandomColor = (seed: string) => colord({
 	h: getRandomBetween({
 		seed,
@@ -23,7 +23,7 @@ export const seededRandomColor = (seed: string) => colord({
 		max: 100,
 	}),
 });
-/* eslint-enable sort-keys */
+/* eslint-enable perfectionist/sort-objects */
 
 export const getColor = (seed: string) => {
 	const background = seededRandomColor(seed).toRgbString();

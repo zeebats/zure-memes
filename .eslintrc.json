@@ -1,12 +1,14 @@
 {
 	"extends": [
 		"@zeebats/eslint-config/vue3",
-		"@zeebats/eslint-config/typescript"
+		"@zeebats/eslint-config/typescript",
+		"@zeebats/eslint-config/astro"
 	],
 	"ignorePatterns": [
 		"coverage/**/*",
 		"src/env.d.ts",
-		"workflow/export/**/*"
+		"workflow/export/**/*",
+		"src/types/supabase.d.ts"
 	],
 	"overrides": [
 		{
@@ -15,6 +17,10 @@
 				"@typescript-eslint/no-unused-vars": "off",
 				"unicorn/prevent-abbreviations": "off"
 			}
+		},
+		{
+			"files": ["*.astro"],
+			"rules": { "consistent-return": "off" }
 		}
 	]
 }

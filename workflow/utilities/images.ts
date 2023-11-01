@@ -1,11 +1,13 @@
-import { exec } from 'node:child_process';
-import { readFile, unlink, writeFile } from 'node:fs/promises';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-import { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/supabase';
+
+import { exec } from 'node:child_process';
+import { unlinkSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
 import fetch from 'node-fetch';
 
-import { Database } from '@/types/supabase';
-import { filterImages, Image, queryImages } from '@/utilities/images';
+import { type Image, filterImages, queryImages } from '@/utilities/images';
 import { createFilename } from '@/workflow/utilities/string';
 import { getTagsForImageId } from '@/workflow/utilities/tags';
 
@@ -15,8 +17,8 @@ export const downloadImagesJSON = async ({ $supabase }: { $supabase: SupabaseCli
 		error,
 	} = await queryImages({ $supabase }).select();
 
-	if (error) {
-		throw error;
+	if (error !== null) {
+		throw new Error(JSON.stringify(error));
 	}
 
 	return writeFile('./.cache/images.json', JSON.stringify(images));
@@ -28,8 +30,8 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient<
 		error,
 	} = await queryImages({ $supabase }).select('url');
 
-	if (error) {
-		throw error;
+	if (error !== null) {
+		throw new Error(JSON.stringify(error));
 	}
 
 	return Promise.all(
@@ -62,12 +64,12 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient<
 				`--out ${filename}.jpg`,
 			];
 
-			exec(command.join(' '), error => {
-				if (error) {
-					throw error;
+			exec(command.join(' '), nodeError => {
+				if (nodeError !== null) {
+					throw new Error(JSON.stringify(nodeError));
 				}
 
-				unlink(filename);
+				unlinkSync(filename);
 			});
 		}),
 	);
@@ -76,7 +78,7 @@ export const downloadImages = async ({ $supabase }: { $supabase: SupabaseClient<
 export const getImages = async ({ search }: { search: string }) => {
 	const local = await readFile('./.cache/images.json', { encoding: 'utf8' });
 
-	const images: Image[] = JSON.parse(local);
+	const images = JSON.parse(local) as unknown as Image[];
 
 	const prepared = await Promise.all(images.map(async image => ({
 		...image,

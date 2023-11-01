@@ -1,6 +1,6 @@
 import { keyboard, touch } from '@/store/device';
 
-const handleTouchObserver = ({ matches }: MediaQueryListEvent | { matches: boolean }) => {
+const handleTouchObserver = ({ matches }: { matches: boolean } | MediaQueryListEvent) => {
 	touch.set(matches);
 };
 
@@ -11,7 +11,7 @@ const { matches } = touchObserver;
 
 handleTouchObserver({ matches });
 
-(window.visualViewport as VisualViewport).addEventListener('resize', ({ target }: Event) => {
+(window.visualViewport!).addEventListener('resize', ({ target }: Event) => {
 	requestAnimationFrame(() => {
 		const { height: visualHeight } = target as VisualViewport;
 		const { innerHeight: windowHeight } = window;

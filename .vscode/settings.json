@@ -1,6 +1,23 @@
 {
+	"editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "editor.formatOnSave": true,
+	"eslint.lintTask.enable": true,
   "eslint.validate": [
+    "astro",
+    "javascript",
+    "javascriptreact",
     "json",
+    "jsonc",
     "typescript",
-  ]
+    "typescriptreact"
+  ],
+  "stylelint.validate": [
+    "astro",
+    "css",
+    "less",
+    "postcss"
+  ],
 }

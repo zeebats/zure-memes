@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention, sort-keys, perfectionist/sort-objects */
+
 import transformerDirectives from '@unocss/transformer-directives';
 import { defineConfig, presetUno } from 'unocss';
 
 export default defineConfig({
 	presets: [presetUno()],
 	theme: {
-		/* eslint-disable sort-keys */
 		breakpoints: {
 			'sm': '640px',
 			'md': '768px',
@@ -15,7 +16,6 @@ export default defineConfig({
 			'4xl': '2560px',
 			'5xl': '3200px',
 		},
-		/* eslint-enable sort-keys */
 		colors: {
 			primary: {
 				100: '#FFFCE3',
