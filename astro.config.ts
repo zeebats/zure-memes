@@ -17,7 +17,6 @@ export default defineConfig({
 			manifest: {
 				background_color: '#ffffff',
 				description: 'Zure Memes fo\' dat ass',
-				display: 'standalone',
 				icons: [
 					{
 						sizes: '48x48',
