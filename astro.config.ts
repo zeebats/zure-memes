@@ -17,7 +17,7 @@ export default defineConfig({
 			manifest: {
 				background_color: '#ffffff',
 				description: 'Zure Memes fo\' dat ass',
-				display: 'minimal-ui',
+				display: 'fullscreen',
 				icons: [
 					{
 						sizes: '48x48',
@@ -75,7 +75,7 @@ export default defineConfig({
 				name: 'Zure Memes',
 				orientation: 'portrait-primary',
 				short_name: 'Zure Memes',
-				start_url: '/',
+				start_url: '/?pwa=true',
 				theme_color: '#FFE100',
 			},
 			/* eslint-enable camelcase, @typescript-eslint/naming-convention */
@@ -83,7 +83,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			scope: '/',
 			workbox: {
-				globPatterns: ['**/*.{css,js,html,svg,png,avif,ico,txt}'],
+				globPatterns: ['**/*.{css,js,html,svg,png,ico,txt}'],
 				navigateFallback: '/404',
 			},
 		}),
