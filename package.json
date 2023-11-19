@@ -54,7 +54,7 @@
 		"c8": "8.0.1",
 		"case-police": "0.6.1",
 		"lint-staged": "15.1.0",
-		"netlify-cli": "16.9.3",
+		"netlify-cli": "17.5.1",
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.9.0",
