@@ -26,7 +26,7 @@
 		"@supabase/ssr": "0.0.10",
 		"@supabase/supabase-js": "2.38.4",
 		"@types/js-cookie": "3.0.6",
-		"@types/node": "18.18.10",
+		"@types/node": "20.9.2",
 		"@unocss/astro": "0.57.5",
 		"@unocss/preset-uno": "0.57.5",
 		"@unocss/reset": "0.57.5",
