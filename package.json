@@ -19,7 +19,7 @@
 	},
 	"dependencies": {
 		"@astrojs/netlify": "3.0.4",
-		"@astrojs/vue": "3.0.4",
+		"@astrojs/vue": "4.0.8",
 		"@egjs/vue3-infinitegrid": "4.11.0",
 		"@nanostores/vue": "0.10.0",
 		"@netlify/functions": "2.4.0",
