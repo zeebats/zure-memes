@@ -18,7 +18,7 @@
 		"workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
 	},
 	"dependencies": {
-		"@astrojs/netlify": "4.1.0",
+		"@astrojs/netlify": "4.1.1",
 		"@astrojs/vue": "4.0.8",
 		"@egjs/vue3-infinitegrid": "4.11.0",
 		"@nanostores/vue": "0.10.0",
