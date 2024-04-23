@@ -24,7 +24,7 @@
 		"@nanostores/vue": "0.10.0",
 		"@netlify/functions": "2.6.0",
 		"@supabase/ssr": "0.3.0",
-		"@supabase/supabase-js": "2.42.4",
+		"@supabase/supabase-js": "2.42.5",
 		"@types/js-cookie": "3.0.6",
 		"@types/node": "20.12.7",
 		"@unocss/astro": "0.59.4",
@@ -47,7 +47,7 @@
 		"workbox-window": "7.0.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "19.2.2",
+		"@commitlint/cli": "19.3.0",
 		"@commitlint/config-conventional": "19.2.2",
 		"@zeebats/eslint-config": "1.4.0",
 		"@zeebats/stylelint-config": "1.4.0",
@@ -59,7 +59,7 @@
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.11.1",
 		"vitest": "1.5.0",
-		"vue-tsc": "2.0.13"
+		"vue-tsc": "2.0.14"
 	},
 	"overrides": {
 		"vue": "3"
