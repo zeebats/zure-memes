@@ -18,23 +18,23 @@
 		"workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
 	},
 	"dependencies": {
-		"@astrojs/netlify": "5.2.0",
-		"@astrojs/vue": "4.1.0",
+		"@astrojs/netlify": "5.2.1",
+		"@astrojs/vue": "4.2.0",
 		"@egjs/vue3-infinitegrid": "4.11.1",
 		"@nanostores/vue": "0.10.0",
-		"@netlify/functions": "2.6.0",
+		"@netlify/functions": "2.6.3",
 		"@supabase/ssr": "0.3.0",
-		"@supabase/supabase-js": "2.42.5",
+		"@supabase/supabase-js": "2.43.1",
 		"@types/js-cookie": "3.0.6",
-		"@types/node": "20.12.7",
-		"@unocss/astro": "0.59.4",
-		"@unocss/preset-uno": "0.59.4",
-		"@unocss/reset": "0.59.4",
-		"@unocss/transformer-directives": "0.59.4",
-		"@vite-pwa/astro": "0.3.1",
+		"@types/node": "20.12.11",
+		"@unocss/astro": "0.60.0",
+		"@unocss/preset-uno": "0.60.0",
+		"@unocss/reset": "0.60.0",
+		"@unocss/transformer-directives": "0.60.0",
+		"@vite-pwa/astro": "0.4.0",
 		"@vuelidate/core": "2.0.3",
 		"@vuelidate/validators": "2.0.4",
-		"astro": "4.6.3",
+		"astro": "4.8.0",
 		"colord": "2.9.3",
 		"filenamify-url": "3.1.0",
 		"fzf": "0.5.2",
@@ -42,9 +42,9 @@
 		"nanoid": "5.0.7",
 		"nanostores": "0.10.3",
 		"node-fetch": "3.3.2",
-		"unocss": "0.59.4",
-		"vite-plugin-pwa": "0.19.8",
-		"workbox-window": "7.0.0"
+		"unocss": "0.60.0",
+		"vite-plugin-pwa": "0.20.0",
+		"workbox-window": "7.1.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "19.3.0",
@@ -54,12 +54,12 @@
 		"c8": "9.1.0",
 		"case-police": "0.6.1",
 		"lint-staged": "15.2.2",
-		"netlify-cli": "17.22.1",
+		"netlify-cli": "17.23.2",
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.11.1",
-		"vitest": "1.5.0",
-		"vue-tsc": "2.0.14"
+		"vitest": "1.6.0",
+		"vue-tsc": "2.0.16"
 	},
 	"overrides": {
 		"vue": "3"
