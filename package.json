@@ -18,15 +18,15 @@
 		"workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
 	},
 	"dependencies": {
-		"@astrojs/netlify": "5.3.2",
+		"@astrojs/netlify": "5.3.3",
 		"@astrojs/vue": "4.5.0",
 		"@egjs/vue3-infinitegrid": "4.11.1",
 		"@nanostores/vue": "0.10.0",
 		"@netlify/functions": "2.8.0",
-		"@supabase/ssr": "0.3.0",
-		"@supabase/supabase-js": "2.43.5",
+		"@supabase/ssr": "0.4.0",
+		"@supabase/supabase-js": "2.44.2",
 		"@types/js-cookie": "3.0.6",
-		"@types/node": "20.14.8",
+		"@types/node": "20.14.9",
 		"@unocss/astro": "0.61.0",
 		"@unocss/preset-uno": "0.61.0",
 		"@unocss/reset": "0.61.0",
@@ -34,7 +34,7 @@
 		"@vite-pwa/astro": "0.4.0",
 		"@vuelidate/core": "2.0.3",
 		"@vuelidate/validators": "2.0.4",
-		"astro": "4.11.0",
+		"astro": "4.11.3",
 		"colord": "2.9.3",
 		"filenamify-url": "3.1.0",
 		"fzf": "0.5.2",
@@ -54,12 +54,12 @@
 		"c8": "10.1.2",
 		"case-police": "0.6.1",
 		"lint-staged": "15.2.7",
-		"netlify-cli": "17.29.0",
+		"netlify-cli": "17.30.0",
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.11.1",
 		"vitest": "1.6.0",
-		"vue-tsc": "2.0.22"
+		"vue-tsc": "2.0.24"
 	},
 	"overrides": {
 		"vue": "3"
