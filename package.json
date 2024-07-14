@@ -58,7 +58,7 @@
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.11.1",
-		"vitest": "1.6.0",
+		"vitest": "2.0.2",
 		"vue-tsc": "2.0.26"
 	},
 	"overrides": {
