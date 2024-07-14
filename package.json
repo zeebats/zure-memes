@@ -18,7 +18,7 @@
 		"workflow:dev": "esbuild workflow/index.ts --bundle --platform=node --target=node18 --watch --outfile=workflow/export/index.js"
 	},
 	"dependencies": {
-		"@astrojs/netlify": "5.3.5",
+		"@astrojs/netlify": "5.4.0",
 		"@astrojs/vue": "4.5.0",
 		"@egjs/vue3-infinitegrid": "4.12.0",
 		"@nanostores/vue": "0.10.0",
@@ -54,7 +54,7 @@
 		"c8": "10.1.2",
 		"case-police": "0.6.1",
 		"lint-staged": "15.2.7",
-		"netlify-cli": "17.33.0",
+		"netlify-cli": "17.33.3",
 		"postcss-nested": "6.0.1",
 		"postcss-nested-ancestors": "3.0.0",
 		"simple-git-hooks": "2.11.1",
